@@ -8,13 +8,13 @@ The premise is to start at the bottom of a tower and navigate up the tower by so
 
 Controls
 --------
-WASD/Arrow keys - Movement
-E - Use
-Space - Nothing
+- WASD/Arrow keys - Movement
+- E - Use
+- Space - Nothing
 
 Authors
 -------
-Joel
-Jason
-Steven
+- Joel
+- Jason
+- Steven
 
