@@ -1,0 +1,7 @@
+Contains the game's states.
+
+Current States:
+
+SplashState - Brief state that pops up when starting the game
+MenuState - Main menu for the game. Adjust settings and setup the game.
+PlayingState - The state which almost everything happens. Where the player gets to play the game.
