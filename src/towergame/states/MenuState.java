@@ -58,7 +58,7 @@ public class MenuState extends BasicGameState{
 		
 		// [Press Enter]
 		if (!flash)
-			FontUtils.drawCenter(TowerGame.ricasso12, "[Press Enter]", 165, 164, 470, Color.white);
+			FontUtils.drawCenter(TowerGame.ricasso12, "[Press Enter]", 165, 184, 470, Color.white);
 		
 		// Darkening Layer
 		bg3.draw();
