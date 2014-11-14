@@ -26,6 +26,7 @@ public class SplashState extends BasicGameState{
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) {
 		timer = 2000;
+		TowerGame.menu.loop();
 	}
 	
 	@Override
@@ -49,8 +50,8 @@ public class SplashState extends BasicGameState{
 		TowerGame tg = (TowerGame) game;
 		
 		if (input.isKeyPressed(Input.KEY_SPACE) || input.isKeyPressed(Input.KEY_ENTER) || timer <= 0) {
-			//tg.enterState(TowerGame.MENUSTATE, new FadeOutTransition(), new FadeInTransition());
-			tg.enterState(TowerGame.PLAYINGSTATE, new FadeOutTransition(), new FadeInTransition());
+			tg.enterState(TowerGame.MENUSTATE, new FadeOutTransition(), new FadeInTransition());
+			//tg.enterState(TowerGame.PLAYINGSTATE, new FadeOutTransition(), new FadeInTransition());
 		}
 	}
 

@@ -1,9 +1,15 @@
 package towergame;
 
+import java.awt.Font;
+import java.io.InputStream;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.ResourceLoader;
 
 import towergame.states.PlayingState;
 import towergame.states.MenuState;
@@ -18,6 +24,20 @@ public class TowerGame extends StateBasedGame{
 	public static final int MENUSTATE = 1;
 	public static final int PLAYINGSTATE = 2;
 	
+	public static final String MENU1 = "towergame/resources/menu1.png";
+	public static final String MENU2 = "towergame/resources/menu2.png";
+	public static final String MENU3 = "towergame/resources/menu3.png";
+	
+	public static final String RICASSO = "towergame/resources/Ricasso.ttf";
+	
+	public static Music menu;
+	public static Music bgm;
+	
+	Font awtFont;
+	public static TrueTypeFont ricasso12;
+	public static TrueTypeFont ricasso20;
+	public static TrueTypeFont ricasso30;
+	
 	public TowerGame(String title, int width, int height) {
 		super(title);
 		ScreenHeight = height;
@@ -25,7 +45,7 @@ public class TowerGame extends StateBasedGame{
 	}
 
 	@Override
-	public void initStatesList(GameContainer arg0) throws SlickException {
+	public void initStatesList(GameContainer container) throws SlickException {
 		// Add States
 		addState(new SplashState());
 		addState(new MenuState());
@@ -34,10 +54,29 @@ public class TowerGame extends StateBasedGame{
 		// Preload some Images
 		
 		// Preload some Sounds
+		container.setSoundVolume(0.25f);
 		
 		// Preload some Music
+		container.setMusicVolume(0.15f);
+		menu = new Music("towergame/resources/mica_2.ogg");
 		
 		// Preload some font
+		// Used to load custom fonts
+		try {
+			InputStream inputStream	= ResourceLoader.getResourceAsStream(RICASSO);
+			
+			awtFont = Font.createFont(Font.TRUETYPE_FONT, inputStream);
+			awtFont = awtFont.deriveFont(12f); // set font size
+			ricasso12 = new TrueTypeFont(awtFont, true);
+			awtFont = awtFont.deriveFont(20f); // set font size
+			ricasso20 = new TrueTypeFont(awtFont, true);
+			awtFont = awtFont.deriveFont(30f); // set font size
+			ricasso30 = new TrueTypeFont(awtFont, true);
+				
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public static void main(String[] args) {
