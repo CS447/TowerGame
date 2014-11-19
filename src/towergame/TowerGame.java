@@ -27,6 +27,9 @@ public class TowerGame extends StateBasedGame{
 	public static final String MENU2 = "towergame/resources/menu2.png";
 	public static final String MENU3 = "towergame/resources/menu3.png";
 	
+	public static final String PEACH = "towergame/resources/peach.png";
+	public static final String PEACH16 = "towergame/resources/peach16.png";
+	
 	public static final String RICASSO = "towergame/resources/Ricasso.ttf";
 	
 	public static final String SFX_BEEP1 = "towergame/resources/confirm_style_5_001.ogg";
@@ -96,7 +99,7 @@ public class TowerGame extends StateBasedGame{
 
 		try {
 			app = new AppGameContainer(new TowerGame("Peachtree Tower", 800, 600));
-			//app.setIcons(new String[] { "towergame/resources/icon16.png", "towergame/resources/icon32.png" });
+			app.setIcons(new String[] { PEACH16, PEACH });
 			app.setDisplayMode(800, 600, false);
 			app.setVSync(true);
 			app.start();
