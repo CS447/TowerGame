@@ -10,6 +10,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.FontUtils;
 
+import towergame.SoundManager;
 import towergame.TowerGame;
 
 public class MenuState extends BasicGameState{
@@ -151,11 +152,20 @@ public class MenuState extends BasicGameState{
 		
 		Input input = container.getInput();
 		
+		if (input.isKeyPressed(Input.KEY_NUMPAD1))
+			playBeep1();
+		if (input.isKeyPressed(Input.KEY_NUMPAD2))
+			playBeep2();
+		if (input.isKeyPressed(Input.KEY_NUMPAD3))
+			playBeep3();
+		
 		switch(screen){
 		case 0:
-			if (input.isKeyPressed(Input.KEY_ENTER))
+			if (input.isKeyPressed(Input.KEY_ENTER)){
 				screen = 1;
-			input.clearKeyPressedRecord();
+				playBeep3();
+				input.clearKeyPressedRecord();
+			}
 			break;
 		case 1: 
 			menuControls(input);
@@ -185,6 +195,7 @@ public class MenuState extends BasicGameState{
 		if (input.isKeyPressed(Input.KEY_ESCAPE)){
 			screen = 0;
 			main = 1;
+			playBeep2();
 			input.clearKeyPressedRecord();
 		}
 		
@@ -195,6 +206,7 @@ public class MenuState extends BasicGameState{
 			} else {
 				main--;
 			}
+			playBeep1();
 		}
 		// Move down
 		if ( (input.isKeyPressed(Input.KEY_DOWN) || input.isKeyPressed(Input.KEY_S)) ){
@@ -203,6 +215,7 @@ public class MenuState extends BasicGameState{
 			} else {
 				main++;
 			}
+			playBeep1();
 		}
 		
 		// Press Enter
@@ -219,6 +232,7 @@ public class MenuState extends BasicGameState{
 				options = 1;
 				break;
 			}
+			playBeep3();
 			input.clearKeyPressedRecord();
 		}
 	}
@@ -228,6 +242,7 @@ public class MenuState extends BasicGameState{
 		if (input.isKeyPressed(Input.KEY_ESCAPE)){
 			screen = 1;
 			startGame = 1;
+			playBeep2();
 			input.clearKeyPressedRecord();
 		}
 		
@@ -238,6 +253,7 @@ public class MenuState extends BasicGameState{
 			} else {
 				startGame--;
 			}
+			playBeep1();
 		}
 		// Move down
 		if ( (input.isKeyPressed(Input.KEY_DOWN) || input.isKeyPressed(Input.KEY_S)) ){
@@ -246,6 +262,7 @@ public class MenuState extends BasicGameState{
 			} else {
 				startGame++;
 			}
+			playBeep1();
 		}
 		
 		// Press Enter
@@ -255,7 +272,7 @@ public class MenuState extends BasicGameState{
 			case 1:
 				break;
 			// Join
-			case 2: 
+			case 2:
 				break;
 			// Back
 			case 3: 
@@ -263,6 +280,7 @@ public class MenuState extends BasicGameState{
 				startGame = 1;
 				break;
 			}
+			playBeep3();
 			input.clearKeyPressedRecord();
 		}
 	}
@@ -272,6 +290,7 @@ public class MenuState extends BasicGameState{
 		if (input.isKeyPressed(Input.KEY_ESCAPE)){
 			screen = 1;
 			options = 1;
+			playBeep2();
 			input.clearKeyPressedRecord();
 		}
 		
@@ -282,6 +301,7 @@ public class MenuState extends BasicGameState{
 			} else {
 				options--;
 			}
+			playBeep1();
 		}
 		// Move down
 		if ( (input.isKeyPressed(Input.KEY_DOWN) || input.isKeyPressed(Input.KEY_S)) ){
@@ -290,6 +310,7 @@ public class MenuState extends BasicGameState{
 			} else {
 				options++;
 			}
+			playBeep1();
 		}
 		
 		// Press Enter
@@ -305,6 +326,7 @@ public class MenuState extends BasicGameState{
 			case 3: 
 				screen = 1;
 				options = 1;
+				playBeep3();
 				break;
 			}
 			input.clearKeyPressedRecord();
@@ -312,6 +334,21 @@ public class MenuState extends BasicGameState{
 		
 	}
 
+	private void playBeep1(){
+		SoundManager.getSound(TowerGame.SFX_BEEP1).play();
+	}
+	
+	private void playBeep2(){
+		SoundManager.getSound(TowerGame.SFX_BEEP2).play();
+	}
+	
+	private void playBeep3(){
+		SoundManager.getSound(TowerGame.SFX_BEEP3).play();
+	}
+	private void playConfirm1(){
+		SoundManager.getSound(TowerGame.SFX_CONFIRM1).play();
+	}
+	
 	@Override
 	public int getID() {
 		return 1;

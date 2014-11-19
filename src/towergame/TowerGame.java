@@ -30,6 +30,14 @@ public class TowerGame extends StateBasedGame{
 	
 	public static final String RICASSO = "towergame/resources/Ricasso.ttf";
 	
+	public static final String SFX_BEEP1 = "towergame/resources/confirm_style_5_001.ogg";
+	public static final String SFX_BEEP2 = "towergame/resources/confirm_style_5_002.ogg";
+	public static final String SFX_BEEP3 = "towergame/resources/confirm_style_5_003.ogg";
+	public static final String SFX_BEEP4 = "towergame/resources/confirm_style_5_004.ogg";
+
+	public static final String SFX_CONFIRM1 = "towergame/resources/confirm_style_5_echo_003.ogg";
+	public static final String SFX_CONFIRM2 = "towergame/resources/confirm_style_5_echo_004.ogg";
+	
 	public static final String BGM_MENU = "towergame/resources/mica_2.ogg";
 	
 	Font awtFont;
@@ -54,6 +62,12 @@ public class TowerGame extends StateBasedGame{
 		
 		// Preload some Sounds
 		container.setSoundVolume(0.25f);
+		SoundManager.loadSound(SFX_BEEP1);
+		SoundManager.loadSound(SFX_BEEP2);
+		SoundManager.loadSound(SFX_BEEP3);
+		SoundManager.loadSound(SFX_BEEP4);
+		SoundManager.loadSound(SFX_CONFIRM1);
+		SoundManager.loadSound(SFX_CONFIRM2);
 		
 		// Preload some Music
 		container.setMusicVolume(0.15f);
