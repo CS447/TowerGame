@@ -7,9 +7,32 @@ public class Player extends Entity{
 	private boolean isPlayer1;
 	private boolean isAlive;
 	
+	 /* 
+	 *       up              
+	 *       ---             
+	 *       \  \      right 
+	 *      ---------        
+	 *       \  \  \  \      
+	 *         --------      
+	 *   left     \  \       
+	 *             ---       
+	 *              down     
+	 */
+	
+	/**
+	 * The possible states the player is in <br>
+	 */
+	public enum state{
+		WALK_UP, WALK_RIGHT, WALK_DOWN, WALK_LEFT,
+		STAND_UP, STAND_RIGHT, STAND_DOWN, STAND_LEFT,
+		SIT_UP, SIT_RIGHT, SIT_DOWN, SIT_LEFT,
+		DEAD;
+	}
+	
 	public Player(Vector2f myPosition) {
 		super(myPosition);
 		
+		isAlive = true;
 	}
 	
 	public Player(float x, float y) {
@@ -42,6 +65,12 @@ public class Player extends Entity{
 	
 	public void setAlive(boolean fate){
 		isAlive = fate;
+	}
+
+	@Override
+	public void draw() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -2,11 +2,13 @@ package towergame.entities;
 
 import org.newdawn.slick.geom.Vector2f;
 
-public class Entity {
+public abstract class Entity {
 	private Vector2f position;
+	protected int state;
 	
 	public Entity(Vector2f myPosition){
 		position = myPosition;
+		state = 0;
 	}
 	
 	public Entity(float x, float y){
@@ -28,4 +30,14 @@ public class Entity {
 	public float getY(){
 		return position.getY();
 	}
+	
+	public int getState(){
+		return state;
+	}
+	
+	public void setState(int myState){
+		state = myState;
+	}
+	
+	public abstract void draw();
 }
