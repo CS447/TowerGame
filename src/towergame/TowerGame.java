@@ -30,8 +30,7 @@ public class TowerGame extends StateBasedGame{
 	
 	public static final String RICASSO = "towergame/resources/Ricasso.ttf";
 	
-	public static Music menu;
-	public static Music bgm;
+	public static final String BGM_MENU = "towergame/resources/mica_2.ogg";
 	
 	Font awtFont;
 	public static TrueTypeFont ricasso12;
@@ -58,7 +57,7 @@ public class TowerGame extends StateBasedGame{
 		
 		// Preload some Music
 		container.setMusicVolume(0.15f);
-		menu = new Music("towergame/resources/mica_2.ogg");
+		SoundManager.loadMusic(BGM_MENU);
 		
 		// Preload some font
 		// Used to load custom fonts
