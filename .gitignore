@@ -10,3 +10,15 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/bin
+
+
+# Other
+.classpath
+.project
+
+# Include
+!slick.jar
+!lwjgl.jar
+!jogg-0.0.7.jar
+!jorbis-0.0.15.jar
