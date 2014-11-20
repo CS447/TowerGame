@@ -30,6 +30,8 @@ public class TowerGame extends StateBasedGame{
 	public static final String PEACH = "towergame/resources/peach.png";
 	public static final String PEACH16 = "towergame/resources/peach16.png";
 	
+	public static final String SPRITE_TILE_BASIC = "towergame/resources/tileBasic.png";
+	
 	public static final String SPRITE_BOX = "towergame/resources/box.png";
 	
 	public static final String RICASSO = "towergame/resources/Ricasso.ttf";
@@ -67,6 +69,7 @@ public class TowerGame extends StateBasedGame{
 		ResourceManager.loadImage(MENU2);
 		ResourceManager.loadImage(MENU3);
 		
+		ResourceManager.loadImage(SPRITE_TILE_BASIC);
 		ResourceManager.loadImage(SPRITE_BOX);
 		
 		// Preload some Sounds

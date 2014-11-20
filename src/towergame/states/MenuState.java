@@ -78,8 +78,6 @@ public class MenuState extends BasicGameState{
 			break;
 		}
 		
-		
-		
 		// Darkening Layer
 		bg3.draw();
 	}
