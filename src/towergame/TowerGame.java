@@ -32,6 +32,11 @@ public class TowerGame extends StateBasedGame{
 	
 	public static final String SPRITE_TILE_BASIC = "towergame/resources/tileBasic.png";
 	
+	public static final String SPRITESHEET_TILE_CONVEYOR_U = "towergame/resources/conveyorUp.png";
+	public static final String SPRITESHEET_TILE_CONVEYOR_R = "towergame/resources/conveyorRight.png";
+	public static final String SPRITESHEET_TILE_CONVEYOR_D = "towergame/resources/conveyorDown.png";
+	public static final String SPRITESHEET_TILE_CONVEYOR_L = "towergame/resources/conveyorLeft.png";
+	
 	public static final String SPRITE_BOX = "towergame/resources/box.png";
 	
 	public static final String RICASSO = "towergame/resources/Ricasso.ttf";
@@ -71,6 +76,11 @@ public class TowerGame extends StateBasedGame{
 		
 		ResourceManager.loadImage(SPRITE_TILE_BASIC);
 		ResourceManager.loadImage(SPRITE_BOX);
+		
+		ResourceManager.loadImage(SPRITESHEET_TILE_CONVEYOR_U);
+		ResourceManager.loadImage(SPRITESHEET_TILE_CONVEYOR_R);
+		ResourceManager.loadImage(SPRITESHEET_TILE_CONVEYOR_D);
+		ResourceManager.loadImage(SPRITESHEET_TILE_CONVEYOR_L);
 		
 		// Preload some Sounds
 		container.setSoundVolume(0.25f);

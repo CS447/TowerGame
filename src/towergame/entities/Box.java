@@ -31,7 +31,7 @@ public class Box extends Mechanism{
 	}
 
 	@Override
-	public void update() {
+	public void update(long delta) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -29,7 +29,7 @@ public class TileBasic extends Tile{
 	}
 
 	@Override
-	public void update() {
+	public void update(long delta) {
 		// TODO Auto-generated method stub
 		
 	}

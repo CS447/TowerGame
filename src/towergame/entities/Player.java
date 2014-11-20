@@ -125,7 +125,7 @@ public class Player extends Entity{
 	}
 
 	@Override
-	public void update() {
+	public void update(long delta) {
 		state = playerState.pose;
 		
 	}
