@@ -10,7 +10,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.FontUtils;
 
-import towergame.SoundManager;
+import towergame.ResourceManager;
 import towergame.TowerGame;
 
 public class MenuState extends BasicGameState{
@@ -32,9 +32,9 @@ public class MenuState extends BasicGameState{
 			throws SlickException {
 		
 		// Three Layer Background
-		bg1 = new Image(TowerGame.MENU1);
-		bg2 = new Image(TowerGame.MENU2);
-		bg3 = new Image(TowerGame.MENU3);
+		bg1 = ResourceManager.getImage(TowerGame.MENU1);
+		bg2 = ResourceManager.getImage(TowerGame.MENU2);
+		bg3 = ResourceManager.getImage(TowerGame.MENU3);
 		
 	}
 
@@ -335,18 +335,18 @@ public class MenuState extends BasicGameState{
 	}
 
 	private void playBeep1(){
-		SoundManager.getSound(TowerGame.SFX_BEEP1).play();
+		ResourceManager.getSound(TowerGame.SFX_BEEP1).play();
 	}
 	
 	private void playBeep2(){
-		SoundManager.getSound(TowerGame.SFX_BEEP2).play();
+		ResourceManager.getSound(TowerGame.SFX_BEEP2).play();
 	}
 	
 	private void playBeep3(){
-		SoundManager.getSound(TowerGame.SFX_BEEP3).play();
+		ResourceManager.getSound(TowerGame.SFX_BEEP3).play();
 	}
 	private void playConfirm1(){
-		SoundManager.getSound(TowerGame.SFX_CONFIRM1).play();
+		ResourceManager.getSound(TowerGame.SFX_CONFIRM1).play();
 	}
 	
 	@Override

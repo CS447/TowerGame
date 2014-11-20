@@ -30,6 +30,8 @@ public class TowerGame extends StateBasedGame{
 	public static final String PEACH = "towergame/resources/peach.png";
 	public static final String PEACH16 = "towergame/resources/peach16.png";
 	
+	public static final String SPRITE_BOX = "towergame/resources/box.png";
+	
 	public static final String RICASSO = "towergame/resources/Ricasso.ttf";
 	
 	public static final String SFX_BEEP1 = "towergame/resources/confirm_style_5_001.ogg";
@@ -61,19 +63,24 @@ public class TowerGame extends StateBasedGame{
 		addState(new PlayingState());
 		
 		// Preload some Images
+		ResourceManager.loadImage(MENU1);
+		ResourceManager.loadImage(MENU2);
+		ResourceManager.loadImage(MENU3);
+		
+		ResourceManager.loadImage(SPRITE_BOX);
 		
 		// Preload some Sounds
 		container.setSoundVolume(0.25f);
-		SoundManager.loadSound(SFX_BEEP1);
-		SoundManager.loadSound(SFX_BEEP2);
-		SoundManager.loadSound(SFX_BEEP3);
-		SoundManager.loadSound(SFX_BEEP4);
-		SoundManager.loadSound(SFX_CONFIRM1);
-		SoundManager.loadSound(SFX_CONFIRM2);
+		ResourceManager.loadSound(SFX_BEEP1);
+		ResourceManager.loadSound(SFX_BEEP2);
+		ResourceManager.loadSound(SFX_BEEP3);
+		ResourceManager.loadSound(SFX_BEEP4);
+		ResourceManager.loadSound(SFX_CONFIRM1);
+		ResourceManager.loadSound(SFX_CONFIRM2);
 		
 		// Preload some Music
 		container.setMusicVolume(0.15f);
-		SoundManager.loadMusic(BGM_MENU);
+		ResourceManager.loadMusic(BGM_MENU);
 		
 		// Preload some font
 		// Used to load custom fonts

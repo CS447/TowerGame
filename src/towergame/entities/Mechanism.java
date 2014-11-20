@@ -5,6 +5,7 @@ import org.newdawn.slick.geom.Vector2f;
 public abstract class Mechanism extends Entity{
 
 	private boolean isOn;
+	private boolean isPushable;
 	
 	public Mechanism(Vector2f myPosition) {
 		super(myPosition);
@@ -26,6 +27,14 @@ public abstract class Mechanism extends Entity{
 	 */
 	public void setPower(boolean power){
 		isOn = power;
+	}
+	
+	public boolean isPushable(){
+		return isPushable;
+	}
+	
+	public void setPushable(boolean pushable){
+		isPushable = pushable;
 	}
 	
 }

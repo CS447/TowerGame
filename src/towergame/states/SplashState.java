@@ -10,7 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
-import towergame.SoundManager;
+import towergame.ResourceManager;
 import towergame.TowerGame;
 
 public class SplashState extends BasicGameState{
@@ -27,7 +27,7 @@ public class SplashState extends BasicGameState{
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) {
 		timer = 2000;
-		SoundManager.getMusic(TowerGame.BGM_MENU).loop();
+		ResourceManager.getMusic(TowerGame.BGM_MENU).loop();
 	}
 	
 	@Override

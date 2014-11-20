@@ -3,11 +3,14 @@ package towergame;
 import java.net.URL;
 import java.util.HashMap;
 
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
+import org.newdawn.slick.SpriteSheet;
 
-public class SoundManager {
+public class ResourceManager {
+	private static final HashMap<String, Image> images = new HashMap<String, Image>();
 	private static final HashMap<String, Music> music = new HashMap<String, Music>();
 	private static final HashMap<String, Sound> sounds = new HashMap<String, Sound>();
 	
@@ -27,6 +30,50 @@ public class SoundManager {
 		}
 		
 		return url;
+	}
+	
+	/**
+	 * @param rscName The name/path of the resource to load
+	 * @throws SlickException
+	 */
+	public static void loadImage(final String rscName) {
+
+		URL u = findResource(rscName);
+		try {
+			images.put(rscName, new Image(u.openStream(), rscName, false));
+		} catch (Exception e) {
+
+			System.err.println("Failed to load the resource found by the spec " + rscName);
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * @param rscName The name/path of the resource to load
+	 * @return An Slick Image resource
+	 * @throws SlickException
+	 */
+	public static Image getImage(final String rscName) {
+		if (images.get(rscName) == null) {
+			System.err.println("Warning: Image '" + rscName + "' was requested that wasn't previously loaded. Use loadImage(path) before calling getImage(path) to avoid runtime lag.");
+			loadImage(rscName);
+		}
+		return images.get(rscName);
+	}
+	
+	/**
+	 * @param rscName  The name/path of the resource to load
+	 * @param tx  The x width of the sprites in the sprite sheet
+	 * @param ty  The y width of the sprites in the sprite sheet
+	 * @return The sprite sheet data requested from the file path provided.
+	 * @throws SlickException
+	 */
+	public static SpriteSheet getSpriteSheet(final String rscName, final int tx, final int ty) {
+		if (images.get(rscName) == null) {
+			System.err.println("Warning: Image '" + rscName + "' was requested that wasn't previously loaded. Use loadImage(path) before calling getImage(path) to avoid runtime lag.");
+			loadImage(rscName);
+		}
+		return new SpriteSheet(images.get(rscName), tx, ty);
 	}
 	
 	/**
@@ -56,10 +103,6 @@ public class SoundManager {
 		}
 
 		return music.get(rscName);
-	}
-	
-	public static void clearMusicCache() {
-		music.clear();
 	}
 	
 	/**
@@ -92,6 +135,15 @@ public class SoundManager {
 		return sounds.get(rscName);
 	}
 
+	
+	public static void clearImageCache() {
+		images.clear();
+	}
+	
+	public static void clearMusicCache() {
+		music.clear();
+	}
+	
 	public static void clearSoundCache() {
 		sounds.clear();
 	}
