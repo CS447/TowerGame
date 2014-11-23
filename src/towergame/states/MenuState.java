@@ -8,6 +8,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 import org.newdawn.slick.util.FontUtils;
 
 import towergame.ResourceManager;
@@ -148,6 +150,7 @@ public class MenuState extends BasicGameState{
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
 		
+		TowerGame tg = (TowerGame) game;
 		Input input = container.getInput();
 		
 		if (input.isKeyPressed(Input.KEY_NUMPAD1))
@@ -169,7 +172,7 @@ public class MenuState extends BasicGameState{
 			menuControls(input);
 			break;
 		case 2: 
-			startGameControls(input);
+			startGameControls(tg, input);
 			break;
 		case 3: 
 			optionControls(input);
@@ -235,7 +238,7 @@ public class MenuState extends BasicGameState{
 		}
 	}
 	
-	private void startGameControls(Input input){
+	private void startGameControls(TowerGame tg, Input input){
 		// Go back
 		if (input.isKeyPressed(Input.KEY_ESCAPE)){
 			screen = 1;
@@ -263,14 +266,16 @@ public class MenuState extends BasicGameState{
 			playBeep1();
 		}
 		
-		// Press Enter
+		// Press Enter TODO Add Host and Join Options
 		if (input.isKeyPressed(Input.KEY_ENTER)){
 			switch(startGame){
 			// Host
 			case 1:
+				tg.enterState(TowerGame.PLAYINGSTATE, new FadeOutTransition(), new FadeInTransition());
 				break;
 			// Join
 			case 2:
+				tg.enterState(TowerGame.PLAYINGSTATE, new FadeOutTransition(), new FadeInTransition());
 				break;
 			// Back
 			case 3: 
@@ -331,7 +336,7 @@ public class MenuState extends BasicGameState{
 		}
 		
 	}
-
+	
 	private void playBeep1(){
 		ResourceManager.getSound(TowerGame.SFX_BEEP1).play();
 	}

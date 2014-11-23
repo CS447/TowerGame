@@ -28,6 +28,7 @@ public class Player extends Entity{
 		WALK_UP(1), WALK_RIGHT(2), WALK_DOWN(3), WALK_LEFT(4),
 		STAND_UP(5), STAND_RIGHT(6), STAND_DOWN(7), STAND_LEFT(8),
 		SIT_UP(9), SIT_RIGHT(10), SIT_DOWN(11), SIT_LEFT(12),
+		USE_UP(13), USE_RIGHT(14), USE_DOWN(15), USE_LEFT(16),
 		DEAD(-1);
 		
 		private int pose;
@@ -110,6 +111,14 @@ public class Player extends Entity{
 			break;
 		case STAND_UP:
 			break;
+		case USE_DOWN:
+			break;
+		case USE_LEFT:
+			break;
+		case USE_RIGHT:
+			break;
+		case USE_UP:
+			break;
 		case WALK_DOWN:
 			break;
 		case WALK_LEFT:
@@ -120,6 +129,7 @@ public class Player extends Entity{
 			break;
 		default:
 			break;
+		
 		}
 		
 	}
