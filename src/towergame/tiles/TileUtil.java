@@ -22,7 +22,7 @@ public class TileUtil {
 	 * @param carY
 	 * @return
 	 */
-	public float toIsoX(float carX, float carY){
+	public static float toIsoX(float carX, float carY){
 		return (carX + carY);
 	}
 	
@@ -32,8 +32,8 @@ public class TileUtil {
 	 * @param carY
 	 * @return
 	 */
-	public float toIsoY(float carX, float carY){
-		return ( (carX-carY)/2 );
+	public static float toIsoY(float carX, float carY){
+		return (carY-carX)/2;
 	}
 	
 	/**
@@ -42,8 +42,8 @@ public class TileUtil {
 	 * @param isoY
 	 * @return
 	 */
-	public float toCarX(float isoX, float isoY){
-		return ( (0.5f * isoX) + isoY);
+	public static float toCarX(float isoX, float isoY){
+		return ( (0.5f * isoX) - isoY);
 	}
 	
 	/**
@@ -52,8 +52,8 @@ public class TileUtil {
 	 * @param isoY
 	 * @return
 	 */
-	public float toCarY(float isoX, float isoY){
-		return ( (0.5f * isoX) - isoY);
+	public static float toCarY(float isoX, float isoY){
+		return ( (0.5f * isoX) + isoY);
 	}
 	
 	/**
@@ -61,7 +61,7 @@ public class TileUtil {
 	 * @param Cartesian
 	 * @return
 	 */
-	public Vector2f toIso(Vector2f Cartesian){
+	public static Vector2f toIso(Vector2f Cartesian){
 		Vector2f temp = new Vector2f();
 		
 		temp.x = toIsoX(Cartesian.getX(), Cartesian.getY());
@@ -75,7 +75,7 @@ public class TileUtil {
 	 * @param Isometric
 	 * @return
 	 */
-	public Vector2f toCar(Vector2f Isometric){
+	public static Vector2f toCar(Vector2f Isometric){
 		Vector2f temp = new Vector2f();
 		
 		temp.x = toCarX(Isometric.getX(), Isometric.getY());
