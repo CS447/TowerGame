@@ -32,10 +32,10 @@ public class Tile {
 	 * @param myStyle
 	 */
 	public Tile(int x, int y, int myStyle){
-		// TileUtil.toIsoX((16 * x) , (16 * y)), TileUtil.toIsoY((16 * x) , (16 * y))
-		//  (32 * x) + (32 * y)-100 , (-16 * x) + (16 * y)+400 
-		//this(new Vector2f( (32 * x) + (32 * y)-100 , (-16 * x)+(16 * y)+400 ));
-		this(new Vector2f(32*x-450, 32*y+350));
+		this(new Vector2f(32*x, 32*y));
+		
+		// Convert position to Isometric
+		this.position = TileUtil.toIso(position);
 		setStyle(myStyle);
 	}
 
@@ -51,10 +51,10 @@ public class Tile {
 		}
 	}
 	
-	public void draw(){
+	public void draw(Vector2f camera){
 		switch(style){
 			case 1:
-				sprite.draw(TileUtil.toIso(position).getX(),TileUtil.toIso(position).getY());
+				sprite.draw(position.getX()+camera.getX(), position.getY()+camera.getY());
 				//System.out.println("("+position.x + ", " + position.y+")");
 				break;
 			case 2:

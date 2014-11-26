@@ -30,6 +30,14 @@ public class TowerGame extends StateBasedGame{
 	public static final String PEACH = "towergame/resources/peach.png";
 	public static final String PEACH16 = "towergame/resources/peach16.png";
 	
+	public static final String SPRITESHEET_PLAYER1_STAND_U = "towergame/resources/p1StandUp.png";
+	public static final String SPRITESHEET_PLAYER1_STAND_R = "towergame/resources/p1StandRight.png";
+	public static final String SPRITESHEET_PLAYER1_STAND_D = "towergame/resources/p1StandDown.png";
+	public static final String SPRITESHEET_PLAYER1_STAND_L = "towergame/resources/p1StandLeft.png";
+	
+	public static final String SPRITESHEET_PLAYER1_WALK_R = "towergame/resources/p1WalkRight.png";
+	public static final String SPRITESHEET_PLAYER1_WALK_L = "towergame/resources/p1WalkLeft.png";
+	
 	public static final String SPRITE_TILE_BASIC = "towergame/resources/tileBasic.png";
 	
 	public static final String SPRITESHEET_TILE_CONVEYOR_U = "towergame/resources/conveyorUp.png";
@@ -81,6 +89,14 @@ public class TowerGame extends StateBasedGame{
 		ResourceManager.loadImage(SPRITESHEET_TILE_CONVEYOR_R);
 		ResourceManager.loadImage(SPRITESHEET_TILE_CONVEYOR_D);
 		ResourceManager.loadImage(SPRITESHEET_TILE_CONVEYOR_L);
+		
+		ResourceManager.loadImage(SPRITESHEET_PLAYER1_STAND_U);
+		ResourceManager.loadImage(SPRITESHEET_PLAYER1_STAND_R);
+		ResourceManager.loadImage(SPRITESHEET_PLAYER1_STAND_D);
+		ResourceManager.loadImage(SPRITESHEET_PLAYER1_STAND_L);
+		
+		ResourceManager.loadImage(SPRITESHEET_PLAYER1_WALK_R);
+		ResourceManager.loadImage(SPRITESHEET_PLAYER1_WALK_L);
 		
 		// Preload some Sounds
 		container.setSoundVolume(0.25f);

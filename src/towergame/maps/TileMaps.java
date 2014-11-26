@@ -1,5 +1,7 @@
 package towergame.maps;
 
+import org.newdawn.slick.geom.Vector2f;
+
 public class TileMaps {
 
 	/*
@@ -46,6 +48,9 @@ public class TileMaps {
 		 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
 		 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
 		 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
+	
+	public static final Vector2f level1CameraStart = new Vector2f(100, 250);
+	
 	
 	/**
 	 * 50x1 Map

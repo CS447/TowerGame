@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.newdawn.slick.geom.Vector2f;
+
 public class TileManager {
 
 	List<Tile> tileList;
@@ -32,7 +34,7 @@ public class TileManager {
 	
 	/**
 	 * Loads a map from TileMaps.java given the map array, width and height.
-	 * Assumes all tiles are 32x32 in a Cartesian World
+	 * Assumes all tiles are 32x32 in a Cartesian World (64x32 in Isometric)
 	 * @param map
 	 * @param width
 	 * @param height
@@ -59,10 +61,10 @@ public class TileManager {
 		Collections.sort(tileList, new TileComparator());	
 	}
 	
-	public void draw() {
+	public void draw(Vector2f camera) {
 		//System.out.println("Size: "+tileList.size());
 		for(Tile tile : tileList ) {
-			tile.draw();
+			tile.draw(camera);
 		}
 	}
 	
