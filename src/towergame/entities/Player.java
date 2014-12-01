@@ -64,16 +64,39 @@ public class Player extends Entity{
 		
 		playerState = playerState.STAND_LEFT;
 		
-		ssStand[0] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER1_STAND_U, 64, 76);
-		ssStand[1] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER1_STAND_R, 64, 76);
-		ssStand[2] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER1_STAND_D, 64, 76);
-		ssStand[3] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER1_STAND_L, 64, 76);
+		setupAnimations();
+	}
+	
+	public Player(float x, float y, boolean player) {
+		this(new Vector2f(x, y));
+		setPlayer(player);
+		setupAnimations();
+	}
+	
+	private void setupAnimations(){
+		if (isPlayer1){
+			ssStand[0] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER1_STAND_U, 64, 76);
+			ssStand[1] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER1_STAND_R, 64, 76);
+			ssStand[2] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER1_STAND_D, 64, 76);
+			ssStand[3] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER1_STAND_L, 64, 76);
+			
+			ssWalk[0] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER1_WALK_R, 64, 76);
+			ssWalk[1] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER1_WALK_R, 64, 76);
+			ssWalk[2] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER1_WALK_L, 64, 76);
+			ssWalk[3] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER1_WALK_L, 64, 76);
+		} else {
+			ssStand[0] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER2_STAND_U, 64, 76);
+			ssStand[1] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER2_STAND_R, 64, 76);
+			ssStand[2] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER2_STAND_D, 64, 76);
+			ssStand[3] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER2_STAND_L, 64, 76);
+			
+			ssWalk[0] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER2_WALK_R, 64, 76);
+			ssWalk[1] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER2_WALK_R, 64, 76);
+			ssWalk[2] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER2_WALK_L, 64, 76);
+			ssWalk[3] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER2_WALK_L, 64, 76);
+		}
 		
-		ssWalk[0] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER1_WALK_R, 64, 76);
-		ssWalk[1] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER1_WALK_R, 64, 76);
-		ssWalk[2] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER1_WALK_L, 64, 76);
-		ssWalk[3] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_PLAYER1_WALK_L, 64, 76);
-		
+		// Setup Animations
 		animationStand[0] = new Animation(ssStand[0], 0, 0, 0, 0, true, 250, false );
 		animationStand[1] = new Animation(ssStand[1], 0, 0, 0, 0, true, 250, false );
 		animationStand[2] = new Animation(ssStand[2], 0, 0, 0, 0, true, 250, false );
@@ -83,10 +106,6 @@ public class Player extends Entity{
 		animationWalk[1] = new Animation(ssWalk[1], 0, 0, 3, 0, true, 250, true );
 		animationWalk[2] = new Animation(ssWalk[2], 0, 0, 3, 0, true, 250, true );
 		animationWalk[3] = new Animation(ssWalk[3], 0, 0, 3, 0, true, 250, true );
-	}
-	
-	public Player(float x, float y) {
-		this(new Vector2f(x, y));
 	}
 	
 	public void setState(PlayerState state){

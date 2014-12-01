@@ -36,7 +36,7 @@ public class PlayingState extends BasicGameState{
 		tileManager.loadMap(TileMaps.level1, 24, 12);
 		cameraPos = TileMaps.level1CameraStart;
 		
-		p1 = new Player(368, 262);
+		p1 = new Player(368, 262, true);
 	}
 	
 	@Override
@@ -52,25 +52,28 @@ public class PlayingState extends BasicGameState{
 		
 		Input input = container.getInput();
 		
-		if (input.isKeyDown(input.KEY_DOWN)){
+		
+		// Just a temp concept of moving the camera. Want to base the camera on
+		// Player's position (Not the way its currently set up). Need to change this.
+		if (input.isKeyDown(Input.KEY_DOWN)){
 			cameraPos.y -= 2;
 			p1.setState(PlayerState.WALK_DOWN);
 		}
-		if (input.isKeyDown(input.KEY_RIGHT)){
+		if (input.isKeyDown(Input.KEY_RIGHT)){
 			cameraPos.x -= 2;
 			p1.setState(PlayerState.WALK_RIGHT);
 		}
-		if (input.isKeyDown(input.KEY_LEFT)){
+		if (input.isKeyDown(Input.KEY_LEFT)){
 			cameraPos.x += 2;
 			p1.setState(PlayerState.WALK_LEFT);
 		}
-		if (input.isKeyDown(input.KEY_UP)){
+		if (input.isKeyDown(Input.KEY_UP)){
 			cameraPos.y += 2;
 			p1.setState(PlayerState.WALK_UP);
 		}
 		
-		if (!input.isKeyDown(input.KEY_DOWN) && !input.isKeyDown(input.KEY_RIGHT) &&
-				!input.isKeyDown(input.KEY_LEFT) && !input.isKeyDown(input.KEY_UP)){
+		if (!input.isKeyDown(Input.KEY_DOWN) && !input.isKeyDown(Input.KEY_RIGHT) &&
+				!input.isKeyDown(Input.KEY_LEFT) && !input.isKeyDown(Input.KEY_UP)){
 			p1.setStand();
 		}
 		
