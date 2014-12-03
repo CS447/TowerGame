@@ -6,6 +6,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 import towergame.ResourceManager;
 import towergame.TowerGame;
+import towergame.tiles.TileUtil;
 
 public class Player extends Entity{
 
@@ -13,6 +14,7 @@ public class Player extends Entity{
 	private boolean isAlive;
 	
 	private int lastFacing;
+	private int walkingSpeed;
 	
 	private SpriteSheet ssStand[] = new SpriteSheet[4];
 	private SpriteSheet ssWalk[]  = new SpriteSheet[4];;
@@ -61,6 +63,7 @@ public class Player extends Entity{
 		isAlive = true;
 		
 		lastFacing = 3;
+		walkingSpeed = 1;
 		
 		playerState = playerState.STAND_LEFT;
 		
@@ -171,6 +174,22 @@ public class Player extends Entity{
 		return ( playerState.pose % 4 );
 	}
 	
+	public void walkUp(){
+		this.velocity.y = walkingSpeed;
+	}
+	
+	public void walkRight(){
+		this.velocity.x = -walkingSpeed;
+	}
+	
+	public void walkDown(){
+		this.velocity.y = -walkingSpeed;
+	}
+	
+	public void walkLeft(){
+		this.velocity.x = walkingSpeed;
+	}
+	
 	@Override
 	public void draw() {
 		
@@ -223,12 +242,75 @@ public class Player extends Entity{
 		}
 		
 	}
+	
+	public void draw(Vector2f camera, boolean me){
+		float tempX = getX();
+		float tempY = getY();
+		
+		if (me == true){
+			tempX = 368;
+			tempY = 262;
+		} else {
+			tempX = TileUtil.toIsoX(getX(), getY()) + camera.x;
+			tempY = TileUtil.toIsoY(getX(), getY()) + camera.y - 57;
+		}
+		
+		switch(playerState){
+		case DEAD:
+			break;
+		case SIT_DOWN:
+			break;
+		case SIT_LEFT:
+			break;
+		case SIT_RIGHT:
+			break;
+		case SIT_UP:
+			break;
+		case STAND_DOWN:
+			animationStand[2].draw(tempX, tempY);
+			break;
+		case STAND_LEFT:
+			animationStand[3].draw(tempX, tempY);
+			break;
+		case STAND_RIGHT:
+			animationStand[1].draw(tempX, tempY);
+			break;
+		case STAND_UP:
+			animationStand[0].draw(tempX, tempY);
+			break;
+		case USE_DOWN:
+			break;
+		case USE_LEFT:
+			break;
+		case USE_RIGHT:
+			break;
+		case USE_UP:
+			break;
+		case WALK_DOWN:
+			animationWalk[2].draw(tempX, tempY);
+			break;
+		case WALK_LEFT:
+			animationWalk[3].draw(tempX, tempY);
+			break;
+		case WALK_RIGHT:
+			animationWalk[1].draw(tempX, tempY);
+			break;
+		case WALK_UP:
+			animationWalk[0].draw(tempX, tempY);
+			break;
+		default:
+			break;
+		
+		}
+	}
 
 	@Override
 	public void update(long delta) {
 		state = playerState.pose;
 		
-		
+		this.setPosition(getX() + velocity.x, getY() + velocity.y);	
+		this.velocity.x = 0;
+		this.velocity.y = 0;
 		lastFacing = isFacing();
 	}
 }

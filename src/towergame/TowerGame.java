@@ -16,6 +16,8 @@ import towergame.states.SplashState;
 
 public class TowerGame extends StateBasedGame{
 
+	public static boolean player1;
+	
 	public final int ScreenWidth;
 	public final int ScreenHeight;
 	

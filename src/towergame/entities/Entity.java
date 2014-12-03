@@ -4,10 +4,12 @@ import org.newdawn.slick.geom.Vector2f;
 
 public abstract class Entity {
 	private Vector2f position;
+	protected Vector2f velocity;
 	protected int state;
 	
 	public Entity(Vector2f myPosition){
 		position = myPosition;
+		velocity = new Vector2f(0,0);
 		state = 0;
 	}
 	

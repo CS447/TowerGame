@@ -32,6 +32,11 @@ public class TileMaps {
 	 */
 	
 	
+	public static final int[] level0 = 
+		{1, 0, 
+		 1, 1};
+	
+	
 	/**
 	 * 24x12 Map
 	 */

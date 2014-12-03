@@ -272,10 +272,12 @@ public class MenuState extends BasicGameState{
 			// Host
 			case 1:
 				tg.enterState(TowerGame.PLAYINGSTATE, new FadeOutTransition(), new FadeInTransition());
+				TowerGame.player1 = true;
 				break;
 			// Join
 			case 2:
 				tg.enterState(TowerGame.PLAYINGSTATE, new FadeOutTransition(), new FadeInTransition());
+				TowerGame.player1 = false;
 				break;
 			// Back
 			case 3: 
