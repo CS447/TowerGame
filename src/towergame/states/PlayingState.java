@@ -60,9 +60,13 @@ public class PlayingState extends BasicGameState{
 		g.drawString("Tile    : (" + Float.toString( TileUtil.getCoordinateX(ws.p1.getX()) )+", "+Float.toString( TileUtil.getCoordinateY(ws.p1.getY()) )+")", 50, 110);
 		
 		
-		
-		ws.p1.draw(cameraPos, true);
-		ws.p2.draw(cameraPos, false);
+		if (ws.p1.getY() < ws.p2.getY()){
+			ws.p1.draw(cameraPos, true);
+			ws.p2.draw(cameraPos, false);
+		} else {
+			ws.p2.draw(cameraPos, false);
+			ws.p1.draw(cameraPos, true);
+		}
 		
 	}
 
