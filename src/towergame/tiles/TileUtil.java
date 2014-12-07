@@ -83,4 +83,21 @@ public class TileUtil {
 		
 		return temp;
 	}
+	
+	public static float getCoordinateX(float x){
+		return (float) Math.floor(x/32);
+	}
+	
+	public static float getCoordinateY(float y){
+		return (float) Math.floor(y/32);
+	}
+	
+	public static Vector2f getCoordinate(Vector2f position){
+		Vector2f temp = new Vector2f(0,0);
+		
+		temp.x = (float) Math.floor(position.x/32);
+		temp.y = (float) Math.floor(position.y/32);
+		
+		return temp;
+	}
 }

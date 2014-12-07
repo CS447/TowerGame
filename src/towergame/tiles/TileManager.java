@@ -65,6 +65,12 @@ public class TileManager {
 		//System.out.println("Size: "+tileList.size());
 		for(Tile tile : tileList ) {
 			tile.draw(camera);
+			
+			// For checking Tile Coordinates
+			/*if (tile.getStyle() == 1) {
+				System.out.println(TileUtil.getCoordinate(tile.getPosition()).toString());
+				System.out.println(tile.getPosition().toString());
+			}*/
 		}
 	}
 	

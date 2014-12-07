@@ -14,7 +14,9 @@ public class Player extends Entity{
 	private boolean isAlive;
 	
 	private int lastFacing;
-	private int walkingSpeed;
+	private float walkingSpeed;
+	
+	private Vector2f playerVelocity;
 	
 	private SpriteSheet ssStand[] = new SpriteSheet[4];
 	private SpriteSheet ssWalk[]  = new SpriteSheet[4];;
@@ -57,13 +59,19 @@ public class Player extends Entity{
 		}
 	}
 	
+	// ----------------------------------------------------------------------------------------
+	// Player
+	// ----------------------------------------------------------------------------------------
+	
 	public Player(Vector2f myPosition) {
 		super(myPosition);
 		
 		isAlive = true;
 		
 		lastFacing = 3;
-		walkingSpeed = 1;
+		walkingSpeed = 0.125f;
+		
+		playerVelocity = new Vector2f(0,0);
 		
 		playerState = playerState.STAND_LEFT;
 		
@@ -175,19 +183,39 @@ public class Player extends Entity{
 	}
 	
 	public void walkUp(){
-		this.velocity.y = walkingSpeed;
+		this.playerVelocity.y = -walkingSpeed;
+		this.playerVelocity.x = walkingSpeed;
+	}
+	
+	public void walkUpRight(){
+		this.playerVelocity.x = walkingSpeed;
 	}
 	
 	public void walkRight(){
-		this.velocity.x = -walkingSpeed;
+		this.playerVelocity.x = walkingSpeed * 0.5f;
+		this.playerVelocity.y = walkingSpeed * 0.5f;
+	}
+	
+	public void walkDownRight(){
+		this.playerVelocity.y = walkingSpeed;
 	}
 	
 	public void walkDown(){
-		this.velocity.y = -walkingSpeed;
+		this.playerVelocity.y = walkingSpeed;
+		this.playerVelocity.x = -walkingSpeed;
+	}
+	
+	public void walkDownLeft(){
+		this.playerVelocity.x = -walkingSpeed;
 	}
 	
 	public void walkLeft(){
-		this.velocity.x = walkingSpeed;
+		this.playerVelocity.x = -walkingSpeed * 0.5f;
+		this.playerVelocity.y = -walkingSpeed * 0.5f;
+	}
+	
+	public void walkUpLeft(){
+		this.playerVelocity.y = -walkingSpeed;
 	}
 	
 	@Override
@@ -248,10 +276,12 @@ public class Player extends Entity{
 		float tempY = getY();
 		
 		if (me == true){
-			tempX = 368;
-			tempY = 262;
+			// -32 for player width
+			// -57 for player height
+			tempX = TileUtil.toIsoX(getX(), getY()) + camera.x - 32;
+			tempY = TileUtil.toIsoY(getX(), getY()) + camera.y - 57;
 		} else {
-			tempX = TileUtil.toIsoX(getX(), getY()) + camera.x;
+			tempX = TileUtil.toIsoX(getX(), getY()) + camera.x - 32;
 			tempY = TileUtil.toIsoY(getX(), getY()) + camera.y - 57;
 		}
 		
@@ -304,13 +334,20 @@ public class Player extends Entity{
 		}
 	}
 
+	private void resetVelocity(){
+		this.velocity.x = 0;
+		this.velocity.y = 0;
+		this.playerVelocity.x = 0;
+		this.playerVelocity.y = 0;
+	}
+	
 	@Override
 	public void update(long delta) {
 		state = playerState.pose;
 		
-		this.setPosition(getX() + velocity.x, getY() + velocity.y);	
-		this.velocity.x = 0;
-		this.velocity.y = 0;
+		this.setPosition(getX() + (velocity.x+playerVelocity.x)*delta, 
+				getY() + (velocity.y+playerVelocity.y)*delta);	
+		resetVelocity();
 		lastFacing = isFacing();
 	}
 }
