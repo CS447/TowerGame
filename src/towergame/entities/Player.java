@@ -6,6 +6,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 import towergame.ResourceManager;
 import towergame.TowerGame;
+import towergame.tiles.TileManager;
 import towergame.tiles.TileUtil;
 
 public class Player extends Entity{
@@ -341,12 +342,29 @@ public class Player extends Entity{
 		this.playerVelocity.y = 0;
 	}
 	
+	private void movePlayer(TileManager tm, float myX, float myY){
+		Vector2f temp = new Vector2f(getX()+myX, getY()+myY);
+		
+		if (tm.tileStyle(temp) > 0) {
+			this.setPosition(getX() + myX, getY() + myY);
+		}
+	}
+	
+
+	public void update(long delta, TileManager tm) {
+		state = playerState.pose;
+		
+		movePlayer( tm, (velocity.x+playerVelocity.x)*delta, (velocity.y+playerVelocity.y)*delta );
+		resetVelocity();
+		lastFacing = isFacing();
+	}
+	
 	@Override
 	public void update(long delta) {
 		state = playerState.pose;
 		
-		this.setPosition(getX() + (velocity.x+playerVelocity.x)*delta, 
-				getY() + (velocity.y+playerVelocity.y)*delta);	
+		//this.setPosition( getX() + (velocity.x+playerVelocity.x)*delta, 
+		//		getY() + (velocity.y+playerVelocity.y)*delta );
 		resetVelocity();
 		lastFacing = isFacing();
 	}

@@ -61,6 +61,19 @@ public class TileManager {
 		Collections.sort(tileList, new TileComparator());	
 	}
 	
+	public int tileStyle(Vector2f pos){
+		Vector2f temp = TileUtil.getCoordinate(pos);
+		int style = -1;
+		
+		for(Tile tile : tileList ) {
+			if (TileUtil.getCoordinate(tile.getPosition()).equals(temp)){
+				style = tile.getStyle();
+			}
+		}
+		
+		return style;
+	}
+	
 	public void draw(Vector2f camera) {
 		//System.out.println("Size: "+tileList.size());
 		for(Tile tile : tileList ) {

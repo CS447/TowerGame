@@ -19,8 +19,8 @@ public class PlayingState extends BasicGameState{
 
 	WorldState ws;
 	
-	TileManager tileManager;
-	Vector2f cameraPos;
+	static TileManager tileManager;
+	static Vector2f cameraPos;
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
@@ -37,12 +37,14 @@ public class PlayingState extends BasicGameState{
 		
 		tileManager.clear();
 		tileManager.loadMap(TileMaps.level1, 24, 12);
-		//tileManager.loadMap(TileMaps.level0, 2, 2);
-		cameraPos = TileMaps.level1CameraStart;
 		
-		ws.p1 = new Player(128, 128, true);
-		//ws.p2 = new Player(64+32+16, 32+16-38-38, false);
-		ws.p2 = new Player(128, 128, false);
+		ws.p1 = new Player(48, 208, true);
+		ws.p2 = new Player(48, 176, false);
+		
+		//cameraPos = new Vector2f(0,0);
+		cameraPos = TileUtil.toIso(ws.p1.getPosition());
+		cameraPos.x = -cameraPos.x + 368;
+		cameraPos.y = -cameraPos.y + 262;
 	}
 	
 	@Override
@@ -145,16 +147,13 @@ public class PlayingState extends BasicGameState{
 		// ----------------------------------------------------------------------------------------
 		
 		
-		ws.p1.update(delta);
-		ws.p2.update(delta);
+		ws.p1.update(delta, tileManager);
+		ws.p2.update(delta, tileManager);
 		
+		// Set the camera position (368 and 262 are to center the camera around the player)
 		cameraPos = TileUtil.toIso(ws.p1.getPosition());
 		cameraPos.x = -cameraPos.x + 368;
 		cameraPos.y = -cameraPos.y + 262;
-		//cameraPos.x += 368;
-		//cameraPos.y += 262;
-		//cameraPos.x = ws.p1.getX() - 368;
-		//cameraPos.y = ws.p1.getY() - 262;
 	}
 
 	@Override
