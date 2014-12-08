@@ -41,7 +41,7 @@ public abstract class Entity {
 		state = myState;
 	}
 	
-	public abstract void draw();
+	public abstract void draw(Vector2f camera);
 	
 	public abstract void update(long delta);
 }

@@ -9,6 +9,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import towergame.WorldState;
+import towergame.entities.Box;
 import towergame.entities.Player;
 import towergame.entities.Player.PlayerState;
 import towergame.maps.TileMaps;
@@ -61,11 +62,11 @@ public class PlayingState extends BasicGameState{
 		
 		
 		if (ws.p1.getY() < ws.p2.getY()){
-			ws.p1.draw(cameraPos, true);
-			ws.p2.draw(cameraPos, false);
+			ws.p1.draw(cameraPos);
+			ws.p2.draw(cameraPos);
 		} else {
-			ws.p2.draw(cameraPos, false);
-			ws.p1.draw(cameraPos, true);
+			ws.p2.draw(cameraPos);
+			ws.p1.draw(cameraPos);
 		}
 		
 	}

@@ -220,71 +220,12 @@ public class Player extends Entity{
 	}
 	
 	@Override
-	public void draw() {
-		
-		switch(playerState){
-		case DEAD:
-			break;
-		case SIT_DOWN:
-			break;
-		case SIT_LEFT:
-			break;
-		case SIT_RIGHT:
-			break;
-		case SIT_UP:
-			break;
-		case STAND_DOWN:
-			animationStand[2].draw(getX(), getY());
-			break;
-		case STAND_LEFT:
-			animationStand[3].draw(getX(), getY());
-			break;
-		case STAND_RIGHT:
-			animationStand[1].draw(getX(), getY());
-			break;
-		case STAND_UP:
-			animationStand[0].draw(getX(), getY());
-			break;
-		case USE_DOWN:
-			break;
-		case USE_LEFT:
-			break;
-		case USE_RIGHT:
-			break;
-		case USE_UP:
-			break;
-		case WALK_DOWN:
-			animationWalk[2].draw(getX(), getY());
-			break;
-		case WALK_LEFT:
-			animationWalk[3].draw(getX(), getY());
-			break;
-		case WALK_RIGHT:
-			animationWalk[1].draw(getX(), getY());
-			break;
-		case WALK_UP:
-			animationWalk[0].draw(getX(), getY());
-			break;
-		default:
-			break;
-		
-		}
-		
-	}
-	
-	public void draw(Vector2f camera, boolean me){
+	public void draw(Vector2f camera){
 		float tempX = getX();
 		float tempY = getY();
 		
-		if (me == true){
-			// -32 for player width
-			// -57 for player height
-			tempX = TileUtil.toIsoX(getX(), getY()) + camera.x - 32;
-			tempY = TileUtil.toIsoY(getX(), getY()) + camera.y - 57;
-		} else {
-			tempX = TileUtil.toIsoX(getX(), getY()) + camera.x - 32;
-			tempY = TileUtil.toIsoY(getX(), getY()) + camera.y - 57;
-		}
+		tempX = TileUtil.toIsoX(getX(), getY()) + camera.getX() - 32;
+		tempY = TileUtil.toIsoY(getX(), getY()) + camera.getY() - 57;
 		
 		switch(playerState){
 		case DEAD:
