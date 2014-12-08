@@ -74,6 +74,19 @@ public class TileManager {
 		return style;
 	}
 	
+	public Vector2f tileForce(Vector2f pos){
+		Vector2f temp = TileUtil.getCoordinate(pos);
+		Vector2f force = new Vector2f(0,0);
+		
+		for(Tile tile : tileList ) {
+			if (TileUtil.getCoordinate(tile.getPosition()).equals(temp)){
+				force = tile.getForce();
+			}
+		}
+		
+		return force;
+	}
+	
 	public void draw(Vector2f camera) {
 		//System.out.println("Size: "+tileList.size());
 		for(Tile tile : tileList ) {

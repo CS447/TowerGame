@@ -10,6 +10,7 @@ import towergame.TowerGame;
 public class Tile {
 	
 	private Vector2f position;
+	private Vector2f force;
 	private int style;
 	private boolean power;
 	
@@ -39,12 +40,25 @@ public class Tile {
 
 	public void setImage(){
 		switch(style){
-		case 1:
+		case 1: // Standard Tile
 			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BASIC);
+			setForce(new Vector2f(0,0));
 			break;
-		case 2:
+		case 2: // Conveyor Belt Up
+			animation = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_TILE_CONVEYOR_U, 64, 40), 0, 0, 2, 0, true, 150, true );
+			setForce(new Vector2f(0,-0.125f));
 			break;
-		case 3:
+		case 3: // Conveyor Belt Right
+			animation = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_TILE_CONVEYOR_R, 64, 40), 0, 0, 2, 0, true, 150, true );
+			setForce(new Vector2f(0.125f,0));
+			break;
+		case 4: // Conveyor Belt Down
+			animation = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_TILE_CONVEYOR_D, 64, 40), 0, 0, 2, 0, true, 150, true );
+			setForce(new Vector2f(0,0.125f));
+			break;
+		case 5: // Conveyor Belt Left
+			animation = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_TILE_CONVEYOR_L, 64, 40), 0, 0, 2, 0, true, 150, true );
+			setForce(new Vector2f(-0.125f,0));
 			break;
 		}
 	}
@@ -60,8 +74,12 @@ public class Tile {
 				//		TileUtil.getCoordinateY(position.y)+")");
 				break;
 			case 2:
-				break;
 			case 3:
+			case 4:
+			case 5:
+				animation.draw(temp.getX()+camera.getX(), temp.getY()+camera.getY());
+				break;
+			case 6:
 				break;
 		}
 	}
@@ -93,5 +111,13 @@ public class Tile {
 
 	public void setPower(boolean power) {
 		this.power = power;
+	}
+
+	public Vector2f getForce() {
+		return force;
+	}
+
+	public void setForce(Vector2f force) {
+		this.force = force;
 	}
 }

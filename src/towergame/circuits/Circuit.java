@@ -12,7 +12,7 @@ package towergame.circuits;
 public abstract class Circuit {
 
 	private final int id;
-	private boolean power;
+	protected boolean power;
 	public boolean[] inputList;
 	
 	public Circuit(int id, int inputSize) {

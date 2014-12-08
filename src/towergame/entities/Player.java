@@ -277,10 +277,8 @@ public class Player extends Entity{
 	}
 
 	private void resetVelocity(){
-		this.velocity.x = 0;
-		this.velocity.y = 0;
-		this.playerVelocity.x = 0;
-		this.playerVelocity.y = 0;
+		velocity = new Vector2f(0,0);
+		playerVelocity = new Vector2f(0,0);
 	}
 	
 	private void movePlayer(TileManager tm, float myX, float myY){
@@ -291,10 +289,14 @@ public class Player extends Entity{
 		}
 	}
 	
+	private void checkTile(TileManager tm){
+		this.velocity = tm.tileForce(getPosition());
+	}
 
 	public void update(long delta, TileManager tm) {
 		state = playerState.pose;
 		
+		checkTile(tm);
 		movePlayer( tm, (velocity.x+playerVelocity.x)*delta, (velocity.y+playerVelocity.y)*delta );
 		resetVelocity();
 		lastFacing = isFacing();

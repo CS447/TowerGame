@@ -36,7 +36,10 @@ public class PlayingState extends BasicGameState{
 	public void enter(GameContainer container, StateBasedGame game) {
 		container.setMusicOn(false);
 		
+		ws.circuitList.clear();
 		tileManager.clear();
+		
+		// Load Map
 		tileManager.loadMap(TileMaps.level1, 24, 12);
 		
 		ws.p1 = new Player(48, 208, true);
