@@ -44,16 +44,33 @@ public class Box extends Mechanism{
 		
 	}
 
+	private void resetVelocity(){
+		velocity = new Vector2f(0,0);
+	}
+	
+	private void move(TileManager tm, float myX, float myY){
+		Vector2f temp = new Vector2f(getX()+myX, getY()+myY);
+		
+		if (tm.tileStyle(temp) > 0) {
+			this.setPosition(getX() + myX, getY() + myY);
+		}
+	}
+	
+	private void checkTile(TileManager tm, List<Circuit> cl, int delta){
+		this.velocity = tm.tileForce(getPosition());
+		tm.tileEvent(getPosition(), cl, delta);
+	}
+
+	@Override
+	public void update(int delta, TileManager tm, List<Circuit> cl) {
+		checkTile(tm, cl, delta);
+		move(tm, velocity.x * delta, velocity.y * delta);
+		resetVelocity();
+	}
+
 	@Override
 	public void update(int delta) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void update(int delta, TileManager tm, List<Circuit> cl) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
