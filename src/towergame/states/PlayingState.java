@@ -2,12 +2,15 @@ package towergame.states;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import towergame.ResourceManager;
+import towergame.TowerGame;
 import towergame.WorldState;
 import towergame.circuits.Circuit;
 import towergame.circuits.ReverseOrQuadCircuit;
@@ -24,6 +27,8 @@ public class PlayingState extends BasicGameState{
 	
 	static TileManager tileManager;
 	static Vector2f cameraPos;
+	static Image darkness;
+	static float darknessAlpha;
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
@@ -32,6 +37,8 @@ public class PlayingState extends BasicGameState{
 		tileManager = new TileManager();
 		
 		ws = new WorldState();
+		
+		darkness = ResourceManager.getImage(TowerGame.DARKNESS);
 	}
 
 	@Override
@@ -42,6 +49,8 @@ public class PlayingState extends BasicGameState{
 		tileManager.clear();
 		
 		ws.level = 1;
+		
+		darknessAlpha = 1;
 		
 		loadLevel();
 	}
@@ -67,6 +76,7 @@ public class PlayingState extends BasicGameState{
 			ws.p1.draw(cameraPos);
 		}
 		
+		darkness.draw();
 	}
 
 	@Override
@@ -145,6 +155,18 @@ public class PlayingState extends BasicGameState{
 				!input.isKeyDown(Input.KEY_LEFT) && !input.isKeyDown(Input.KEY_UP)){
 			ws.p2.setStand();
 			
+		}
+		
+		// ----------------------------------------------------------------------------------------
+		// Debug Controls
+		// ----------------------------------------------------------------------------------------
+		
+		if (input.isKeyPressed(Input.KEY_NUMPAD4)){
+			darknessAlpha += 0.1f;
+			darkness.setAlpha(darknessAlpha);
+		} else if (input.isKeyPressed(Input.KEY_NUMPAD1)){
+			darknessAlpha -= 0.1f;
+			darkness.setAlpha(darknessAlpha);
 		}
 		
 		// ----------------------------------------------------------------------------------------

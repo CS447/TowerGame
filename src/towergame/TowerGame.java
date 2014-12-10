@@ -32,6 +32,8 @@ public class TowerGame extends StateBasedGame{
 	public static final String PEACH = "towergame/resources/peach.png";
 	public static final String PEACH16 = "towergame/resources/peach16.png";
 	
+	public static final String DARKNESS = "towergame/resources/darkness.png";
+	
 	public static final String SPRITESHEET_PLAYER1_STAND_U = "towergame/resources/p1StandUp.png";
 	public static final String SPRITESHEET_PLAYER1_STAND_R = "towergame/resources/p1StandRight.png";
 	public static final String SPRITESHEET_PLAYER1_STAND_D = "towergame/resources/p1StandDown.png";
@@ -94,6 +96,8 @@ public class TowerGame extends StateBasedGame{
 		ResourceManager.loadImage(MENU1);
 		ResourceManager.loadImage(MENU2);
 		ResourceManager.loadImage(MENU3);
+		
+		ResourceManager.loadImage(DARKNESS);
 		
 		ResourceManager.loadImage(SPRITE_TILE_BASIC);
 		ResourceManager.loadImage(SPRITE_BOX);
