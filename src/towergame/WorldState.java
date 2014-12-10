@@ -10,6 +10,8 @@ public class WorldState {
 	
 	public long time;
 	
+	public int level;
+	
 	public Player p1;
 	public Player p2;
 	
