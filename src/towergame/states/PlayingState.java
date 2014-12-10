@@ -1,5 +1,9 @@
 package towergame.states;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -16,6 +20,8 @@ import towergame.circuits.Circuit;
 import towergame.circuits.ReverseOrDualCircuit;
 import towergame.circuits.ReverseOrQuadCircuit;
 import towergame.entities.Box;
+import towergame.entities.Entity;
+import towergame.entities.EntityComparator;
 import towergame.entities.MechanismManager;
 import towergame.entities.Player;
 import towergame.entities.Player.PlayerState;
@@ -67,7 +73,8 @@ public class PlayingState extends BasicGameState{
 		g.setAntiAlias(false);
 		
 		tileManager.draw(camera);
-		mechanismManager.draw(ws.mechanismList, camera);
+		
+		/*mechanismManager.draw(ws.mechanismList, camera);
 		
 		if (ws.p1.getY() < ws.p2.getY()){
 			ws.p1.draw(camera);
@@ -75,6 +82,17 @@ public class PlayingState extends BasicGameState{
 		} else {
 			ws.p2.draw(camera);
 			ws.p1.draw(camera);
+		}*/
+		
+		List<Entity> temp = new ArrayList<Entity>();
+		
+		temp.addAll(ws.mechanismList);
+		temp.add(ws.p1);
+		temp.add(ws.p2);
+		
+		Collections.sort(temp, new EntityComparator());
+		for(Entity t: temp){
+			t.draw(camera);
 		}
 		
 		darkness.draw();
