@@ -202,6 +202,7 @@ public class PlayingState extends BasicGameState{
 		
 		// ----------------------------------------------------------------------------------------
 		
+		mechanismManager.update(ws.mechanismList, delta, tileManager, ws.circuitList);
 		tileManager.update(delta, ws.circuitList);
 		
 		for (Circuit circuit: ws.circuitList){
