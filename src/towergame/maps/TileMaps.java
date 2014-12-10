@@ -7,6 +7,11 @@ public class TileMaps {
 	 * 
 	 * 0 = No Tile
 	 * 1 = Basic Tile
+	 * 2 = Conveyor Belt Up
+	 * 3 = Conveyor Belt Right
+	 * 4 = Conveyor Belt Down
+	 * 5 = Conveyor Belt Left
+	 * 6 = Tile Button 
 	 * 
 	 * 
 	 *     Example Map 10x10

@@ -13,10 +13,13 @@ import towergame.ResourceManager;
 import towergame.TowerGame;
 import towergame.WorldState;
 import towergame.circuits.Circuit;
+import towergame.circuits.ReverseOrDualCircuit;
 import towergame.circuits.ReverseOrQuadCircuit;
 import towergame.entities.Box;
+import towergame.entities.MechanismManager;
 import towergame.entities.Player;
 import towergame.entities.Player.PlayerState;
+import towergame.maps.ObjectMaps;
 import towergame.maps.TileMaps;
 import towergame.tiles.TileManager;
 import towergame.tiles.TileUtil;
@@ -26,7 +29,8 @@ public class PlayingState extends BasicGameState{
 	WorldState ws;
 	
 	static TileManager tileManager;
-	static Vector2f cameraPos;
+	static MechanismManager mechanismManager;
+	static Vector2f camera;
 	static Image darkness;
 	static float darknessAlpha;
 	
@@ -35,6 +39,7 @@ public class PlayingState extends BasicGameState{
 			throws SlickException {
 		
 		tileManager = new TileManager();
+		mechanismManager = new MechanismManager();
 		
 		ws = new WorldState();
 		
@@ -61,22 +66,25 @@ public class PlayingState extends BasicGameState{
 		
 		g.setAntiAlias(false);
 		
-		tileManager.draw(cameraPos);
-		g.drawString("Camera:   (" + Float.toString(cameraPos.x)+", "+Float.toString(cameraPos.y)+")", 50, 50);
+		tileManager.draw(camera);
+		mechanismManager.draw(ws.mechanismList, camera);
+		
+		if (ws.p1.getY() < ws.p2.getY()){
+			ws.p1.draw(camera);
+			ws.p2.draw(camera);
+		} else {
+			ws.p2.draw(camera);
+			ws.p1.draw(camera);
+		}
+		
+		darkness.draw();
+		
+		// Extra stuff
+		g.drawString("Camera:   (" + Float.toString(camera.x)+", "+Float.toString(camera.y)+")", 50, 50);
 		g.drawString("Player 1: (" + Float.toString(ws.p1.getX())+", "+Float.toString(ws.p1.getY())+")", 50, 70);
 		g.drawString("Isometr : (" + Float.toString(TileUtil.toCarX(ws.p1.getX(), ws.p1.getY()))+", "+Float.toString(TileUtil.toCarY(ws.p1.getX(), ws.p1.getY()))+")", 50, 90);
 		g.drawString("Tile    : (" + Float.toString( TileUtil.getCoordinateX(ws.p1.getX()) )+", "+Float.toString( TileUtil.getCoordinateY(ws.p1.getY()) )+")", 50, 110);
 		
-		
-		if (ws.p1.getY() < ws.p2.getY()){
-			ws.p1.draw(cameraPos);
-			ws.p2.draw(cameraPos);
-		} else {
-			ws.p2.draw(cameraPos);
-			ws.p1.draw(cameraPos);
-		}
-		
-		darkness.draw();
 	}
 
 	@Override
@@ -181,25 +189,28 @@ public class PlayingState extends BasicGameState{
 		ws.p2.update(delta, tileManager, ws.circuitList);
 		
 		// Set the camera position (368 and 262 are to center the camera around the player)
-		cameraPos = TileUtil.toIso(ws.p1.getPosition());
-		cameraPos.x = -cameraPos.x + 368;
-		cameraPos.y = -cameraPos.y + 262;
+		camera = TileUtil.toIso(ws.p1.getPosition());
+		camera.x = -camera.x + 368;
+		camera.y = -camera.y + 262;
 	}
 
 	public void loadLevel(){
 		tileManager.clear();
+		ws.circuitList.clear();
 		
 		switch(ws.level){
 			case 1:
 				// Load Map
 				tileManager.loadMap(TileMaps.level1, 24, 12);
+				mechanismManager.loadMap(ws.mechanismList, ObjectMaps.level1, 24, 12);
 				
 				// Set Players
 				ws.p1 = new Player(48, 208, true);
 				ws.p2 = new Player(48, 176, false);
 				
 				// Load Circuits
-				ws.circuitList.add(new ReverseOrQuadCircuit(1));
+				ws.circuitList.add(new ReverseOrDualCircuit(1));
+				ws.circuitList.add(new ReverseOrDualCircuit(2));
 				
 				break;
 			case 2:
@@ -209,9 +220,9 @@ public class PlayingState extends BasicGameState{
 		tileManager.removeExtras();
 		
 		// Set Camera
-		cameraPos = TileUtil.toIso(ws.p1.getPosition());
-		cameraPos.x = -cameraPos.x + 368;
-		cameraPos.y = -cameraPos.y + 262;
+		camera = TileUtil.toIso(ws.p1.getPosition());
+		camera.x = -camera.x + 368;
+		camera.y = -camera.y + 262;
 		
 		initSpecialTiles();
 	}
@@ -219,17 +230,19 @@ public class PlayingState extends BasicGameState{
 	public void initSpecialTiles(){
 		switch(ws.level){
 		case 1:
-			tileManager.setTileCircuit2(4, 2, 1, 1);
-			tileManager.setTileCircuit2(4, 9, 1, 2);
-			tileManager.setTileCircuit2(19, 2, 1, 1);
-			tileManager.setTileCircuit2(19, 9, 1, 2);
+			// Setting buttons
+			tileManager.setTileCircuit2(4, 2, 1, 0);
+			tileManager.setTileCircuit2(4, 9, 2, 1);
+			tileManager.setTileCircuit2(19, 2, 1, 0);
+			tileManager.setTileCircuit2(19, 9, 2, 1);
 			for (int i = 6; i < 18; i++){
+				// Setting conveyors
 				tileManager.setTileCircuit2(i, 1, 1, 0);
 				tileManager.setTileCircuit2(i, 2, 1, 0);
 				tileManager.setTileCircuit2(i, 3, 1, 0);
-				tileManager.setTileCircuit2(i, 8, 1, 0);
-				tileManager.setTileCircuit2(i, 9, 1, 0);
-				tileManager.setTileCircuit2(i, 10, 1, 0);
+				tileManager.setTileCircuit2(i, 8, 2, 0);
+				tileManager.setTileCircuit2(i, 9, 2, 0);
+				tileManager.setTileCircuit2(i, 10, 2, 0);
 			}
 			break;
 		case 2:

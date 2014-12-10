@@ -1,6 +1,11 @@
 package towergame.entities;
 
+import java.util.List;
+
 import org.newdawn.slick.geom.Vector2f;
+
+import towergame.circuits.Circuit;
+import towergame.tiles.TileManager;
 
 public abstract class Mechanism extends Entity{
 
@@ -36,5 +41,7 @@ public abstract class Mechanism extends Entity{
 	public void setPushable(boolean pushable){
 		isPushable = pushable;
 	}
+	
+	public abstract void update(int delta, TileManager tm, List<Circuit> cl);
 	
 }

@@ -307,7 +307,7 @@ public class Player extends Entity{
 	}
 	
 	@Override
-	public void update(long delta) {
+	public void update(int delta) {
 		state = playerState.pose;
 		
 		//this.setPosition( getX() + (velocity.x+playerVelocity.x)*delta, 

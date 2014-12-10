@@ -1,10 +1,14 @@
 package towergame.entities;
 
+import java.util.List;
+
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 
 import towergame.ResourceManager;
 import towergame.TowerGame;
+import towergame.circuits.Circuit;
+import towergame.tiles.TileManager;
 import towergame.tiles.TileUtil;
 
 public class Box extends Mechanism{
@@ -34,14 +38,20 @@ public class Box extends Mechanism{
 		
 		// These numbers setup the sprite accordingly (even though its -38 and not -51)
 		tempX = TileUtil.toIsoX(getX(), getY()) + camera.getX() - 32;
-		tempY = TileUtil.toIsoY(getX(), getY()) + camera.getY() - 38;
+		tempY = TileUtil.toIsoY(getX(), getY()) + camera.getY() - 34;
 		
 		sprite.draw(tempX, tempY);
 		
 	}
 
 	@Override
-	public void update(long delta) {
+	public void update(int delta) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(int delta, TileManager tm, List<Circuit> cl) {
 		// TODO Auto-generated method stub
 		
 	}
