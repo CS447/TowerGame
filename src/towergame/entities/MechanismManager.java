@@ -7,7 +7,6 @@ import java.util.List;
 import org.newdawn.slick.geom.Vector2f;
 
 import towergame.circuits.Circuit;
-import towergame.tiles.Tile;
 import towergame.tiles.TileManager;
 
 public class MechanismManager {

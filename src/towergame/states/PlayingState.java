@@ -18,8 +18,6 @@ import towergame.TowerGame;
 import towergame.WorldState;
 import towergame.circuits.Circuit;
 import towergame.circuits.ReverseOrDualCircuit;
-import towergame.circuits.ReverseOrQuadCircuit;
-import towergame.entities.Box;
 import towergame.entities.Entity;
 import towergame.entities.EntityComparator;
 import towergame.entities.MechanismManager;
