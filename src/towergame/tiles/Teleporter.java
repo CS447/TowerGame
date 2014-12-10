@@ -52,7 +52,7 @@ public class Teleporter extends Tile {
 	
 	//Sets sister teleporter, and then sets the sister teleporter of the sister to this teleporter
 	public void setSister(Teleporter sister) {
-		if (sister == null) {
+		if (this.sister == null) {
 			this.sister = sister;
 			sister.setSister(this);
 		}

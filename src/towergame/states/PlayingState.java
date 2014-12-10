@@ -22,6 +22,7 @@ public class PlayingState extends BasicGameState{
 	
 	static TileManager tileManager;
 	static Vector2f cameraPos;
+	private int currLevel;
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
@@ -46,6 +47,8 @@ public class PlayingState extends BasicGameState{
 		cameraPos = TileUtil.toIso(ws.p1.getPosition());
 		cameraPos.x = -cameraPos.x + 368;
 		cameraPos.y = -cameraPos.y + 262;
+		
+		currLevel = 1;
 	}
 	
 	@Override
@@ -81,6 +84,13 @@ public class PlayingState extends BasicGameState{
 		// ----------------------------------------------------------------------------------------
 		
 		Input input = container.getInput();
+		
+		//Reset command first, hold LSHIFT, R, N to reset
+		if (input.isKeyDown(Input.KEY_LSHIFT) && input.isKeyDown(Input.KEY_R) &&
+				input.isKeyDown(Input.KEY_N)) {
+			reset(currLevel);
+			return;
+		}
 		
 		if (input.isKeyDown(Input.KEY_A) && input.isKeyDown(Input.KEY_W)){
 			ws.p1.setState(PlayerState.WALK_LEFT);
@@ -161,6 +171,32 @@ public class PlayingState extends BasicGameState{
 		cameraPos.y = -cameraPos.y + 262;
 	}
 
+	public void reset(int currLevel) {
+		switch(currLevel) {
+		case 1:
+			tileManager.clear();
+			tileManager.loadMap(TileMaps.level1, 24, 12);
+			
+			ws.p1 = new Player(48, 208, true);
+			ws.p2 = new Player(48, 176, false);
+			
+			//cameraPos = new Vector2f(0,0);
+			cameraPos = TileUtil.toIso(ws.p1.getPosition());
+			cameraPos.x = -cameraPos.x + 368;
+			cameraPos.y = -cameraPos.y + 262;
+			break;
+		case 2:
+			//Reset 2nd level
+			break;
+		case 3:
+			//Reset 3rd level
+			break;
+		case 4:
+			//Reset 4th level
+			break;
+		}
+	}
+	
 	@Override
 	public int getID() {
 		return 2;
