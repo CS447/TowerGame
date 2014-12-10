@@ -255,10 +255,10 @@ public class PlayingState extends BasicGameState{
 		switch(ws.level){
 		case 1:
 			// Setting buttons
-			tileManager.setTileCircuit2(4, 2, 1, 0);
-			tileManager.setTileCircuit2(4, 9, 2, 1);
-			tileManager.setTileCircuit2(19, 2, 1, 0);
-			tileManager.setTileCircuit2(19, 9, 2, 1);
+			tileManager.setTileCircuit2(4, 2, 1, 1);
+			tileManager.setTileCircuit2(4, 9, 2, 2);
+			tileManager.setTileCircuit2(19, 2, 1, 1);
+			tileManager.setTileCircuit2(19, 9, 2, 2);
 			for (int i = 6; i < 18; i++){
 				// Setting conveyors
 				tileManager.setTileCircuit2(i, 1, 1, 0);
