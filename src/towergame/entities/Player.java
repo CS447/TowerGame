@@ -77,7 +77,7 @@ public class Player extends Entity{
 		
 		playerVelocity = new Vector2f(0,0);
 		
-		playerState = playerState.STAND_LEFT;
+		playerState = PlayerState.STAND_LEFT;
 		
 		setupAnimations();
 	}

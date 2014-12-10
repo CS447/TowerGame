@@ -1,7 +1,5 @@
 package towergame.maps;
 
-import org.newdawn.slick.geom.Vector2f;
-
 public class TileMaps {
 
 	/*
