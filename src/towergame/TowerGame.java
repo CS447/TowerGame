@@ -55,6 +55,9 @@ public class TowerGame extends StateBasedGame{
 	public static final String SPRITESHEET_TILE_CONVEYOR_D = "towergame/resources/conveyorDown.png";
 	public static final String SPRITESHEET_TILE_CONVEYOR_L = "towergame/resources/conveyorLeft.png";
 	
+	public static final String SPRITESHEET_TELEPORTER_OFF = "towergame/resources/teleporterOff.png";
+	public static final String SPRITESHEET_TELEPORTER_ON = "towergame/resources/teleporterOn.png";
+	
 	public static final String SPRITE_BOX = "towergame/resources/box.png";
 	
 	public static final String RICASSO = "towergame/resources/Ricasso.ttf";

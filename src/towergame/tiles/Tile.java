@@ -43,6 +43,7 @@ public class Tile {
 			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BASIC);
 			break;
 		case 2:
+			//Can use these cases for pressure plates on and off, no need for new class
 			break;
 		case 3:
 			break;
