@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.newdawn.slick.geom.Vector2f;
 
+import towergame.circuits.Circuit;
+
 public class TileManager {
 
 	List<Tile> tileList;
@@ -74,6 +76,59 @@ public class TileManager {
 		return style;
 	}
 	
+	public Vector2f tileForce(Vector2f pos){
+		Vector2f temp = TileUtil.getCoordinate(pos);
+		Vector2f force = new Vector2f(0,0);
+		
+		for(Tile tile : tileList ) {
+			if (TileUtil.getCoordinate(tile.getPosition()).equals(temp)){
+				force = tile.getForce();
+			}
+		}
+		
+		return force;
+	}
+	
+	public void tileEvent(Vector2f pos, List<Circuit> cl, int delta){
+		Vector2f temp = TileUtil.getCoordinate(pos);
+		
+		for(Tile tile : tileList ) {
+			if (TileUtil.getCoordinate(tile.getPosition()).equals(temp)){
+				tile.update2(delta, cl);
+			}
+		}
+	}
+	
+	/**
+	 * Give it the tile's Cartesian coordinate and it'll translate it to a tile coordinate.
+	 * Takes the tile at that place and sets its circuit.
+	 * 
+	 * @param pos
+	 * @param circuit
+	 */
+	public void setTileCircuit(Vector2f pos, int circuit, int inputID){
+		Vector2f temp = TileUtil.getCoordinate(pos);
+		for(Tile tile : tileList ) {
+			if (TileUtil.getCoordinate(tile.getPosition()).equals(temp)){
+				tile.setCircuit(circuit);
+				tile.setInput(inputID);
+			}
+		}
+	}
+	
+	/**
+	 * Takes the tile's coordinate. Ex: (2,4) would be the third tile right and 5 tiles down
+	 */
+	public void setTileCircuit2(float x, float y, int circuit, int inputID){
+		Vector2f temp = new Vector2f(x,y);
+		for(Tile tile : tileList ) {
+			if (TileUtil.getCoordinate(tile.getPosition()).equals(temp)){
+				tile.setCircuit(circuit);
+				tile.setInput(inputID);
+			}
+		}
+	}
+	
 	public void draw(Vector2f camera) {
 		//System.out.println("Size: "+tileList.size());
 		for(Tile tile : tileList ) {
@@ -84,6 +139,24 @@ public class TileManager {
 				System.out.println(TileUtil.getCoordinate(tile.getPosition()).toString());
 				System.out.println(tile.getPosition().toString());
 			}*/
+		}
+	}
+	
+	public void update(int delta, List<Circuit> cl){
+		for(Tile tile : tileList ) {
+			tile.update(delta, cl);
+		}
+	}
+	
+	public void removeExtras(){
+		List<Tile> removeList = new ArrayList<Tile>();
+		for(Tile tile : tileList ) {
+			if (tile.getStyle() == 0){
+				removeList.add(tile);
+			}
+		}
+		for(Tile rTile : removeList){
+			tileList.remove(rTile);
 		}
 	}
 	

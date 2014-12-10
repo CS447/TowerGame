@@ -1,11 +1,14 @@
 package towergame.entities;
 
+import java.util.List;
+
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Vector2f;
 
 import towergame.ResourceManager;
 import towergame.TowerGame;
+import towergame.circuits.Circuit;
 import towergame.tiles.TileManager;
 import towergame.tiles.TileUtil;
 
@@ -277,10 +280,8 @@ public class Player extends Entity{
 	}
 
 	private void resetVelocity(){
-		this.velocity.x = 0;
-		this.velocity.y = 0;
-		this.playerVelocity.x = 0;
-		this.playerVelocity.y = 0;
+		velocity = new Vector2f(0,0);
+		playerVelocity = new Vector2f(0,0);
 	}
 	
 	private void movePlayer(TileManager tm, float myX, float myY){
@@ -291,10 +292,15 @@ public class Player extends Entity{
 		}
 	}
 	
+	private void checkTile(TileManager tm, List<Circuit> cl, int delta){
+		this.velocity = tm.tileForce(getPosition());
+		tm.tileEvent(getPosition(), cl, delta);
+	}
 
-	public void update(long delta, TileManager tm) {
+	public void update(int delta, TileManager tm, List<Circuit> cl) {
 		state = playerState.pose;
 		
+		checkTile(tm, cl, delta);
 		movePlayer( tm, (velocity.x+playerVelocity.x)*delta, (velocity.y+playerVelocity.y)*delta );
 		resetVelocity();
 		lastFacing = isFacing();

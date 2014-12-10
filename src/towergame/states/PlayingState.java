@@ -9,6 +9,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import towergame.WorldState;
+import towergame.circuits.Circuit;
+import towergame.circuits.ReverseOrQuadCircuit;
 import towergame.entities.Box;
 import towergame.entities.Player;
 import towergame.entities.Player.PlayerState;
@@ -37,18 +39,12 @@ public class PlayingState extends BasicGameState{
 	public void enter(GameContainer container, StateBasedGame game) {
 		container.setMusicOn(false);
 		
+		ws.circuitList.clear();
 		tileManager.clear();
-		tileManager.loadMap(TileMaps.level1, 24, 12);
 		
-		ws.p1 = new Player(48, 208, true);
-		ws.p2 = new Player(48, 176, false);
+		ws.level = 1;
 		
-		//cameraPos = new Vector2f(0,0);
-		cameraPos = TileUtil.toIso(ws.p1.getPosition());
-		cameraPos.x = -cameraPos.x + 368;
-		cameraPos.y = -cameraPos.y + 262;
-		
-		currLevel = 1;
+		loadLevel();
 	}
 	
 	@Override
@@ -88,7 +84,7 @@ public class PlayingState extends BasicGameState{
 		//Reset command first, hold LSHIFT, R, N to reset
 		if (input.isKeyDown(Input.KEY_LSHIFT) && input.isKeyDown(Input.KEY_R) &&
 				input.isKeyDown(Input.KEY_N)) {
-			reset(currLevel);
+			reset(ws.level);
 			return;
 		}
 		
@@ -161,9 +157,14 @@ public class PlayingState extends BasicGameState{
 		
 		// ----------------------------------------------------------------------------------------
 		
+		tileManager.update(delta, ws.circuitList);
 		
-		ws.p1.update(delta, tileManager);
-		ws.p2.update(delta, tileManager);
+		for (Circuit circuit: ws.circuitList){
+			circuit.doLogic();
+		}
+		
+		ws.p1.update(delta, tileManager, ws.circuitList);
+		ws.p2.update(delta, tileManager, ws.circuitList);
 		
 		// Set the camera position (368 and 262 are to center the camera around the player)
 		cameraPos = TileUtil.toIso(ws.p1.getPosition());
@@ -172,7 +173,7 @@ public class PlayingState extends BasicGameState{
 	}
 
 	public void reset(int currLevel) {
-		switch(currLevel) {
+		switch(ws.level) {
 		case 1:
 			tileManager.clear();
 			tileManager.loadMap(TileMaps.level1, 24, 12);
@@ -193,6 +194,56 @@ public class PlayingState extends BasicGameState{
 			break;
 		case 4:
 			//Reset 4th level
+		}
+	}
+
+	public void loadLevel(){
+		tileManager.clear();
+		
+		switch(ws.level){
+			case 1:
+				// Load Map
+				tileManager.loadMap(TileMaps.level1, 24, 12);
+				
+				// Set Players
+				ws.p1 = new Player(48, 208, true);
+				ws.p2 = new Player(48, 176, false);
+				
+				// Load Circuits
+				ws.circuitList.add(new ReverseOrQuadCircuit(1));
+				
+				break;
+			case 2:
+				break;	
+		}
+		// Remove blank tiles
+		tileManager.removeExtras();
+		
+		// Set Camera
+		cameraPos = TileUtil.toIso(ws.p1.getPosition());
+		cameraPos.x = -cameraPos.x + 368;
+		cameraPos.y = -cameraPos.y + 262;
+		
+		initSpecialTiles();
+	}
+	
+	public void initSpecialTiles(){
+		switch(ws.level){
+		case 1:
+			tileManager.setTileCircuit2(4, 2, 1, 1);
+			tileManager.setTileCircuit2(4, 9, 1, 2);
+			tileManager.setTileCircuit2(19, 2, 1, 1);
+			tileManager.setTileCircuit2(19, 9, 1, 2);
+			for (int i = 6; i < 18; i++){
+				tileManager.setTileCircuit2(i, 1, 1, 0);
+				tileManager.setTileCircuit2(i, 2, 1, 0);
+				tileManager.setTileCircuit2(i, 3, 1, 0);
+				tileManager.setTileCircuit2(i, 8, 1, 0);
+				tileManager.setTileCircuit2(i, 9, 1, 0);
+				tileManager.setTileCircuit2(i, 10, 1, 0);
+			}
+			break;
+		case 2:
 			break;
 		}
 	}

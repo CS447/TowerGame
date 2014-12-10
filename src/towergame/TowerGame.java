@@ -50,6 +50,9 @@ public class TowerGame extends StateBasedGame{
 	
 	public static final String SPRITE_TILE_BASIC = "towergame/resources/tileBasic.png";
 	
+	public static final String SPRITE_TILE_BUTTON_ON = "towergame/resources/tileButtonOn.png";
+	public static final String SPRITE_TILE_BUTTON_OFF = "towergame/resources/tileButtonOff.png";
+	
 	public static final String SPRITESHEET_TILE_CONVEYOR_U = "towergame/resources/conveyorUp.png";
 	public static final String SPRITESHEET_TILE_CONVEYOR_R = "towergame/resources/conveyorRight.png";
 	public static final String SPRITESHEET_TILE_CONVEYOR_D = "towergame/resources/conveyorDown.png";
@@ -97,6 +100,9 @@ public class TowerGame extends StateBasedGame{
 		
 		ResourceManager.loadImage(SPRITE_TILE_BASIC);
 		ResourceManager.loadImage(SPRITE_BOX);
+		
+		ResourceManager.loadImage(SPRITE_TILE_BUTTON_ON);
+		ResourceManager.loadImage(SPRITE_TILE_BUTTON_OFF);
 		
 		ResourceManager.loadImage(SPRITESHEET_TILE_CONVEYOR_U);
 		ResourceManager.loadImage(SPRITESHEET_TILE_CONVEYOR_R);

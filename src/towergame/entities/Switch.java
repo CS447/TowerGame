@@ -40,9 +40,7 @@ public class Switch extends Mechanism{
 		case 2:
 			//sprite = ResourceManager.getImage(TowerGame.SPRITE_SWITCH_ON);
 			sprite.draw(tempX, tempY);
-		}
-
-		
+		}		
 	}
 	
 	public void flipState()

@@ -1,19 +1,27 @@
 package towergame.tiles;
 
+import java.util.List;
+
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 
 import towergame.ResourceManager;
 import towergame.TowerGame;
+import towergame.circuits.Circuit;
 
 public class Tile {
 	
 	private Vector2f position;
+	private Vector2f force;
 	private int style;
 	private boolean power;
 	
+	private int circuit;
+	private int input;
+	
 	private Image sprite;
+	private Image sprite2;
 	private Animation animation;
 
 	public Tile(Vector2f myPosition){
@@ -39,14 +47,54 @@ public class Tile {
 
 	public void setImage(){
 		switch(style){
-		case 1:
+		case 1: // Standard Tile
 			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BASIC);
 			break;
-		case 2:
-			//Can use these cases for pressure plates on and off, no need for new class
+		case 2: // Conveyor Belt Up
+			animation = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_TILE_CONVEYOR_U, 64, 40), 0, 0, 2, 0, true, 150, true );
 			break;
-		case 3:
+		case 3: // Conveyor Belt Right
+			animation = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_TILE_CONVEYOR_R, 64, 40), 0, 0, 2, 0, true, 150, true );
 			break;
+		case 4: // Conveyor Belt Down
+			animation = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_TILE_CONVEYOR_D, 64, 40), 0, 0, 2, 0, true, 150, true );
+			break;
+		case 5: // Conveyor Belt Left
+			animation = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_TILE_CONVEYOR_L, 64, 40), 0, 0, 2, 0, true, 150, true );
+			break;
+		case 6:
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON);
+			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF);
+			break;
+		}
+	}
+	
+	public void setTileForce(){
+		switch(style){
+			case 1:
+				setForce(new Vector2f(0,0));
+				break;
+			case 2:
+				setForce(new Vector2f(0,-0.125f));
+				break;
+			case 3:
+				setForce(new Vector2f(0.125f,0));
+				break;
+			case 4:
+				setForce(new Vector2f(0,0.125f));
+				break;
+			case 5:
+				setForce(new Vector2f(-0.125f,0));
+				break;
+			case 6:
+				setForce(new Vector2f(0,0));
+				break;
+			default:
+				setForce(new Vector2f(0,0));
+				break;
+		}
+		if (this.power == false){
+			setForce(new Vector2f(0,0));
 		}
 	}
 	
@@ -61,9 +109,67 @@ public class Tile {
 				//		TileUtil.getCoordinateY(position.y)+")");
 				break;
 			case 2:
-				break;
 			case 3:
+			case 4:
+			case 5:
+				animation.draw(temp.getX()+camera.getX(), temp.getY()+camera.getY());
+				if (power == true){
+					if (animation.isStopped() == true)
+						animation.start();
+				} else {
+					animation.stop();
+				}
 				break;
+			case 6:
+				if (isOn()){
+					sprite.draw(temp.getX()+camera.getX(), temp.getY()+camera.getY());
+				} else {
+					sprite2.draw(temp.getX()+camera.getX(), temp.getY()+camera.getY());
+				}
+				break;
+		}
+	}
+	
+	public void update(int delta, List<Circuit> cl){
+		if (this.input != 0){
+			this.power = false;
+		}
+		switch(style){
+		case 1:
+			break;
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+			for (Circuit circuit: cl){
+				if (circuit.getId() == this.circuit){
+					this.setPower(circuit.isOn());
+				}
+			}
+			break;
+		case 6:
+			break;
+		}
+		setTileForce();
+	}
+	
+	public void update2(int delta, List<Circuit> cl){
+		switch(style){
+		case 1:
+			break;
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+			break;
+		case 6:
+			this.power = true;
+			for (Circuit circuit: cl){
+				if (circuit.getId() == this.circuit){
+					circuit.setInput(this.input, this.power);
+				}
+			}
+			break;
 		}
 	}
 	
@@ -86,6 +192,7 @@ public class Tile {
 	public void setStyle(int style) {
 		this.style = style;
 		setImage();
+		setTileForce();
 	}
 
 	public boolean isOn() {
@@ -94,5 +201,29 @@ public class Tile {
 
 	public void setPower(boolean power) {
 		this.power = power;
+	}
+
+	public Vector2f getForce() {
+		return force;
+	}
+
+	public void setForce(Vector2f force) {
+		this.force = force;
+	}
+
+	public int getCircuit() {
+		return circuit;
+	}
+
+	public void setCircuit(int circuit) {
+		this.circuit = circuit;
+	}
+
+	public int getInput() {
+		return input;
+	}
+
+	public void setInput(int input) {
+		this.input = input;
 	}
 }
