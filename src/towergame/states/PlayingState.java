@@ -40,12 +40,16 @@ public class PlayingState extends BasicGameState{
 	static Image darkness;
 	static float darknessAlpha;
 	
+	static List<Entity> entityList;
+	
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		
 		tileManager = new TileManager();
 		mechanismManager = new MechanismManager();
+		
+		entityList = new ArrayList<Entity>();
 		
 		ws = new WorldState();
 		
@@ -58,6 +62,8 @@ public class PlayingState extends BasicGameState{
 		
 		ws.circuitList.clear();
 		tileManager.clear();
+		
+		entityList.clear();
 		
 		ws.level = 1;
 		
@@ -74,7 +80,8 @@ public class PlayingState extends BasicGameState{
 		
 		tileManager.draw(camera);
 		
-		/*mechanismManager.draw(ws.mechanismList, camera);
+		/*
+		 * mechanismManager.draw(ws.mechanismList, camera);
 		
 		if (ws.p1.getY() < ws.p2.getY()){
 			ws.p1.draw(camera);
@@ -82,18 +89,18 @@ public class PlayingState extends BasicGameState{
 		} else {
 			ws.p2.draw(camera);
 			ws.p1.draw(camera);
-		}*/
-		
-		List<Entity> temp = new ArrayList<Entity>();
-		
-		temp.addAll(ws.mechanismList);
-		temp.add(ws.p1);
-		temp.add(ws.p2);
-		
-		Collections.sort(temp, new EntityComparator());
-		for(Entity t: temp){
-			t.draw(camera);
 		}
+		*/
+		
+		entityList.addAll(ws.mechanismList);
+		entityList.add(ws.p1);
+		entityList.add(ws.p2);
+		
+		Collections.sort(entityList, new EntityComparator());
+		for(Entity temp: entityList){
+			temp.draw(camera);
+		}
+		entityList.clear();
 		
 		darkness.draw();
 		
