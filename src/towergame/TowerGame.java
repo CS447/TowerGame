@@ -32,6 +32,8 @@ public class TowerGame extends StateBasedGame{
 	public static final String PEACH = "towergame/resources/peach.png";
 	public static final String PEACH16 = "towergame/resources/peach16.png";
 	
+	public static final String DARKNESS = "towergame/resources/darkness.png";
+	
 	public static final String SPRITESHEET_PLAYER1_STAND_U = "towergame/resources/p1StandUp.png";
 	public static final String SPRITESHEET_PLAYER1_STAND_R = "towergame/resources/p1StandRight.png";
 	public static final String SPRITESHEET_PLAYER1_STAND_D = "towergame/resources/p1StandDown.png";
@@ -50,8 +52,25 @@ public class TowerGame extends StateBasedGame{
 	
 	public static final String SPRITE_TILE_BASIC = "towergame/resources/tileBasic.png";
 	
-	public static final String SPRITE_TILE_BUTTON_ON = "towergame/resources/tileButtonOn.png";
-	public static final String SPRITE_TILE_BUTTON_OFF = "towergame/resources/tileButtonOff.png";
+	public static final String SPRITE_TILE_BUTTON_ON1 = "towergame/resources/tileButtonOn1.png";
+	public static final String SPRITE_TILE_BUTTON_OFF1 = "towergame/resources/tileButtonOff1.png";
+	public static final String SPRITE_TILE_BUTTON_ON2 = "towergame/resources/tileButtonOn2.png";
+	public static final String SPRITE_TILE_BUTTON_OFF2 = "towergame/resources/tileButtonOff2.png";
+	public static final String SPRITE_TILE_BUTTON_ON3 = "towergame/resources/tileButtonOn3.png";
+	public static final String SPRITE_TILE_BUTTON_OFF3 = "towergame/resources/tileButtonOff3.png";
+	public static final String SPRITE_TILE_BUTTON_ON4 = "towergame/resources/tileButtonOn4.png";
+	public static final String SPRITE_TILE_BUTTON_OFF4 = "towergame/resources/tileButtonOff4.png";
+	public static final String SPRITE_TILE_BUTTON_ON5 = "towergame/resources/tileButtonOn5.png";
+	public static final String SPRITE_TILE_BUTTON_OFF5 = "towergame/resources/tileButtonOff5.png";
+	public static final String SPRITE_TILE_BUTTON_ON6 = "towergame/resources/tileButtonOn6.png";
+	public static final String SPRITE_TILE_BUTTON_OFF6 = "towergame/resources/tileButtonOff6.png";
+	public static final String SPRITE_TILE_BUTTON_ON7 = "towergame/resources/tileButtonOn7.png";
+	public static final String SPRITE_TILE_BUTTON_OFF7 = "towergame/resources/tileButtonOff7.png";
+	public static final String SPRITE_TILE_BUTTON_ON8 = "towergame/resources/tileButtonOn8.png";
+	public static final String SPRITE_TILE_BUTTON_OFF8 = "towergame/resources/tileButtonOff8.png";
+	public static final String SPRITE_TILE_BUTTON_ON9 = "towergame/resources/tileButtonOn9.png";
+	public static final String SPRITE_TILE_BUTTON_OFF9 = "towergame/resources/tileButtonOff9.png";
+	
 	
 	public static final String SPRITESHEET_TILE_CONVEYOR_U = "towergame/resources/conveyorUp.png";
 	public static final String SPRITESHEET_TILE_CONVEYOR_R = "towergame/resources/conveyorRight.png";
@@ -98,11 +117,29 @@ public class TowerGame extends StateBasedGame{
 		ResourceManager.loadImage(MENU2);
 		ResourceManager.loadImage(MENU3);
 		
+		ResourceManager.loadImage(DARKNESS);
+		
 		ResourceManager.loadImage(SPRITE_TILE_BASIC);
 		ResourceManager.loadImage(SPRITE_BOX);
 		
-		ResourceManager.loadImage(SPRITE_TILE_BUTTON_ON);
-		ResourceManager.loadImage(SPRITE_TILE_BUTTON_OFF);
+		ResourceManager.loadImage(SPRITE_TILE_BUTTON_ON1);
+		ResourceManager.loadImage(SPRITE_TILE_BUTTON_OFF1);
+		ResourceManager.loadImage(SPRITE_TILE_BUTTON_ON2);
+		ResourceManager.loadImage(SPRITE_TILE_BUTTON_OFF2);
+		ResourceManager.loadImage(SPRITE_TILE_BUTTON_ON3);
+		ResourceManager.loadImage(SPRITE_TILE_BUTTON_OFF3);
+		ResourceManager.loadImage(SPRITE_TILE_BUTTON_ON4);
+		ResourceManager.loadImage(SPRITE_TILE_BUTTON_OFF4);
+		ResourceManager.loadImage(SPRITE_TILE_BUTTON_ON5);
+		ResourceManager.loadImage(SPRITE_TILE_BUTTON_OFF5);
+		ResourceManager.loadImage(SPRITE_TILE_BUTTON_ON6);
+		ResourceManager.loadImage(SPRITE_TILE_BUTTON_OFF6);
+		ResourceManager.loadImage(SPRITE_TILE_BUTTON_ON7);
+		ResourceManager.loadImage(SPRITE_TILE_BUTTON_OFF7);
+		ResourceManager.loadImage(SPRITE_TILE_BUTTON_ON8);
+		ResourceManager.loadImage(SPRITE_TILE_BUTTON_OFF8);
+		ResourceManager.loadImage(SPRITE_TILE_BUTTON_ON9);
+		ResourceManager.loadImage(SPRITE_TILE_BUTTON_OFF9);
 		
 		ResourceManager.loadImage(SPRITESHEET_TILE_CONVEYOR_U);
 		ResourceManager.loadImage(SPRITESHEET_TILE_CONVEYOR_R);

@@ -63,9 +63,42 @@ public class Tile {
 			animation = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_TILE_CONVEYOR_L, 64, 40), 0, 0, 2, 0, true, 150, true );
 			break;
 		case 6:
-			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON);
-			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF);
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON1);
+			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF1);
 			break;
+		case 7:
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON2);
+			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF2);
+			break;
+		case 8:
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON3);
+			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF3);
+			break;
+		case 9:
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON4);
+			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF4);
+			break;
+		case 10:
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON5);
+			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF5);
+			break;
+		case 11:
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON6);
+			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF6);
+			break;
+		case 12:
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON7);
+			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF7);
+			break;
+		case 13:
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON8);
+			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF8);
+			break;
+		case 14:
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON9);
+			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF9);
+			break;
+			
 		}
 	}
 	
@@ -121,12 +154,22 @@ public class Tile {
 				}
 				break;
 			case 6:
+			case 7:
+			case 8:
+			case 9:
+			case 10:
+			case 11:
+			case 12:
+			case 13:
+			case 14:
 				if (isOn()){
 					sprite.draw(temp.getX()+camera.getX(), temp.getY()+camera.getY());
 				} else {
 					sprite2.draw(temp.getX()+camera.getX(), temp.getY()+camera.getY());
 				}
 				break;
+			default:
+			break;
 		}
 	}
 	
@@ -147,7 +190,7 @@ public class Tile {
 				}
 			}
 			break;
-		case 6:
+		default:
 			break;
 		}
 		setTileForce();
@@ -163,6 +206,14 @@ public class Tile {
 		case 5:
 			break;
 		case 6:
+		case 7:
+		case 8:
+		case 9:
+		case 10:
+		case 11:
+		case 12:
+		case 13:
+		case 14:
 			this.power = true;
 			for (Circuit circuit: cl){
 				if (circuit.getId() == this.circuit){
