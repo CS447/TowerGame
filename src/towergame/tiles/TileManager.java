@@ -7,11 +7,13 @@ import java.util.List;
 
 import org.newdawn.slick.geom.Vector2f;
 
+import towergame.Pair;
 import towergame.circuits.Circuit;
 
 public class TileManager {
 
 	List<Tile> tileList;
+	public List<Pair> teleporterList;
 	
 	public class TileComparator implements Comparator<Tile>{
 
@@ -31,6 +33,7 @@ public class TileManager {
 	public TileManager(){
 		
 		tileList = new ArrayList<Tile>();
+		teleporterList = new ArrayList<Pair>();
 		
 	}
 	
@@ -41,7 +44,7 @@ public class TileManager {
 	 * @param width
 	 * @param height
 	 */
-	public void loadMap(int[] map, int width, int height) {
+	public void loadMap(int[] map, int width, int height, int[] tpmap) {
 		
 		int count = 0;
 		Tile temp;
@@ -54,6 +57,15 @@ public class TileManager {
 				tileList.add(temp);
 				count++;
 			}
+		}
+		
+		//Populate the teleporter list
+		//teleporterList(0) and (1) are sisters, (2) and (3), and so on
+		for (int i = 0; i < tpmap.length; i=i+2)
+		{
+			int j = tpmap[i];
+			int k = tpmap[i+1];
+			teleporterList.add(new Pair(j, k));
 		}
 		
 		sort();
@@ -162,5 +174,6 @@ public class TileManager {
 	
 	public void clear(){
 		tileList.clear();
+		teleporterList.clear();
 	}
 }

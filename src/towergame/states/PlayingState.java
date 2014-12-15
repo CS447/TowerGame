@@ -63,7 +63,7 @@ public class PlayingState extends BasicGameState{
 		
 		entityList.clear();
 		
-		ws.level = 1;
+		ws.level = 2;
 		
 		darknessAlpha = 1;
 		
@@ -240,6 +240,16 @@ public class PlayingState extends BasicGameState{
 			loadLevel();
 			break;
 		case 2:
+			ws.circuitList.clear();
+			tileManager.clear();
+			
+			entityList.clear();
+			
+			ws.level = 2;
+			
+			darknessAlpha = 1;
+			
+			loadLevel();
 			//Reset 2nd level
 			break;
 		case 3:
@@ -257,7 +267,7 @@ public class PlayingState extends BasicGameState{
 		switch(ws.level){
 			case 1:
 				// Load Map
-				tileManager.loadMap(TileMaps.level1, 24, 12);
+				tileManager.loadMap(TileMaps.level1, 24, 12, TileMaps.TPlevel1);
 				mechanismManager.loadMap(ws.mechanismList, ObjectMaps.level1, 24, 12);
 				
 				// Set Players
@@ -270,6 +280,19 @@ public class PlayingState extends BasicGameState{
 				
 				break;
 			case 2:
+				// Load Map
+				tileManager.loadMap(TileMaps.level2, 26, 20, TileMaps.TPlevel2);
+				mechanismManager.loadMap(ws.mechanismList, ObjectMaps.level2, 26, 20);
+
+				
+				// Set Players
+				ws.p1 = new Player(48, 336, true);
+				ws.p2 = new Player(48, 304, false);
+				
+				// Load Circuits
+				ws.circuitList.add(new ReverseOrDualCircuit(1));
+				ws.circuitList.add(new ReverseOrDualCircuit(2));
+				
 				break;	
 		}
 		// Remove blank tiles
