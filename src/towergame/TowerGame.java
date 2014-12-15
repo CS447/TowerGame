@@ -146,6 +146,9 @@ public class TowerGame extends StateBasedGame{
 		ResourceManager.loadImage(SPRITESHEET_TILE_CONVEYOR_D);
 		ResourceManager.loadImage(SPRITESHEET_TILE_CONVEYOR_L);
 		
+		ResourceManager.loadImage(SPRITESHEET_TELEPORTER_OFF);
+		ResourceManager.loadImage(SPRITESHEET_TELEPORTER_ON);
+		
 		ResourceManager.loadImage(SPRITESHEET_PLAYER1_STAND_U);
 		ResourceManager.loadImage(SPRITESHEET_PLAYER1_STAND_R);
 		ResourceManager.loadImage(SPRITESHEET_PLAYER1_STAND_D);
