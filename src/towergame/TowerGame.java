@@ -52,6 +52,9 @@ public class TowerGame extends StateBasedGame{
 	
 	public static final String SPRITE_TILE_BASIC = "towergame/resources/tileBasic.png";
 	
+	public static final String SPRITE_TILE_FADE_IN = "towergame/resources/tileFadeIn.png";
+	public static final String SPRITE_TILE_FADE_OUT = "towergame/resources/tileFadeOut.png";
+	
 	public static final String SPRITE_TILE_BUTTON_ON1 = "towergame/resources/tileButtonOn1.png";
 	public static final String SPRITE_TILE_BUTTON_OFF1 = "towergame/resources/tileButtonOff1.png";
 	public static final String SPRITE_TILE_BUTTON_ON2 = "towergame/resources/tileButtonOn2.png";
@@ -119,8 +122,11 @@ public class TowerGame extends StateBasedGame{
 		
 		ResourceManager.loadImage(DARKNESS);
 		
-		ResourceManager.loadImage(SPRITE_TILE_BASIC);
 		ResourceManager.loadImage(SPRITE_BOX);
+		ResourceManager.loadImage(SPRITE_TILE_BASIC);
+		
+		ResourceManager.loadImage(SPRITE_TILE_FADE_IN);
+		ResourceManager.loadImage(SPRITE_TILE_FADE_OUT);
 		
 		ResourceManager.loadImage(SPRITE_TILE_BUTTON_ON1);
 		ResourceManager.loadImage(SPRITE_TILE_BUTTON_OFF1);

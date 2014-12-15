@@ -18,6 +18,7 @@ import towergame.TowerGame;
 import towergame.WorldState;
 import towergame.circuits.Circuit;
 import towergame.circuits.ReverseOrDualCircuit;
+import towergame.circuits.ExitCircuit;
 import towergame.entities.Entity;
 import towergame.entities.EntityComparator;
 import towergame.entities.MechanismManager;
@@ -63,7 +64,7 @@ public class PlayingState extends BasicGameState{
 		
 		entityList.clear();
 		
-		ws.level = 2;
+		ws.level = 1;
 		
 		darknessAlpha = 1;
 		
@@ -277,6 +278,7 @@ public class PlayingState extends BasicGameState{
 				// Load Circuits
 				ws.circuitList.add(new ReverseOrDualCircuit(1));
 				ws.circuitList.add(new ReverseOrDualCircuit(2));
+				ws.circuitList.add(new ExitCircuit(3));
 				
 				break;
 			case 2:
@@ -309,11 +311,18 @@ public class PlayingState extends BasicGameState{
 	public void initSpecialTiles(){
 		switch(ws.level){
 		case 1:
+			// Setting fade tiles
+			tileManager.setTileCircuit2(22, 5, 3, 0);
+			tileManager.setTileCircuit2(22, 6, 3, 0);
+			
 			// Setting buttons
 			tileManager.setTileCircuit2(4, 2, 1, 1);
 			tileManager.setTileCircuit2(4, 9, 2, 2);
 			tileManager.setTileCircuit2(19, 2, 1, 1);
 			tileManager.setTileCircuit2(19, 9, 2, 2);
+			tileManager.setTileCircuit2(21, 4, 3, 1);
+			tileManager.setTileCircuit2(21, 7, 3, 2);
+			
 			for (int i = 6; i < 18; i++){
 				// Setting conveyors
 				tileManager.setTileCircuit2(i, 1, 1, 0);

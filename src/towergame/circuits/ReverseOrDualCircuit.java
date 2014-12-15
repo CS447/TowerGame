@@ -15,6 +15,7 @@ public class ReverseOrDualCircuit extends Circuit{
 			power = true;
 		}
 		
+		// Resets power if not still pressed
 		inputList[0] = false;
 		inputList[1] = false;
 		
