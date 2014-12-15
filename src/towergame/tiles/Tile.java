@@ -98,6 +98,9 @@ public class Tile {
 			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON9);
 			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF9);
 			break;
+		case 15:
+			animation = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_TELEPORTER_ON, 64, 40), 0, 0, 13, 0, true, 150, true );
+			break;
 			
 		}
 	}
@@ -166,6 +169,16 @@ public class Tile {
 					sprite.draw(temp.getX()+camera.getX(), temp.getY()+camera.getY());
 				} else {
 					sprite2.draw(temp.getX()+camera.getX(), temp.getY()+camera.getY());
+				}
+				break;
+			case 15:
+				animation.draw(temp.getX()+camera.getX(), temp.getY()+camera.getY());
+				power = true;  //For testing purposes starting them all with power on.  You guys can change it, I just don't know how the circuits work just yet
+				if (power == true){
+					if (animation.isStopped() == true)
+						animation.start();
+				} else {
+					animation.stop();
 				}
 				break;
 			default:
