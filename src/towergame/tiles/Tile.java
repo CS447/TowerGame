@@ -120,6 +120,9 @@ public class Tile {
 			animation2.setCurrentFrame(15);
 			this.setPower(true);
 			break;
+		case 99: // Exit Tile
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BASIC);
+			break;
 		}
 	}
 	
@@ -140,9 +143,6 @@ public class Tile {
 			case 5:
 				setForce(new Vector2f(-0.125f,0));
 				break;
-			case 6:
-				setForce(new Vector2f(0,0));
-				break;
 			default:
 				setForce(new Vector2f(0,0));
 				break;
@@ -157,6 +157,7 @@ public class Tile {
 		
 		switch(style){
 			case 1:
+			case 99:
 				sprite.draw(temp.getX()+camera.getX(), temp.getY()+camera.getY());
 				//System.out.println("("+position.x + ", " + position.y+") = (" +
 				//		TileUtil.getCoordinateX(position.x) + ", " + 
@@ -244,11 +245,12 @@ public class Tile {
 			}
 			if (previousPower != this.isOn()){
 				animation.restart();
+				animation2.restart();
 			}
 			if (this.isOn() == true){
-				this.setStyle(16);
+				this.style = 16;
 			} else {
-				this.setStyle(-1);
+				this.style = -1;
 			}
 			break;
 		default:

@@ -220,6 +220,18 @@ public class PlayingState extends BasicGameState{
 		ws.p1.update(delta, tileManager, ws.circuitList);
 		ws.p2.update(delta, tileManager, ws.circuitList);
 		
+		// ----------------------------------------------------------------------------------------
+		// Level Clear (Players standing on next level tiles)
+		// ----------------------------------------------------------------------------------------
+		
+		if (tileManager.tileStyle(ws.p1.getPosition()) == 99 &&
+				tileManager.tileStyle(ws.p2.getPosition()) == 99) {
+			ws.level++;
+			loadLevel();
+		}
+		
+		// ----------------------------------------------------------------------------------------
+		
 		// Set the camera position (368 and 262 are to center the camera around the player)
 		camera = TileUtil.toIso(ws.p1.getPosition());
 		camera.x = -camera.x + 368;
@@ -263,6 +275,7 @@ public class PlayingState extends BasicGameState{
 
 	public void loadLevel(){
 		tileManager.clear();
+		ws.mechanismList.clear();
 		ws.circuitList.clear();
 		
 		switch(ws.level){
