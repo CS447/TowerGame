@@ -286,7 +286,25 @@ public class Player extends Entity{
 	
 	private void movePlayer(TileManager tm, float myX, float myY){
 		Vector2f temp = new Vector2f(getX()+myX, getY()+myY);
-		
+		Vector2f current = new Vector2f(getX(), getY());
+		//Current tile we are on for teleporter purposes
+		if (tm.tileStyle(current) != 15)
+		{
+			if (tm.tileStyle(temp) == 15)
+			{
+				//Now know player is moving from NOT a teleporter TO a teleporter
+				if (getX() < 6*32)
+				{
+				this.setPosition(getX() + 13*32, getY());
+				}
+				else
+				{
+					this.setPosition(getX() - 13*32, getY());
+				}
+				//Currently jerry-rigged up to just get them working.  Need to find a way to make a "teleporter list" for each level
+				//that links together teleporter coordinates.
+			}
+		}
 		if (tm.tileStyle(temp) > 0) {
 			this.setPosition(getX() + myX, getY() + myY);
 		}
