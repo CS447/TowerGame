@@ -38,6 +38,7 @@ public class TowerGame extends StateBasedGame{
 	public static final String BACKGROUND4 = "towergame/resources/background4.png";
 	public static final String BACKGROUND5 = "towergame/resources/background5.png";
 	
+	public static final String BLACK = "towergame/resources/black.png";
 	public static final String DARKNESS = "towergame/resources/darkness.png";
 	
 	public static final String SPRITE_SHADOW_STAND = "towergame/resources/shadowStand.png";
@@ -129,6 +130,7 @@ public class TowerGame extends StateBasedGame{
 		ResourceManager.loadImage(MENU2);
 		ResourceManager.loadImage(MENU3);
 		
+		ResourceManager.loadImage(BLACK);
 		ResourceManager.loadImage(DARKNESS);
 		
 		ResourceManager.loadImage(SPRITE_SHADOW_STAND);

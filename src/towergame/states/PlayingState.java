@@ -40,10 +40,14 @@ public class PlayingState extends BasicGameState{
 	static BackgroundManager backgroundManager;
 	static PlayerShadows playerShadows;
 	static Vector2f camera;
+	static Image black;
+	static float blackAlpha;
 	static Image darkness;
 	static float darknessAlpha;
 	
 	static List<Entity> entityList;
+	
+	static int reset;
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
@@ -58,7 +62,9 @@ public class PlayingState extends BasicGameState{
 		
 		ws = new WorldState();
 		
+		black = ResourceManager.getImage(TowerGame.BLACK);
 		darkness = ResourceManager.getImage(TowerGame.DARKNESS);
+
 	}
 
 	@Override
@@ -72,7 +78,10 @@ public class PlayingState extends BasicGameState{
 		
 		ws.level = 1;
 		
+		blackAlpha = 0;
 		darknessAlpha = 1;
+		
+		reset = 0;
 		
 		loadLevel();
 	}
@@ -111,6 +120,7 @@ public class PlayingState extends BasicGameState{
 		}
 		entityList.clear();
 		
+		black.draw();
 		darkness.draw();
 		
 		// Extra stuff
@@ -135,7 +145,7 @@ public class PlayingState extends BasicGameState{
 		//Reset command first, hold LSHIFT, R, N to reset
 		if (input.isKeyDown(Input.KEY_LSHIFT) && input.isKeyDown(Input.KEY_R) &&
 				input.isKeyDown(Input.KEY_N)) {
-			reset(ws.level);
+			reset();
 			return;
 		}
 		
@@ -206,6 +216,23 @@ public class PlayingState extends BasicGameState{
 			
 		}
 		
+		// Reset the level if held down
+		if (input.isKeyDown(Input.KEY_R)){
+			reset += delta;
+		} else {
+			reset -= delta;
+		}
+		blackAlpha = reset/1000f;
+		black.setAlpha(blackAlpha);
+		
+		if (reset <= 0){
+			reset = 0;
+		}
+		if (reset >= 1000){
+			reset = 0;
+			reset();
+		}
+		
 		// ----------------------------------------------------------------------------------------
 		// Debug Controls
 		// ----------------------------------------------------------------------------------------
@@ -251,7 +278,7 @@ public class PlayingState extends BasicGameState{
 		camera.y = -camera.y + 262;
 	}
 
-	public void reset(int currLevel) {
+	public void reset() {
 		switch(ws.level) {
 		case 1:
 			ws.circuitList.clear();
