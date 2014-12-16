@@ -237,7 +237,7 @@ public class PlayingState extends BasicGameState{
 		// ----------------------------------------------------------------------------------------
 		
 		// Update the background
-		backgroundManager.update(delta);
+		backgroundManager.update(delta, ws.p1.getPosition());
 		
 		// Set the camera position (368 and 262 are to center the camera around the player)
 		camera = TileUtil.toIso(ws.p1.getPosition());
