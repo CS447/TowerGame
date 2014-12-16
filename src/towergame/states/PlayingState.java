@@ -1,5 +1,6 @@
 package towergame.states;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,6 +15,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import towergame.BackgroundManager;
+import towergame.GameClient;
+import towergame.GameServer;
 import towergame.PlayerShadows;
 import towergame.ResourceManager;
 import towergame.TowerGame;
@@ -34,6 +37,9 @@ import towergame.tiles.TileUtil;
 public class PlayingState extends BasicGameState{
 
 	WorldState ws;
+	GameClient client;
+	Player player;
+	Player otherPlayer;
 	
 	static TileManager tileManager;
 	static MechanismManager mechanismManager;
@@ -84,6 +90,14 @@ public class PlayingState extends BasicGameState{
 		reset = 0;
 		
 		loadLevel();
+			
+		if (TowerGame.player1) {
+			client = new GameClient("127.0.0.1", GameServer.LISTEN_PORT);			
+		} else {
+			client = new GameClient(TowerGame.remoteAddr, GameServer.LISTEN_PORT);
+		}
+		
+		
 	}
 	
 	@Override
@@ -150,38 +164,108 @@ public class PlayingState extends BasicGameState{
 		}
 		
 		if (input.isKeyDown(Input.KEY_A) && input.isKeyDown(Input.KEY_W)){
-			ws.p1.setState(PlayerState.WALK_LEFT);
-			ws.p1.walkUpLeft();
+			player.setState(PlayerState.WALK_LEFT);
+			player.walkUpLeft();
+			client.Writer.println("move upleft");
 		} else if (input.isKeyDown(Input.KEY_D) && input.isKeyDown(Input.KEY_W)){
-			ws.p1.setState(PlayerState.WALK_UP);
-			ws.p1.walkUpRight();
+			player.setState(PlayerState.WALK_UP);
+			player.walkUpRight();
+			client.Writer.println("move upright");
 		} else if (input.isKeyDown(Input.KEY_A) && input.isKeyDown(Input.KEY_S)){
-			ws.p1.setState(PlayerState.WALK_DOWN);
-			ws.p1.walkDownLeft();
+			player.setState(PlayerState.WALK_DOWN);
+			player.walkDownLeft();
+			client.Writer.println("move downleft");
 		} else if (input.isKeyDown(Input.KEY_D) && input.isKeyDown(Input.KEY_S)){
-			ws.p1.setState(PlayerState.WALK_RIGHT);
-			ws.p1.walkDownRight();
+			player.setState(PlayerState.WALK_RIGHT);
+			player.walkDownRight();
+			client.Writer.println("move downright");
 		} else if (input.isKeyDown(Input.KEY_D)){
-			ws.p1.setState(PlayerState.WALK_RIGHT);
-			ws.p1.walkRight();
+			player.setState(PlayerState.WALK_RIGHT);
+			player.walkRight();
+			client.Writer.println("move right");
 		} else if (input.isKeyDown(Input.KEY_A)){
-			ws.p1.setState(PlayerState.WALK_LEFT);
-			ws.p1.walkLeft();
+			player.setState(PlayerState.WALK_LEFT);
+			player.walkLeft();
+			client.Writer.println("move left");
 		} else if (input.isKeyDown(Input.KEY_W)){
-			ws.p1.setState(PlayerState.WALK_UP);
-			ws.p1.walkUp();
+			player.setState(PlayerState.WALK_UP);
+			player.walkUp();
+			client.Writer.println("move up");
 		} else if (input.isKeyDown(Input.KEY_S)){
-			ws.p1.setState(PlayerState.WALK_DOWN);
-			ws.p1.walkDown();
+			player.setState(PlayerState.WALK_DOWN);
+			player.walkDown();
+			client.Writer.println("move down");
 		} 
 		
 		if (!input.isKeyDown(Input.KEY_S) && !input.isKeyDown(Input.KEY_D) &&
 				!input.isKeyDown(Input.KEY_A) && !input.isKeyDown(Input.KEY_W)){
-			ws.p1.setStand();
-			
+			player.setStand();
+			client.Writer.println("stand");
 		}
 		
-		// TODO Get rid of Player 2 controls
+		//Send update if changed
+		
+		try {
+			if (client.Reader.ready()) {
+				String line = client.Reader.readLine();
+				
+				String[] tokens = line.split(" ");
+				
+				switch (tokens[0]) {
+				case "state":
+					break;
+				case "move":
+					switch (tokens[1]) {
+					case "left":
+						otherPlayer.setState(PlayerState.WALK_LEFT);
+						otherPlayer.walkLeft();
+						break;
+					case "right":
+						otherPlayer.setState(PlayerState.WALK_RIGHT);
+						otherPlayer.walkRight();
+						break;
+					case "up":
+						otherPlayer.setState(PlayerState.WALK_UP);
+						otherPlayer.walkUp();
+						break;
+					case "down":
+						otherPlayer.setState(PlayerState.WALK_DOWN);
+						otherPlayer.walkDown();
+						break;
+					case "downleft":
+						otherPlayer.setState(PlayerState.WALK_DOWN);
+						otherPlayer.walkDownLeft();
+						break;
+					case "downright":
+						otherPlayer.setState(PlayerState.WALK_RIGHT);
+						otherPlayer.walkDownRight();
+						break;
+					case "upleft":
+						otherPlayer.setState(PlayerState.WALK_LEFT);
+						otherPlayer.walkUpLeft();
+						break;
+					case "upright":
+						otherPlayer.setState(PlayerState.WALK_UP);
+						otherPlayer.walkUpRight();
+						break;
+					}
+					break;
+				case "stand":
+					otherPlayer.setStand();
+					break;
+				case "activate":
+					break;
+				default:
+					break;
+				}
+			}
+		} catch (IOException e) {
+			System.out.println("NetError: " + e);
+		}
+		
+
+		
+		/*// TODO Get rid of Player 2 controls
 		// Only here to test without networking
 		
 		if (input.isKeyDown(Input.KEY_LEFT) && input.isKeyDown(Input.KEY_UP)){
@@ -214,7 +298,7 @@ public class PlayingState extends BasicGameState{
 				!input.isKeyDown(Input.KEY_LEFT) && !input.isKeyDown(Input.KEY_UP)){
 			ws.p2.setStand();
 			
-		}
+		}*/
 		
 		// Reset the level if held down
 		if (input.isKeyDown(Input.KEY_R)){
@@ -273,7 +357,7 @@ public class PlayingState extends BasicGameState{
 		backgroundManager.update(delta, ws.p1.getPosition());
 		
 		// Set the camera position (368 and 262 are to center the camera around the player)
-		camera = TileUtil.toIso(ws.p1.getPosition());
+		camera = TileUtil.toIso(player.getPosition());
 		camera.x = -camera.x + 368;
 		camera.y = -camera.y + 262;
 	}
@@ -350,11 +434,21 @@ public class PlayingState extends BasicGameState{
 				
 				break;	
 		}
+		
+
+		if (TowerGame.player1) {
+			player = ws.p1;
+			otherPlayer = ws.p2;
+		} else {
+			player = ws.p2;
+			otherPlayer = ws.p1;
+		}
+		
 		// Remove blank tiles
 		tileManager.removeExtras();
 		
 		// Set Camera
-		camera = TileUtil.toIso(ws.p1.getPosition());
+		camera = TileUtil.toIso(player.getPosition());
 		camera.x = -camera.x + 368;
 		camera.y = -camera.y + 262;
 		
