@@ -13,6 +13,7 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import towergame.BackgroundManager;
 import towergame.ResourceManager;
 import towergame.TowerGame;
 import towergame.WorldState;
@@ -35,6 +36,7 @@ public class PlayingState extends BasicGameState{
 	
 	static TileManager tileManager;
 	static MechanismManager mechanismManager;
+	static BackgroundManager backgroundManager;
 	static Vector2f camera;
 	static Image darkness;
 	static float darknessAlpha;
@@ -47,6 +49,7 @@ public class PlayingState extends BasicGameState{
 		
 		tileManager = new TileManager();
 		mechanismManager = new MechanismManager();
+		backgroundManager = new BackgroundManager();
 		
 		entityList = new ArrayList<Entity>();
 		
@@ -77,6 +80,7 @@ public class PlayingState extends BasicGameState{
 		
 		g.setAntiAlias(false);
 		
+		backgroundManager.draw();
 		tileManager.draw(camera);
 		
 		/*
@@ -231,6 +235,9 @@ public class PlayingState extends BasicGameState{
 		}
 		
 		// ----------------------------------------------------------------------------------------
+		
+		// Update the background
+		backgroundManager.update(delta);
 		
 		// Set the camera position (368 and 262 are to center the camera around the player)
 		camera = TileUtil.toIso(ws.p1.getPosition());
