@@ -14,6 +14,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import towergame.BackgroundManager;
+import towergame.PlayerShadows;
 import towergame.ResourceManager;
 import towergame.TowerGame;
 import towergame.WorldState;
@@ -37,6 +38,7 @@ public class PlayingState extends BasicGameState{
 	static TileManager tileManager;
 	static MechanismManager mechanismManager;
 	static BackgroundManager backgroundManager;
+	static PlayerShadows playerShadows;
 	static Vector2f camera;
 	static Image darkness;
 	static float darknessAlpha;
@@ -50,6 +52,7 @@ public class PlayingState extends BasicGameState{
 		tileManager = new TileManager();
 		mechanismManager = new MechanismManager();
 		backgroundManager = new BackgroundManager();
+		playerShadows = new PlayerShadows();
 		
 		entityList = new ArrayList<Entity>();
 		
@@ -82,6 +85,9 @@ public class PlayingState extends BasicGameState{
 		
 		backgroundManager.draw();
 		tileManager.draw(camera);
+		
+		playerShadows.draw( camera, ws.p1.getPosition(), ws.p1.getPlayerState() );
+		playerShadows.draw( camera, ws.p2.getPosition(), ws.p2.getPlayerState() );
 		
 		/*
 		 * mechanismManager.draw(ws.mechanismList, camera);

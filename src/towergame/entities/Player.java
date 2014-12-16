@@ -174,6 +174,9 @@ public class Player extends Entity{
 		isAlive = fate;
 	}
 	
+	public PlayerState getPlayerState(){
+		return playerState;
+	}
 	
 	/**
 	 * Returns the direction the player is facing. <br><br>
