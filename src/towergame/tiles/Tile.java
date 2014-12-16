@@ -23,6 +23,7 @@ public class Tile {
 	private Image sprite;
 	private Image sprite2;
 	private Animation animation;
+	private Animation animation2;
 
 	public Tile(Vector2f myPosition){
 		setPosition(myPosition);
@@ -62,9 +63,65 @@ public class Tile {
 		case 5: // Conveyor Belt Left
 			animation = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_TILE_CONVEYOR_L, 64, 40), 0, 0, 2, 0, true, 150, true );
 			break;
-		case 6:
-			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON);
-			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF);
+		case 6: // Light Green
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON1);
+			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF1);
+			break;
+		case 7: // Green
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON2);
+			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF2);
+			break;
+		case 8: // Blue Green
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON3);
+			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF3);
+			break;
+		case 9: // Light Blue
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON4);
+			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF4);
+			break;
+		case 10: // Blue
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON5);
+			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF5);
+			break;
+		case 11: // Purple
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON6);
+			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF6);
+			break;
+		case 12: // Pink
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON7);
+			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF7);
+			break;
+		case 13: // Red
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON8);
+			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF8);
+			break;
+		case 14: // Yellowish
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_ON9);
+			sprite2 = ResourceManager.getImage(TowerGame.SPRITE_TILE_BUTTON_OFF9);
+			break;
+		case 15: // Teleporter
+			animation = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_TELEPORTER_ON, 64, 40), 0, 0, 13, 0, true, 75, true );
+			break;
+		case -1: // Toggle Tile Off
+			animation = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITE_TILE_FADE_IN, 64, 40), 0, 0, 15, 0, true, 50, true );
+			animation2 = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITE_TILE_FADE_OUT, 64, 40), 0, 0, 15, 0, true, 50, true );
+			animation.setLooping(false);
+			animation.setCurrentFrame(15);
+			animation2.setLooping(false);
+			animation2.setCurrentFrame(15);
+			this.setPower(false);
+			break;
+		case 16: // Toggle Tile On
+			animation = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITE_TILE_FADE_IN, 64, 40), 0, 0, 15, 0, true, 50, true );
+			animation2 = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITE_TILE_FADE_OUT, 64, 40), 0, 0, 15, 0, true, 50, true );
+			animation.setLooping(false);
+			animation.setCurrentFrame(15);
+			animation2.setLooping(false);
+			animation2.setCurrentFrame(15);
+			this.setPower(true);
+			break;
+		case 99: // Exit Tile
+			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BASIC);
 			break;
 		}
 	}
@@ -75,19 +132,16 @@ public class Tile {
 				setForce(new Vector2f(0,0));
 				break;
 			case 2:
-				setForce(new Vector2f(0,-0.125f));
+				setForce(new Vector2f(0,-0.150f));
 				break;
 			case 3:
-				setForce(new Vector2f(0.125f,0));
+				setForce(new Vector2f(0.150f,0));
 				break;
 			case 4:
-				setForce(new Vector2f(0,0.125f));
+				setForce(new Vector2f(0,0.150f));
 				break;
 			case 5:
-				setForce(new Vector2f(-0.125f,0));
-				break;
-			case 6:
-				setForce(new Vector2f(0,0));
+				setForce(new Vector2f(-0.150f,0));
 				break;
 			default:
 				setForce(new Vector2f(0,0));
@@ -103,6 +157,7 @@ public class Tile {
 		
 		switch(style){
 			case 1:
+			case 99:
 				sprite.draw(temp.getX()+camera.getX(), temp.getY()+camera.getY());
 				//System.out.println("("+position.x + ", " + position.y+") = (" +
 				//		TileUtil.getCoordinateX(position.x) + ", " + 
@@ -121,16 +176,50 @@ public class Tile {
 				}
 				break;
 			case 6:
+			case 7:
+			case 8:
+			case 9:
+			case 10:
+			case 11:
+			case 12:
+			case 13:
+			case 14:
 				if (isOn()){
 					sprite.draw(temp.getX()+camera.getX(), temp.getY()+camera.getY());
 				} else {
 					sprite2.draw(temp.getX()+camera.getX(), temp.getY()+camera.getY());
 				}
 				break;
+			case 15:
+				animation.draw(temp.getX()+camera.getX(), temp.getY()+camera.getY());
+				power = true;  //For testing purposes starting them all with power on.  You guys can change it, I just don't know how the circuits work just yet
+				if (power == true){
+					if (animation.isStopped() == true)
+						animation.start();
+				} else {
+					animation.stop();
+				}
+				break;
+			case -1:
+				animation2.draw(temp.getX()+camera.getX(), temp.getY()+camera.getY());
+				break;
+			case 16:
+				animation.draw(temp.getX()+camera.getX(), temp.getY()+camera.getY());
+				break;
+			default:
+			break;
 		}
 	}
 	
+	/**
+	 * Update is used to update the tile's power based on a circuit
+	 * 
+	 * @param delta
+	 * @param cl
+	 */
 	public void update(int delta, List<Circuit> cl){
+		boolean previousPower = this.isOn();
+		
 		if (this.input != 0){
 			this.power = false;
 		}
@@ -147,12 +236,35 @@ public class Tile {
 				}
 			}
 			break;
-		case 6:
+		case -1:
+		case 16:
+			for (Circuit circuit: cl){
+				if (circuit.getId() == this.circuit){
+					this.setPower(circuit.isOn());
+				}
+			}
+			if (previousPower != this.isOn()){
+				animation.restart();
+				animation2.restart();
+			}
+			if (this.isOn() == true){
+				this.style = 16;
+			} else {
+				this.style = -1;
+			}
+			break;
+		default:
 			break;
 		}
 		setTileForce();
 	}
 	
+	/**
+	 * Update2 is used for tiles that give circuits input
+	 * 
+	 * @param delta
+	 * @param cl
+	 */
 	public void update2(int delta, List<Circuit> cl){
 		switch(style){
 		case 1:
@@ -163,6 +275,14 @@ public class Tile {
 		case 5:
 			break;
 		case 6:
+		case 7:
+		case 8:
+		case 9:
+		case 10:
+		case 11:
+		case 12:
+		case 13:
+		case 14:
 			this.power = true;
 			for (Circuit circuit: cl){
 				if (circuit.getId() == this.circuit){

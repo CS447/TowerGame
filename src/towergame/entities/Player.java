@@ -6,6 +6,7 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Vector2f;
 
+import towergame.Pair;
 import towergame.ResourceManager;
 import towergame.TowerGame;
 import towergame.circuits.Circuit;
@@ -173,6 +174,9 @@ public class Player extends Entity{
 		isAlive = fate;
 	}
 	
+	public PlayerState getPlayerState(){
+		return playerState;
+	}
 	
 	/**
 	 * Returns the direction the player is facing. <br><br>
@@ -286,7 +290,43 @@ public class Player extends Entity{
 	
 	private void movePlayer(TileManager tm, float myX, float myY){
 		Vector2f temp = new Vector2f(getX()+myX, getY()+myY);
-		
+		Vector2f current = new Vector2f(getX(), getY());
+		//Current tile we are on for teleporter purposes
+		if (tm.tileStyle(current) != 15)
+		{
+			if (tm.tileStyle(temp) == 15)
+			{
+				//Now know player is moving from NOT a teleporter TO a teleporter
+				for (Pair p : tm.teleporterList)
+				{
+					System.out.println("Iteration!");
+					int j = p.getX();
+					int k = p.getY();
+					if (((j - 22.63 < this.getX()) && (this.getX() < j+22.63)) && ((k - 22.63 < this.getY()) && (this.getY() < k + 22.63)))
+					{
+						//Found the teleporter we are in
+						int index = tm.teleporterList.indexOf(p);
+						System.out.println("Pair: (" + p.getX() + ", " + p.getY() + ")");
+						if (index % 2 == 0)
+						{
+							//Even teleporter, sister is in the next element
+							Pair tp = tm.teleporterList.get(index+1);
+							this.setPosition(tp.getX(), tp.getY());
+							return;
+						}
+						else
+						{
+							//Odd teleporter, sister is in previous element
+							Pair tp = tm.teleporterList.get(index-1);
+							this.setPosition(tp.getX(), tp.getY());
+							return;
+						}
+					}
+				}
+				//Currently jerry-rigged up to just get them working.  Need to find a way to make a "teleporter list" for each level
+				//that links together teleporter coordinates.
+			}
+		}
 		if (tm.tileStyle(temp) > 0) {
 			this.setPosition(getX() + myX, getY() + myY);
 		}
@@ -307,7 +347,7 @@ public class Player extends Entity{
 	}
 	
 	@Override
-	public void update(long delta) {
+	public void update(int delta) {
 		state = playerState.pose;
 		
 		//this.setPosition( getX() + (velocity.x+playerVelocity.x)*delta, 

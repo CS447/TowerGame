@@ -43,5 +43,5 @@ public abstract class Entity {
 	
 	public abstract void draw(Vector2f camera);
 	
-	public abstract void update(long delta);
+	public abstract void update(int delta);
 }

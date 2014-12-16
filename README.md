@@ -16,5 +16,5 @@ Authors
 -------
 - Joel
 - Jason
-- Steven - Test to see if push is working
+- Stephen - Test to see if push is working
 
