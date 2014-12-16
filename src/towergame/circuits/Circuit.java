@@ -21,8 +21,18 @@ public abstract class Circuit {
 	}
 	
 	
+	/**
+	 * NOTE: When submitting input ID's start from 1 <br><br>
+	 * Example: Circuit has an inputList of length 3. The inputList will
+	 * be a boolean[3] but the method setInput will convert setInput(1, true)
+	 * to boolean[0] = true. The reason it is this way is due to the way tiles
+	 * are setup. Tiles with an input of 0 are for tiles that don't send input.
+	 * 
+	 * @param id
+	 * @param power
+	 */
 	public void setInput(int id, boolean power){
-		inputList[id] = power;
+		inputList[id-1] = power;
 	}
 	
 	/**
