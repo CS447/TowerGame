@@ -323,8 +323,6 @@ public class Player extends Entity{
 						}
 					}
 				}
-				//Currently jerry-rigged up to just get them working.  Need to find a way to make a "teleporter list" for each level
-				//that links together teleporter coordinates.
 			}
 		}
 		if (tm.tileStyle(temp) > 0) {

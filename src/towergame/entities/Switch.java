@@ -3,8 +3,10 @@ package towergame.entities;
 import java.util.List;
 
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 
 import towergame.ResourceManager;
 import towergame.TowerGame;
@@ -14,14 +16,27 @@ import towergame.tiles.TileUtil;
 
 public class Switch extends Mechanism{
 	
-	private Image sprite;
+	private SpriteSheet sprites[] = new SpriteSheet[2];
+	private Animation animations[] = new Animation[4];
 	private int state;  //Flipped or not?
 	
 	public Switch(Vector2f myPosition) {
 		super(myPosition);
+		state = 1;
 		
-		//sprite = ResourceManager.getImage(TowerGame.SPRITE_SWITCH_OFF);
+		sprites[0] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_SWITCH_ON, 64, 76);
+		sprites[1] = ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_SWITCH_OFF, 64, 76);
+		
+		animations[0] = new Animation(sprites[0], 0, 0, 0, 0, true, 250, false );
+		animations[1] = new Animation(sprites[1], 0, 0, 0, 0, true, 250, false );
+		animations[2] = new Animation(sprites[0], 0, 0, 3, 0, true, 250, false );
+		animations[3] = new Animation(sprites[1], 0, 0, 3, 0, true, 250, false );
+		
 		//Need switch sprites
+	}
+	
+	public Switch(float x, float y) {
+		this(new Vector2f(x, y));
 	}
 	
 	public void draw(Vector2f camera) {
@@ -38,12 +53,11 @@ public class Switch extends Mechanism{
 		
 		switch(state){
 		case 1:
-			//sprite = ResourceManager.getImage(TowerGame.SPRITE_SWITCH_OFF);
-			sprite.draw(tempX, tempY);
+			animations[0].draw(tempX, tempY);
 			break;
 		case 2:
-			//sprite = ResourceManager.getImage(TowerGame.SPRITE_SWITCH_ON);
-			sprite.draw(tempX, tempY);
+			animations[1].draw(tempX, tempY);
+			break;
 		}		
 	}
 	
