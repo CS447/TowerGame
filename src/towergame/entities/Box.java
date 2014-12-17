@@ -19,6 +19,7 @@ public class Box extends Mechanism{
 		super(myPosition);
 		
 		sprite = ResourceManager.getImage(TowerGame.SPRITE_BOX);
+		squareRadius = 7;
 	}
 	
 	public Box(float x, float y) {
@@ -57,7 +58,7 @@ public class Box extends Mechanism{
 	}
 	
 	private void checkTile(TileManager tm, List<Circuit> cl, int delta){
-		this.velocity = tm.tileForce(getPosition());
+		this.velocity.add( tm.tileForce(getPosition()) );
 		tm.tileEvent(getPosition(), cl, delta);
 	}
 

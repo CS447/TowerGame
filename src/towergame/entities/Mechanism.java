@@ -11,6 +11,7 @@ public abstract class Mechanism extends Entity{
 
 	private boolean isOn;
 	private boolean isPushable;
+	int squareRadius = 0;
 	
 	public Mechanism(Vector2f myPosition) {
 		super(myPosition);
@@ -40,6 +41,10 @@ public abstract class Mechanism extends Entity{
 	
 	public void setPushable(boolean pushable){
 		isPushable = pushable;
+	}
+	
+	public void addVelocity(Vector2f vel){
+		this.velocity.add(vel);
 	}
 	
 	public abstract void update(int delta, TileManager tm, List<Circuit> cl);

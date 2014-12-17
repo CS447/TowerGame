@@ -17,6 +17,7 @@ public class Player extends Entity{
 
 	private boolean isPlayer1;
 	private boolean isAlive;
+	private boolean isPushing;
 	
 	private int lastFacing;
 	private float walkingSpeed;
@@ -172,6 +173,10 @@ public class Player extends Entity{
 	
 	public void setAlive(boolean fate){
 		isAlive = fate;
+	}
+	
+	public void setPushing(boolean action){
+		this.isPushing = action;
 	}
 	
 	public PlayerState getPlayerState(){
@@ -335,8 +340,15 @@ public class Player extends Entity{
 		tm.tileEvent(getPosition(), cl, delta);
 	}
 
+	public Vector2f getCurrentVelocity(){
+		return new Vector2f(velocity.getX()+playerVelocity.getX(), velocity.getY()+playerVelocity.getY());
+	}
+	
 	public void update(int delta, TileManager tm, List<Circuit> cl) {
 		state = playerState.pose;
+		if (isPushing){
+			playerVelocity.scale(0.5f);
+		}
 		
 		checkTile(tm, cl, delta);
 		movePlayer( tm, (velocity.x+playerVelocity.x)*delta, (velocity.y+playerVelocity.y)*delta );

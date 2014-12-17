@@ -17,7 +17,7 @@ import towergame.states.SplashState;
 public class TowerGame extends StateBasedGame{
 
 	public static boolean player1;
-	public static String remoteAddr = "192.168.1.198";
+	public static String remoteAddr = "192.168.1.240";
 	public static boolean connected = false;
 	
 	public final int ScreenWidth;
