@@ -120,6 +120,27 @@ public class Tile {
 			animation2.setCurrentFrame(15);
 			this.setPower(true);
 			break;
+		case -2: // Toggle Tile Off
+			animation = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITE_TILE_FADE_IN, 64, 40), 0, 0, 15, 0, true, 50, true );
+			animation2 = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITE_TILE_FADE_OUT, 64, 40), 0, 0, 15, 0, true, 50, true );
+			animation.setLooping(false);
+			animation.setCurrentFrame(15);
+			animation2.setLooping(false);
+			animation2.setCurrentFrame(15);
+			this.setPower(true);
+			break;
+		case 17: // Toggle Tile On
+			animation = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITE_TILE_FADE_IN, 64, 40), 0, 0, 15, 0, true, 50, true );
+			animation2 = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITE_TILE_FADE_OUT, 64, 40), 0, 0, 15, 0, true, 50, true );
+			animation.setLooping(false);
+			animation.setCurrentFrame(15);
+			animation2.setLooping(false);
+			animation2.setCurrentFrame(15);
+			this.setPower(false);
+			break;
+		case 18: // Slow Conveyor Belt Right
+			animation = new Animation(ResourceManager.getSpriteSheet(TowerGame.SPRITESHEET_TILE_CONVEYOR_R, 64, 40), 0, 0, 2, 0, true, 150, true );
+			break;
 		case 99: // Exit Tile
 			sprite = ResourceManager.getImage(TowerGame.SPRITE_TILE_BASIC);
 			break;
@@ -142,6 +163,9 @@ public class Tile {
 				break;
 			case 5:
 				setForce(new Vector2f(-0.150f,0));
+				break;
+			case 18:
+				setForce(new Vector2f(0.005f,0));
 				break;
 			default:
 				setForce(new Vector2f(0,0));
@@ -167,6 +191,7 @@ public class Tile {
 			case 3:
 			case 4:
 			case 5:
+			case 18:
 				animation.draw(temp.getX()+camera.getX(), temp.getY()+camera.getY());
 				if (power == true){
 					if (animation.isStopped() == true)
@@ -201,9 +226,11 @@ public class Tile {
 				}
 				break;
 			case -1:
+			case -2:
 				animation2.draw(temp.getX()+camera.getX(), temp.getY()+camera.getY());
 				break;
 			case 16:
+			case 17:
 				animation.draw(temp.getX()+camera.getX(), temp.getY()+camera.getY());
 				break;
 			default:
@@ -230,6 +257,7 @@ public class Tile {
 		case 3:
 		case 4:
 		case 5:
+		case 18:
 			for (Circuit circuit: cl){
 				if (circuit.getId() == this.circuit){
 					this.setPower(circuit.isOn());
@@ -251,6 +279,23 @@ public class Tile {
 				this.style = 16;
 			} else {
 				this.style = -1;
+			}
+			break;
+		case -2:
+		case 17:
+			for (Circuit circuit: cl){
+				if (circuit.getId() == this.circuit){
+					this.setPower(circuit.isOn());
+				}
+			}
+			if (previousPower != this.isOn()){
+				animation.restart();
+				animation2.restart();
+			}
+			if (this.isOn() == true){
+				this.style = -2;
+			} else {
+				this.style = 17;
 			}
 			break;
 		default:

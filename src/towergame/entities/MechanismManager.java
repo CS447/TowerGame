@@ -88,6 +88,30 @@ public class MechanismManager {
 		}
 	}*/
 	
+	public void collide(Player player, List<Mechanism> list){
+		for(Mechanism mech : list ) {
+			if (player.getPosition().distance(mech.getPosition()) <= 25){
+				player.addVelocity(mech.getCurrentVelocity());
+				if ( ( player.isFacing() == 0 && (player.getCurrentVelocity().getX() == 0 && player.getCurrentVelocity().getY() < 0) && ( player.getY() > mech.getY()) ) ||
+					 ( player.isFacing() == 1 && (player.getCurrentVelocity().getX() > 0 && player.getCurrentVelocity().getY() == 0) && ( player.getX() < mech.getX()) ) ||
+					 ( player.isFacing() == 2 && (player.getCurrentVelocity().getX() == 0 && player.getCurrentVelocity().getY() > 0) && ( player.getY() < mech.getY()) ) ||
+					 ( player.isFacing() == 3 && (player.getCurrentVelocity().getX() < 0 && player.getCurrentVelocity().getY() == 0) && ( player.getX() > mech.getX()) ) ||
+					 
+					 ( player.isFacing() == 0 && (player.getCurrentVelocity().getX() < 0 && player.getCurrentVelocity().getY() < 0) && ( player.getX() > mech.getX() && player.getY() > mech.getY() ) ) ||
+					 ( player.isFacing() == 1 && (player.getCurrentVelocity().getX() > 0 && player.getCurrentVelocity().getY() < 0) && ( player.getX() < mech.getX() && player.getY() > mech.getY() ) ) ||
+					 ( player.isFacing() == 2 && (player.getCurrentVelocity().getX() > 0 && player.getCurrentVelocity().getY() > 0) && ( player.getX() < mech.getX() && player.getY() < mech.getY() ) ) ||
+					 ( player.isFacing() == 3 && (player.getCurrentVelocity().getX() < 0 && player.getCurrentVelocity().getY() > 0) && ( player.getX() > mech.getX() && player.getY() < mech.getY() ) ) ){
+					
+					player.setPushing(true);
+					mech.addVelocity(new Vector2f(player.getCurrentVelocity().scale(0.5f)));
+				
+				} else {
+					player.setPushing(false);
+				}
+			}
+		}
+	}
+	
 	public void update(List<Mechanism> list, int delta, TileManager tm, List<Circuit> cl){
 		for(Mechanism mech : list ) {
 			mech.update(delta, tm, cl);

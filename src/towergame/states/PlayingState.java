@@ -14,6 +14,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.FontUtils;
 
 import towergame.BackgroundManager;
 import towergame.GameClient;
@@ -22,7 +23,12 @@ import towergame.PlayerShadows;
 import towergame.ResourceManager;
 import towergame.TowerGame;
 import towergame.WorldState;
+import towergame.circuits.AndQuadCircuit;
 import towergame.circuits.Circuit;
+import towergame.circuits.IfPressedCircuit;
+import towergame.circuits.OnCircuit;
+import towergame.circuits.OneTimeOnSingleCircuit;
+import towergame.circuits.ReverseIfPressedCircuit;
 import towergame.circuits.ReverseOrDualCircuit;
 import towergame.circuits.ExitCircuit;
 import towergame.entities.Entity;
@@ -59,6 +65,8 @@ public class PlayingState extends BasicGameState{
 	
 	static int reset;
 	
+	static boolean syncGame;
+	
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
@@ -79,14 +87,14 @@ public class PlayingState extends BasicGameState{
 
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) {
-		container.setMusicOn(false);
+		//container.setMusicOn(false);
 		
 		ws.circuitList.clear();
 		tileManager.clear();
 		
 		entityList.clear();
 		
-		ws.level = 1;
+		ws.level = 0;
 		
 		blackAlpha = 0;
 		darknessAlpha = 1;
@@ -108,23 +116,12 @@ public class PlayingState extends BasicGameState{
 		
 		g.setAntiAlias(false);
 		
+		
 		backgroundManager.draw();
 		tileManager.draw(camera);
 		
 		playerShadows.draw( camera, ws.p1.getPosition(), ws.p1.getPlayerState() );
 		playerShadows.draw( camera, ws.p2.getPosition(), ws.p2.getPlayerState() );
-		
-		/*
-		 * mechanismManager.draw(ws.mechanismList, camera);
-		
-		if (ws.p1.getY() < ws.p2.getY()){
-			ws.p1.draw(camera);
-			ws.p2.draw(camera);
-		} else {
-			ws.p2.draw(camera);
-			ws.p1.draw(camera);
-		}
-		*/
 		
 		entityList.addAll(ws.mechanismList);
 		entityList.add(ws.p1);
@@ -138,6 +135,11 @@ public class PlayingState extends BasicGameState{
 		
 		black.draw();
 		darkness.draw();
+		
+		if (syncGame == false) {
+			FontUtils.drawCenter(TowerGame.ricasso30, "Waiting for other player...", 165, 104, 470, Color.white);
+			black.setAlpha(0);
+		}
 		
 		// Extra stuff
 		g.drawString("Camera:   (" + Float.toString(camera.x)+", "+Float.toString(camera.y)+")", 50, 50);
@@ -159,12 +161,44 @@ public class PlayingState extends BasicGameState{
 			throws SlickException {
 		// TODO
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		// ----------------------------------------------------------------------------------------
 		// Game Controls
 		// ----------------------------------------------------------------------------------------
 		Input input = container.getInput();
 		
 		if (TowerGame.connected || !TowerGame.player1) { 			
+			if (syncGame == false){
+				reset += delta*1.75;
+				if (reset >= 1000)
+					ws.level = 4;
+			}
+			
 			if (input.isKeyPressed(Input.KEY_P))
 			{
 				client.Writer.println("pause");
@@ -298,25 +332,28 @@ public class PlayingState extends BasicGameState{
 			} catch (IOException e) {
 				System.out.println("NetError: " + e);
 			}
-		}
-		
-		// Reset the level if held down
-		if (input.isKeyDown(Input.KEY_R)){
-			reset += delta;
-		} else {
-			reset -= delta;
-		}
-		blackAlpha = reset/1000f;
-		black.setAlpha(blackAlpha);
-		
-		if (reset <= 0){
-			reset = 0;
-		}
-		if (reset >= 1000){
-			reset = 0;
-			reset();
-			client.Writer.println("reset");
-			return;
+			
+			
+			// Reset the level if held down
+			if (input.isKeyDown(Input.KEY_R)){
+				reset += delta;
+			} else {
+				reset -= delta;
+			}
+			blackAlpha = reset/1000f;
+			black.setAlpha(blackAlpha);
+			
+			if (reset <= 0){
+				reset = 0;
+			}
+			if (reset >= 1000){
+				syncGame = true;
+				reset = 0;
+				reset();
+				client.Writer.println("reset");
+				return;
+			}
+			
 		}
 		
 		// ----------------------------------------------------------------------------------------
@@ -332,6 +369,9 @@ public class PlayingState extends BasicGameState{
 		}
 		
 		// ----------------------------------------------------------------------------------------
+		
+		mechanismManager.collide(player, ws.mechanismList);
+		mechanismManager.collide(otherPlayer, ws.mechanismList);
 		
 		mechanismManager.update(ws.mechanismList, delta, tileManager, ws.circuitList);
 		tileManager.update(delta, ws.circuitList);
@@ -356,7 +396,7 @@ public class PlayingState extends BasicGameState{
 		// ----------------------------------------------------------------------------------------
 		
 		// Update the background
-		backgroundManager.update(delta, ws.p1.getPosition());
+		backgroundManager.update(delta, player.getPosition());
 		
 		// Set the camera position (368 and 262 are to center the camera around the player)
 		camera = TileUtil.toIso(player.getPosition());
@@ -405,7 +445,16 @@ public class PlayingState extends BasicGameState{
 			loadLevel();
 			break;
 		case 4:
-			//Reset 4th level
+			ws.circuitList.clear();
+			tileManager.clear();
+			
+			entityList.clear();
+			
+			ws.level = 4;
+			
+			darknessAlpha = 1;
+			
+			loadLevel();
 		}
 	}
 
@@ -415,6 +464,14 @@ public class PlayingState extends BasicGameState{
 		ws.circuitList.clear();
 		
 		switch(ws.level){
+			case 0:
+				// Load Map
+				tileManager.loadMap(TileMaps.level0, 2, 2, TileMaps.TPlevel1);
+				
+				// Set Players
+				ws.p1 = new Player(16, 16, true);
+				ws.p2 = new Player(48, 48, false);
+				break;
 			case 1:
 				// Load Map
 				tileManager.loadMap(TileMaps.level1, 24, 12, TileMaps.TPlevel1);
@@ -429,6 +486,8 @@ public class PlayingState extends BasicGameState{
 				ws.circuitList.add(new ReverseOrDualCircuit(2));
 				ws.circuitList.add(new ExitCircuit(3));
 				
+				// Load Music
+				ResourceManager.getMusic(TowerGame.BGM_LVL1).loop();
 				break;
 			case 2:
 				// Load Map
@@ -443,8 +502,16 @@ public class PlayingState extends BasicGameState{
 				// Load Circuits
 				ws.circuitList.add(new ExitCircuit(1));
 				ws.circuitList.add(new ExitCircuit(2));
+				break;
+			case 4:
+				// Load Map
+				tileManager.loadMap(TileMaps.level4, 24, 22, TileMaps.TPlevel1);
+				mechanismManager.loadMap(ws.mechanismList, ObjectMaps.level4, 24, 22);
 				
-				
+				// Set Players
+				ws.p1 = new Player(48, 368, true);
+				ws.p2 = new Player(48, 336, false);
+
 				break;	
 			case 3:
 				// Load Map
@@ -464,6 +531,26 @@ public class PlayingState extends BasicGameState{
 				ws.circuitList.add(new ReverseOrDualCircuit(5));
 				ws.circuitList.add(new ExitCircuit(6));
 				ws.circuitList.add(new ReverseOrDualCircuit(7));
+				// Load Circuits
+				ws.circuitList.add(new ExitCircuit(1));
+				ws.circuitList.add(new OneTimeOnSingleCircuit(2));
+				ws.circuitList.add(new OneTimeOnSingleCircuit(3));
+				ws.circuitList.add(new OnCircuit(4));
+				ws.circuitList.add(new AndQuadCircuit(5));
+				ws.circuitList.add(new OneTimeOnSingleCircuit(6));
+				ws.circuitList.add(new IfPressedCircuit(7));
+				ws.circuitList.add(new OneTimeOnSingleCircuit(8));
+				ws.circuitList.add(new ReverseIfPressedCircuit(9));
+				ws.circuitList.add(new IfPressedCircuit(10));
+				ws.circuitList.add(new ReverseIfPressedCircuit(11));
+				ws.circuitList.add(new ReverseIfPressedCircuit(12));
+				ws.circuitList.add(new OneTimeOnSingleCircuit(13));
+				ws.circuitList.add(new OneTimeOnSingleCircuit(14));
+				ws.circuitList.add(new OneTimeOnSingleCircuit(15));
+				ws.circuitList.add(new ExitCircuit(16));
+				// Load Music
+				ResourceManager.getMusic(TowerGame.BGM_LVL1).loop();
+				break;
 		}
 		
 
@@ -582,6 +669,112 @@ public class PlayingState extends BasicGameState{
 				tileManager.setTileCircuit2(8, 12+i, 7, 0);
 			}
 			
+		case 4:
+			//Fade tiles
+			tileManager.setTileCircuit2(1, 10, 1, 0);
+			tileManager.setTileCircuit2(2, 10, 1, 0);
+			tileManager.setTileCircuit2(3, 10, 1, 0);
+			tileManager.setTileCircuit2(4, 10, 1, 0);
+			tileManager.setTileCircuit2(1, 11, 1, 0);
+			tileManager.setTileCircuit2(2, 11, 1, 0);
+			tileManager.setTileCircuit2(3, 11, 1, 0);
+			tileManager.setTileCircuit2(4, 11, 1, 0);
+			tileManager.setTileCircuit2(2, 12, 1, 0);
+			tileManager.setTileCircuit2(3, 12, 1, 0);
+			tileManager.setTileCircuit2(4, 12, 1, 0);
+			
+			tileManager.setTileCircuit2(3, 6, 1, 0);
+			tileManager.setTileCircuit2(3, 15, 1, 0);
+			
+			tileManager.setTileCircuit2(4, 2, 3, 0);
+			tileManager.setTileCircuit2(4, 19, 2, 0);
+			
+			tileManager.setTileCircuit2(6, 8, 5, 0);
+			
+			tileManager.setTileCircuit2(15, 17, 7, 0);
+			tileManager.setTileCircuit2(12, 2, 8, 0);
+			
+			for (int i = 13; i < 20; i++)
+				tileManager.setTileCircuit2(10, i, 6, 0);
+			
+			tileManager.setTileCircuit2(16, 10, 10, 0);
+			tileManager.setTileCircuit2(18, 2, 10, 0);
+			
+			tileManager.setTileCircuit2(21, 8, 13, 0);
+			tileManager.setTileCircuit2(21, 13, 13, 0);
+			
+			tileManager.setTileCircuit2(22, 10, 16, 0);
+			tileManager.setTileCircuit2(22, 11, 16, 0);
+			
+			tileManager.setTileCircuit2(21, 9, 15, 0);
+			tileManager.setTileCircuit2(21, 10, 15, 0);
+			tileManager.setTileCircuit2(21, 11, 14, 0);
+			tileManager.setTileCircuit2(21, 12, 14, 0);
+			
+			//Buttons
+			tileManager.setTileCircuit2(3, 8, 1, 1);
+			tileManager.setTileCircuit2(3, 13, 1, 2);
+			
+			tileManager.setTileCircuit2(1, 2, 2, 1);
+			tileManager.setTileCircuit2(1, 19, 3, 1);
+			
+			tileManager.setTileCircuit2(6, 13, 5, 1);
+			tileManager.setTileCircuit2(8, 13, 5, 2);
+			tileManager.setTileCircuit2(8, 18, 5, 3);
+			tileManager.setTileCircuit2(9, 15, 5, 4);
+			
+			tileManager.setTileCircuit2(6, 9, 6, 1);
+			
+			tileManager.setTileCircuit2(13, 14, 7, 1);
+			
+			tileManager.setTileCircuit2(18, 16, 8, 1);
+			tileManager.setTileCircuit2(15, 13, 9, 1);
+			
+			tileManager.setTileCircuit2(19, 18, 10, 1);
+			tileManager.setTileCircuit2(19, 19, 11, 1);
+			tileManager.setTileCircuit2(20, 19, 12, 1);
+			
+			tileManager.setTileCircuit2(19, 10, 13, 1);
+			
+			tileManager.setTileCircuit2(23, 0, 14, 1);
+			tileManager.setTileCircuit2(23, 21, 15, 1);
+			
+			// Exit Buttons
+			tileManager.setTileCircuit2(22, 2, 16, 1);
+			tileManager.setTileCircuit2(22, 19, 16, 2);
+			
+			// Setting conveyors
+			for (int i = 1; i < 23; i++){
+				tileManager.setTileCircuit2(i, 0, 1, 0);
+				tileManager.setTileCircuit2(i, 21, 1, 0);
+			}
+			for (int i = 5; i < 12; i++){
+				for (int j = 2; j < 9; j++){
+					if (!(i == 6 && j == 8))
+						tileManager.setTileCircuit2(i, j, 4, 0);
+				}
+			}
+			for (int i = 5; i < 13; i++){
+				tileManager.setTileCircuit2(i, 10, 4, 0);
+			}
+			for (int i = 5; i < 10; i++){
+				tileManager.setTileCircuit2(i, 11, 4, 0);
+			}
+			for (int i = 3; i < 14; i++){
+				tileManager.setTileCircuit2(13, i, 9, 0);
+			}
+			tileManager.setTileCircuit2(14, 2, 9, 0);
+			
+			tileManager.setTileCircuit2(15, 4, 11, 0);
+			tileManager.setTileCircuit2(15, 5, 11, 0);
+			tileManager.setTileCircuit2(17, 8, 11, 0);
+			tileManager.setTileCircuit2(17, 9, 11, 0);
+			
+			tileManager.setTileCircuit2(15, 8, 12, 0);
+			tileManager.setTileCircuit2(15, 9, 12, 0);
+			tileManager.setTileCircuit2(17, 4, 12, 0);
+			tileManager.setTileCircuit2(17, 5, 12, 0);
+			break;
 		}
 	}
 	
