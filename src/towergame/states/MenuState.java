@@ -75,7 +75,7 @@ public class MenuState extends BasicGameState{
 			renderStartGame(g);
 			break;
 		case 3: 
-			renderOptions(g);
+			renderOptions(container, g);
 			break;
 		default:
 			break;
@@ -128,20 +128,22 @@ public class MenuState extends BasicGameState{
 		}
 	}
 	
-	private void renderOptions(Graphics g){
+	private void renderOptions(GameContainer c, Graphics g){
 		FontUtils.drawCenter(TowerGame.ricasso30, "Options", 165, 60, 470, Color.white);
-		FontUtils.drawCenter(TowerGame.ricasso20, "Music Volume", 165, 125, 470, Color.gray);
-		FontUtils.drawCenter(TowerGame.ricasso20, "SFX Volume", 165, 155, 470, Color.gray);
 		FontUtils.drawCenter(TowerGame.ricasso20, "Back", 165, 185, 470, Color.gray);
 		
 		switch (options){
 		case 1:
 			FontUtils.drawCenter(TowerGame.ricasso20, "- Music Volume -", 165, 125, 470, Color.white);
+			FontUtils.drawCenter(TowerGame.ricasso20, (int) (c.getMusicVolume()*100) + "%", 165, 155, 470, Color.white);
 			break;
 		case 2:
-			FontUtils.drawCenter(TowerGame.ricasso20, "- SFX Volume -", 165, 155, 470, Color.white);
+			FontUtils.drawCenter(TowerGame.ricasso20, "- SFX Volume -", 165, 125, 470, Color.white);
+			FontUtils.drawCenter(TowerGame.ricasso20, (int) (c.getSoundVolume()*100) + "%", 155, 155, 470, Color.white);
 			break;
 		case 3:
+			FontUtils.drawCenter(TowerGame.ricasso20, "Music Volume", 165, 125, 470, Color.gray);
+			FontUtils.drawCenter(TowerGame.ricasso20, "SFX Volume", 165, 155, 470, Color.gray);
 			FontUtils.drawCenter(TowerGame.ricasso20, "- Back -", 165, 185, 470, Color.white);
 			break;
 		}
@@ -176,7 +178,7 @@ public class MenuState extends BasicGameState{
 			startGameControls(tg, input);
 			break;
 		case 3: 
-			optionControls(input);
+			optionControls(tg, input);
 			break;
 		default: 
 			break;
@@ -294,7 +296,7 @@ public class MenuState extends BasicGameState{
 		}
 	}
 	
-	private void optionControls(Input input){
+	private void optionControls(TowerGame tg, Input input){
 		// Go back
 		if (input.isKeyPressed(Input.KEY_ESCAPE)){
 			screen = 1;
@@ -318,6 +320,25 @@ public class MenuState extends BasicGameState{
 				options = 1;
 			} else {
 				options++;
+			}
+			playBeep1();
+		}
+		
+		// Move Left
+		if ( (input.isKeyPressed(Input.KEY_LEFT) || input.isKeyPressed(Input.KEY_A)) ){
+			if (options == 1){
+				tg.getContainer().setMusicVolume( (tg.getContainer().getMusicVolume() - 0.05f) );
+			} else if (options == 2){
+				tg.getContainer().setSoundVolume( (tg.getContainer().getSoundVolume() - 0.05f) );
+			}
+			playBeep1();
+		}
+		// Move Right
+		if ( (input.isKeyPressed(Input.KEY_RIGHT) || input.isKeyPressed(Input.KEY_D)) ){
+			if (options == 1){
+				tg.getContainer().setMusicVolume( (tg.getContainer().getMusicVolume() + 0.05f) );
+			} else if (options == 2){
+				tg.getContainer().setSoundVolume( (tg.getContainer().getSoundVolume() + 0.05f) );
 			}
 			playBeep1();
 		}
