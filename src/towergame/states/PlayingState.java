@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -13,6 +14,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.FontUtils;
 
 import towergame.BackgroundManager;
 import towergame.GameClient;
@@ -57,6 +59,8 @@ public class PlayingState extends BasicGameState{
 	
 	static int reset;
 	
+	static boolean syncGame;
+	
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
@@ -77,7 +81,7 @@ public class PlayingState extends BasicGameState{
 
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) {
-		container.setMusicOn(false);
+		//container.setMusicOn(false);
 		
 		ws.circuitList.clear();
 		tileManager.clear();
@@ -90,6 +94,8 @@ public class PlayingState extends BasicGameState{
 		darknessAlpha = 1;
 		
 		reset = 0;
+		
+		syncGame = false;
 		
 		loadLevel();
 			
@@ -106,42 +112,37 @@ public class PlayingState extends BasicGameState{
 		
 		g.setAntiAlias(false);
 		
-		backgroundManager.draw();
-		tileManager.draw(camera);
+		if (syncGame == true) {
 		
-		playerShadows.draw( camera, ws.p1.getPosition(), ws.p1.getPlayerState() );
-		playerShadows.draw( camera, ws.p2.getPosition(), ws.p2.getPlayerState() );
-		
-		/*
-		 * mechanismManager.draw(ws.mechanismList, camera);
-		
-		if (ws.p1.getY() < ws.p2.getY()){
-			ws.p1.draw(camera);
-			ws.p2.draw(camera);
+			backgroundManager.draw();
+			tileManager.draw(camera);
+			
+			playerShadows.draw( camera, ws.p1.getPosition(), ws.p1.getPlayerState() );
+			playerShadows.draw( camera, ws.p2.getPosition(), ws.p2.getPlayerState() );
+			
+			entityList.addAll(ws.mechanismList);
+			entityList.add(ws.p1);
+			entityList.add(ws.p2);
+			
+			Collections.sort(entityList, new EntityComparator());
+			for(Entity temp: entityList){
+				temp.draw(camera);
+			}
+			entityList.clear();
+			
+			black.draw();
+			darkness.draw();
+			
 		} else {
-			ws.p2.draw(camera);
-			ws.p1.draw(camera);
+			FontUtils.drawCenter(TowerGame.ricasso30, "Waiting for other player...", 165, 104, 470, Color.white);
 		}
-		*/
 		
-		entityList.addAll(ws.mechanismList);
-		entityList.add(ws.p1);
-		entityList.add(ws.p2);
-		
-		Collections.sort(entityList, new EntityComparator());
-		for(Entity temp: entityList){
-			temp.draw(camera);
-		}
-		entityList.clear();
-		
-		black.draw();
-		darkness.draw();
-		
-		// Extra stuff
+		/* Extra stuff
 		g.drawString("Camera:   (" + Float.toString(camera.x)+", "+Float.toString(camera.y)+")", 50, 50);
 		g.drawString("Player 1: (" + Float.toString(ws.p1.getX())+", "+Float.toString(ws.p1.getY())+")", 50, 70);
 		g.drawString("Isometr : (" + Float.toString(TileUtil.toCarX(ws.p1.getX(), ws.p1.getY()))+", "+Float.toString(TileUtil.toCarY(ws.p1.getX(), ws.p1.getY()))+")", 50, 90);
 		g.drawString("Tile    : (" + Float.toString( TileUtil.getCoordinateX(ws.p1.getX()) )+", "+Float.toString( TileUtil.getCoordinateY(ws.p1.getY()) )+")", 50, 110);
+		*/
 		
 	}
 
@@ -155,7 +156,11 @@ public class PlayingState extends BasicGameState{
 		// ----------------------------------------------------------------------------------------
 		Input input = container.getInput();
 		
-		if (TowerGame.connected || !TowerGame.player1) { 			
+		if (TowerGame.connected || !TowerGame.player1) { 	
+			if (syncGame == false){
+				reset += delta*1.75;
+			}
+			
 			//Reset command first, hold LSHIFT, R, N to reset
 			if (input.isKeyDown(Input.KEY_LSHIFT) && input.isKeyDown(Input.KEY_R) &&
 					input.isKeyDown(Input.KEY_N)) {
@@ -278,25 +283,26 @@ public class PlayingState extends BasicGameState{
 			} catch (IOException e) {
 				System.out.println("NetError: " + e);
 			}
-		}
-		
-		// Reset the level if held down
-		if (input.isKeyDown(Input.KEY_R)){
-			reset += delta;
-		} else {
-			reset -= delta;
-		}
-		blackAlpha = reset/1000f;
-		black.setAlpha(blackAlpha);
-		
-		if (reset <= 0){
-			reset = 0;
-		}
-		if (reset >= 1000){
-			reset = 0;
-			reset();
-			client.Writer.println("reset");
-			return;
+			
+			// Reset the level if held down
+			if (input.isKeyDown(Input.KEY_R)){
+				reset += delta;
+			} else {
+				reset -= delta;
+			}
+			blackAlpha = reset/1000f;
+			black.setAlpha(blackAlpha);
+			
+			if (reset <= 0){
+				reset = 0;
+			}
+			if (reset >= 1000){
+				reset = 0;
+				reset();
+				client.Writer.println("reset");
+				syncGame = true;
+				return;
+			}
 		}
 		
 		// ----------------------------------------------------------------------------------------
@@ -336,7 +342,7 @@ public class PlayingState extends BasicGameState{
 		// ----------------------------------------------------------------------------------------
 		
 		// Update the background
-		backgroundManager.update(delta, ws.p1.getPosition());
+		backgroundManager.update(delta, player.getPosition());
 		
 		// Set the camera position (368 and 262 are to center the camera around the player)
 		camera = TileUtil.toIso(player.getPosition());
@@ -399,6 +405,8 @@ public class PlayingState extends BasicGameState{
 				ws.circuitList.add(new ReverseOrDualCircuit(2));
 				ws.circuitList.add(new ExitCircuit(3));
 				
+				// Load Music
+				ResourceManager.getMusic(TowerGame.BGM_LVL1).loop();
 				break;
 			case 2:
 				// Load Map
