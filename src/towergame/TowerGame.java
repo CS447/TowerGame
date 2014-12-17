@@ -95,6 +95,9 @@ public class TowerGame extends StateBasedGame{
 	public static final String SPRITESHEET_TELEPORTER_OFF = "towergame/resources/teleporterOff.png";
 	public static final String SPRITESHEET_TELEPORTER_ON = "towergame/resources/teleporterOn.png";
 	
+	public static final String SPRITESHEET_SWITCH_ON = "towergame/resources/leverTurnOn.png";
+	public static final String SPRITESHEET_SWITCH_OFF = "towergame/resources/leverTurnOff.png";
+	
 	public static final String SPRITE_BOX = "towergame/resources/box.png";
 	
 	public static final String RICASSO = "towergame/resources/Ricasso.ttf";
@@ -176,6 +179,9 @@ public class TowerGame extends StateBasedGame{
 		
 		ResourceManager.loadImage(SPRITESHEET_TELEPORTER_OFF);
 		ResourceManager.loadImage(SPRITESHEET_TELEPORTER_ON);
+		
+		ResourceManager.loadImage(SPRITESHEET_SWITCH_ON);
+		ResourceManager.loadImage(SPRITESHEET_SWITCH_OFF);
 		
 		ResourceManager.loadImage(SPRITESHEET_PLAYER1_STAND_U);
 		ResourceManager.loadImage(SPRITESHEET_PLAYER1_STAND_R);
