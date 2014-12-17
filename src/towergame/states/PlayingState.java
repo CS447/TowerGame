@@ -86,7 +86,7 @@ public class PlayingState extends BasicGameState{
 		
 		entityList.clear();
 		
-		ws.level = 3;
+		ws.level = 1;
 		
 		blackAlpha = 0;
 		darknessAlpha = 1;
