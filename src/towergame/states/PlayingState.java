@@ -511,6 +511,23 @@ public class PlayingState extends BasicGameState{
 				// Set Players
 				ws.p1 = new Player(48, 368, true);
 				ws.p2 = new Player(48, 336, false);
+				// Load Circuits
+				ws.circuitList.add(new ExitCircuit(1));
+				ws.circuitList.add(new OneTimeOnSingleCircuit(2));
+				ws.circuitList.add(new OneTimeOnSingleCircuit(3));
+				ws.circuitList.add(new OnCircuit(4));
+				ws.circuitList.add(new AndQuadCircuit(5));
+				ws.circuitList.add(new OneTimeOnSingleCircuit(6));
+				ws.circuitList.add(new IfPressedCircuit(7));
+				ws.circuitList.add(new OneTimeOnSingleCircuit(8));
+				ws.circuitList.add(new ReverseIfPressedCircuit(9));
+				ws.circuitList.add(new IfPressedCircuit(10));
+				ws.circuitList.add(new ReverseIfPressedCircuit(11));
+				ws.circuitList.add(new ReverseIfPressedCircuit(12));
+				ws.circuitList.add(new OneTimeOnSingleCircuit(13));
+				ws.circuitList.add(new OneTimeOnSingleCircuit(14));
+				ws.circuitList.add(new OneTimeOnSingleCircuit(15));
+				ws.circuitList.add(new ExitCircuit(16));
 
 				break;	
 			case 3:
@@ -531,23 +548,7 @@ public class PlayingState extends BasicGameState{
 				ws.circuitList.add(new ReverseOrDualCircuit(5));
 				ws.circuitList.add(new ExitCircuit(6));
 				ws.circuitList.add(new ReverseOrDualCircuit(7));
-				// Load Circuits
-				ws.circuitList.add(new ExitCircuit(1));
-				ws.circuitList.add(new OneTimeOnSingleCircuit(2));
-				ws.circuitList.add(new OneTimeOnSingleCircuit(3));
-				ws.circuitList.add(new OnCircuit(4));
-				ws.circuitList.add(new AndQuadCircuit(5));
-				ws.circuitList.add(new OneTimeOnSingleCircuit(6));
-				ws.circuitList.add(new IfPressedCircuit(7));
-				ws.circuitList.add(new OneTimeOnSingleCircuit(8));
-				ws.circuitList.add(new ReverseIfPressedCircuit(9));
-				ws.circuitList.add(new IfPressedCircuit(10));
-				ws.circuitList.add(new ReverseIfPressedCircuit(11));
-				ws.circuitList.add(new ReverseIfPressedCircuit(12));
-				ws.circuitList.add(new OneTimeOnSingleCircuit(13));
-				ws.circuitList.add(new OneTimeOnSingleCircuit(14));
-				ws.circuitList.add(new OneTimeOnSingleCircuit(15));
-				ws.circuitList.add(new ExitCircuit(16));
+
 				// Load Music
 				ResourceManager.getMusic(TowerGame.BGM_LVL1).loop();
 				break;
