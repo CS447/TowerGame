@@ -165,7 +165,7 @@ public class Tile {
 				setForce(new Vector2f(-0.150f,0));
 				break;
 			case 18:
-				setForce(new Vector2f(0.005f,0));
+				setForce(new Vector2f(0.0025f,0));
 				break;
 			default:
 				setForce(new Vector2f(0,0));
