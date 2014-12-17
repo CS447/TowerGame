@@ -6,7 +6,7 @@ public class ObjectMaps {
 	 * 
 	 * 0 = Block Movement
 	 * 1 = Free Movement
-	 * 
+	 * 2 = Switch
 	 * 
 	 *     Example Map 10x10
 	 * 

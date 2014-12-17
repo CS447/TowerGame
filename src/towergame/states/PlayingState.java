@@ -163,7 +163,13 @@ public class PlayingState extends BasicGameState{
 				client.Writer.println("reset");
 				return;
 			}
-			
+		
+			//Flipping Switches
+			if (input.isKeyDown(Input.KEY_E))
+			{
+					//Screw it I'm just gonna use switch tiles
+			}
+				
 			if (input.isKeyDown(Input.KEY_A) && input.isKeyDown(Input.KEY_W)){
 				player.setState(PlayerState.WALK_LEFT);
 				player.walkUpLeft();
@@ -405,8 +411,9 @@ public class PlayingState extends BasicGameState{
 				ws.p2 = new Player(48, 304, false);
 				
 				// Load Circuits
-				ws.circuitList.add(new ReverseOrDualCircuit(1));
-				ws.circuitList.add(new ReverseOrDualCircuit(2));
+				ws.circuitList.add(new ExitCircuit(1));
+				ws.circuitList.add(new ExitCircuit(2));
+				
 				
 				break;	
 		}
@@ -457,6 +464,17 @@ public class PlayingState extends BasicGameState{
 			}
 			break;
 		case 2:
+			//Fade tiles
+			tileManager.setTileCircuit2(24, 9, 2, 0);
+			tileManager.setTileCircuit2(24, 10, 2, 0);
+			tileManager.setTileCircuit2(15, 8, 1, 0);
+			tileManager.setTileCircuit2(15, 11, 1, 0);
+			
+			//Buttons
+			tileManager.setTileCircuit2(22, 8, 2, 1);
+			tileManager.setTileCircuit2(22, 11, 2, 2);
+			tileManager.setTileCircuit2(12, 8, 1, 1);
+			tileManager.setTileCircuit2(12, 11, 1, 2);
 			break;
 		}
 	}

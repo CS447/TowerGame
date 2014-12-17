@@ -49,6 +49,10 @@ public class MechanismManager {
 						temp = new Box( i*32+16, j*32+16 );
 						list.add(temp);
 						break;
+					case 2:
+						temp = new Switch(i*32+16, j*32+16);
+						list.add(temp);
+						break;
 					default:
 						temp = new Box( i*32, j*32);
 						list.add(temp);
