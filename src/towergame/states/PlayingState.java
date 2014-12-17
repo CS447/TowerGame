@@ -146,7 +146,7 @@ public class PlayingState extends BasicGameState{
 		//g.drawString("Player 1: (" + Float.toString(ws.p1.getX())+", "+Float.toString(ws.p1.getY())+")", 50, 70);
 		//g.drawString("Isometr : (" + Float.toString(TileUtil.toCarX(ws.p1.getX(), ws.p1.getY()))+", "+Float.toString(TileUtil.toCarY(ws.p1.getX(), ws.p1.getY()))+")", 50, 90);
 		//g.drawString("Tile    : (" + Float.toString( TileUtil.getCoordinateX(ws.p1.getX()) )+", "+Float.toString( TileUtil.getCoordinateY(ws.p1.getY()) )+")", 50, 110);
-		
+		//System.out.println("Tile    : (" + Float.toString( TileUtil.getCoordinateX(ws.p1.getX()) )+", "+Float.toString( TileUtil.getCoordinateY(ws.p1.getY()) )+")");
 		if (paused) {
 			g.setColor(new Color(0, 0, 0, 128));
 			g.fillRect(0, 0, container.getWidth(), container.getHeight());
@@ -160,30 +160,6 @@ public class PlayingState extends BasicGameState{
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
 		// TODO
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		
 		
@@ -503,7 +479,7 @@ public class PlayingState extends BasicGameState{
 				ws.circuitList.add(new ExitCircuit(1));
 				ws.circuitList.add(new ExitCircuit(2));
 				break;
-			case 4:
+			case 3:
 				// Load Map
 				tileManager.loadMap(TileMaps.level4, 24, 22, TileMaps.TPlevel1);
 				mechanismManager.loadMap(ws.mechanismList, ObjectMaps.level4, 24, 22);
@@ -530,7 +506,7 @@ public class PlayingState extends BasicGameState{
 				ws.circuitList.add(new ExitCircuit(16));
 
 				break;	
-			case 3:
+			case 4:
 				// Load Map
 				tileManager.loadMap(TileMaps.level3, 23, 17, TileMaps.TPlevel1);
 				mechanismManager.loadMap(ws.mechanismList, ObjectMaps.level3, 23, 17);
@@ -628,6 +604,11 @@ public class PlayingState extends BasicGameState{
 			
 			//Never ending, button hidden off map
 			tileManager.setTileCircuit2(23, 17, 7, 1);
+			tileManager.setTileCircuit2(22, 17, 3, 2);
+			tileManager.setTileCircuit2(21, 17, 2, 2);
+			tileManager.setTileCircuit2(20, 17, 1, 2);
+			tileManager.setTileCircuit2(19, 17, 4, 2);
+			tileManager.setTileCircuit2(18, 17, 5, 2);
 			
 			//Conveyors
 			for (int i = 0; i < 2; i++)
@@ -669,6 +650,7 @@ public class PlayingState extends BasicGameState{
 			{
 				tileManager.setTileCircuit2(8, 12+i, 7, 0);
 			}
+			break;
 			
 		case 4:
 			//Fade tiles
