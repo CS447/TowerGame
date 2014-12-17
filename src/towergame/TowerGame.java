@@ -243,6 +243,7 @@ public class TowerGame extends StateBasedGame{
 			app.setIcons(new String[] { PEACH16, PEACH });
 			app.setDisplayMode(800, 600, false);
 			app.setVSync(true);
+			app.setAlwaysRender(true);
 			app.start();
 		} catch (SlickException e) {
 			e.printStackTrace();
