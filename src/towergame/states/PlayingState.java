@@ -142,10 +142,10 @@ public class PlayingState extends BasicGameState{
 		}
 		
 		// Extra stuff
-		g.drawString("Camera:   (" + Float.toString(camera.x)+", "+Float.toString(camera.y)+")", 50, 50);
-		g.drawString("Player 1: (" + Float.toString(ws.p1.getX())+", "+Float.toString(ws.p1.getY())+")", 50, 70);
-		g.drawString("Isometr : (" + Float.toString(TileUtil.toCarX(ws.p1.getX(), ws.p1.getY()))+", "+Float.toString(TileUtil.toCarY(ws.p1.getX(), ws.p1.getY()))+")", 50, 90);
-		g.drawString("Tile    : (" + Float.toString( TileUtil.getCoordinateX(ws.p1.getX()) )+", "+Float.toString( TileUtil.getCoordinateY(ws.p1.getY()) )+")", 50, 110);
+		//g.drawString("Camera:   (" + Float.toString(camera.x)+", "+Float.toString(camera.y)+")", 50, 50);
+		//g.drawString("Player 1: (" + Float.toString(ws.p1.getX())+", "+Float.toString(ws.p1.getY())+")", 50, 70);
+		//g.drawString("Isometr : (" + Float.toString(TileUtil.toCarX(ws.p1.getX(), ws.p1.getY()))+", "+Float.toString(TileUtil.toCarY(ws.p1.getX(), ws.p1.getY()))+")", 50, 90);
+		//g.drawString("Tile    : (" + Float.toString( TileUtil.getCoordinateX(ws.p1.getX()) )+", "+Float.toString( TileUtil.getCoordinateY(ws.p1.getY()) )+")", 50, 110);
 		
 		if (paused) {
 			g.setColor(new Color(0, 0, 0, 128));
@@ -196,7 +196,7 @@ public class PlayingState extends BasicGameState{
 			if (syncGame == false){
 				reset += delta*1.75;
 				if (reset >= 1000)
-					ws.level = 4;
+					ws.level = 1;
 			}
 			
 			if (input.isKeyPressed(Input.KEY_P))
