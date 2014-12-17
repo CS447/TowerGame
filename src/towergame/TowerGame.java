@@ -111,6 +111,7 @@ public class TowerGame extends StateBasedGame{
 	public static final String SFX_CONFIRM2 = "towergame/resources/confirm_style_5_echo_004.ogg";
 	
 	public static final String BGM_MENU = "towergame/resources/mica_2.ogg";
+	public static final String BGM_LVL1 = "towergame/resources/comical_pirates.ogg";
 	
 	Font awtFont;
 	public static TrueTypeFont ricasso12;
@@ -211,6 +212,7 @@ public class TowerGame extends StateBasedGame{
 		// Preload some Music
 		container.setMusicVolume(0.15f);
 		ResourceManager.loadMusic(BGM_MENU);
+		ResourceManager.loadMusic(BGM_LVL1);
 		
 		// Preload some font
 		// Used to load custom fonts
