@@ -231,6 +231,10 @@ public class Player extends Entity{
 		this.playerVelocity.y = -walkingSpeed;
 	}
 	
+	public void addVelocity(Vector2f vel){
+		this.velocity.add(vel);
+	}
+	
 	@Override
 	public void draw(Vector2f camera){
 		float tempX = getX();
@@ -336,7 +340,7 @@ public class Player extends Entity{
 	}
 	
 	private void checkTile(TileManager tm, List<Circuit> cl, int delta){
-		this.velocity = tm.tileForce(getPosition());
+		this.velocity.add( tm.tileForce( getPosition() ) );
 		tm.tileEvent(getPosition(), cl, delta);
 	}
 

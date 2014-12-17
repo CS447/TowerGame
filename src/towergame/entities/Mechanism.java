@@ -43,6 +43,10 @@ public abstract class Mechanism extends Entity{
 		isPushable = pushable;
 	}
 	
+	public Vector2f getCurrentVelocity(){
+		return this.velocity;
+	}
+	
 	public void addVelocity(Vector2f vel){
 		this.velocity.add(vel);
 	}
