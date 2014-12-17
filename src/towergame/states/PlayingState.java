@@ -196,7 +196,7 @@ public class PlayingState extends BasicGameState{
 			if (syncGame == false){
 				reset += delta*1.75;
 				if (reset >= 1000)
-					ws.level = 4;
+					ws.level = 1;
 			}
 			
 			if (input.isKeyPressed(Input.KEY_P))
