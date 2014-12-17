@@ -10,6 +10,7 @@ Controls
 --------
 - WASD - Movement
 - R (Hold) - Reset level
+- P - Pause
 
 Authors
 -------
