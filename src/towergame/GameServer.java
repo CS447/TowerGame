@@ -1,7 +1,10 @@
 package towergame;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -44,11 +47,11 @@ public class GameServer {
 		}
 		public void run() {
 			try {
-				InputStream in = player1.getInputStream();
-				OutputStream out = player2.getOutputStream();
+				BufferedReader in = new BufferedReader(new InputStreamReader(player1.getInputStream()));
+				PrintWriter out = new PrintWriter(player2.getOutputStream());
 				
-				for (int b = in.read(); b != -1; b = in.read()) {
-					out.write(b);
+				while (true) {
+					out.println(in.readLine());
 				}
 			} catch (Exception e) {
 				System.out.println("Error: Network: " + e);

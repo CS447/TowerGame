@@ -41,6 +41,8 @@ public class PlayingState extends BasicGameState{
 	Player player;
 	Player otherPlayer;
 	
+	PlayerState lastState;
+	
 	static TileManager tileManager;
 	static MechanismManager mechanismManager;
 	static BackgroundManager backgroundManager;
@@ -160,6 +162,7 @@ public class PlayingState extends BasicGameState{
 		if (input.isKeyDown(Input.KEY_LSHIFT) && input.isKeyDown(Input.KEY_R) &&
 				input.isKeyDown(Input.KEY_N)) {
 			reset();
+			client.Writer.println("reset");
 			return;
 		}
 		
@@ -200,8 +203,14 @@ public class PlayingState extends BasicGameState{
 		if (!input.isKeyDown(Input.KEY_S) && !input.isKeyDown(Input.KEY_D) &&
 				!input.isKeyDown(Input.KEY_A) && !input.isKeyDown(Input.KEY_W)){
 			player.setStand();
-			client.Writer.println("stand");
+			if (player.playerState != lastState) {
+				client.Writer.println("stand");
+			}
 		}
+		
+		lastState = player.playerState;
+		
+		client.Writer.flush();
 		
 		//Send update if changed
 		
@@ -255,6 +264,9 @@ public class PlayingState extends BasicGameState{
 					break;
 				case "activate":
 					break;
+				case "reset":
+					reset();
+					return;
 				default:
 					break;
 				}
@@ -262,43 +274,6 @@ public class PlayingState extends BasicGameState{
 		} catch (IOException e) {
 			System.out.println("NetError: " + e);
 		}
-		
-
-		
-		/*// TODO Get rid of Player 2 controls
-		// Only here to test without networking
-		
-		if (input.isKeyDown(Input.KEY_LEFT) && input.isKeyDown(Input.KEY_UP)){
-			ws.p2.setState(PlayerState.WALK_LEFT);
-			ws.p2.walkUpLeft();
-		} else if (input.isKeyDown(Input.KEY_RIGHT) && input.isKeyDown(Input.KEY_UP)){
-			ws.p2.setState(PlayerState.WALK_UP);
-			ws.p2.walkUpRight();
-		} else if (input.isKeyDown(Input.KEY_LEFT) && input.isKeyDown(Input.KEY_DOWN)){
-			ws.p2.setState(PlayerState.WALK_DOWN);
-			ws.p2.walkDownLeft();
-		} else if (input.isKeyDown(Input.KEY_RIGHT) && input.isKeyDown(Input.KEY_DOWN)){
-			ws.p2.setState(PlayerState.WALK_RIGHT);
-			ws.p2.walkDownRight();
-		} else if (input.isKeyDown(Input.KEY_RIGHT)){
-			ws.p2.setState(PlayerState.WALK_RIGHT);
-			ws.p2.walkRight();
-		} else if (input.isKeyDown(Input.KEY_LEFT)){
-			ws.p2.setState(PlayerState.WALK_LEFT);
-			ws.p2.walkLeft();
-		} else if (input.isKeyDown(Input.KEY_UP)){
-			ws.p2.setState(PlayerState.WALK_UP);
-			ws.p2.walkUp();
-		} else if (input.isKeyDown(Input.KEY_DOWN)){
-			ws.p2.setState(PlayerState.WALK_DOWN);
-			ws.p2.walkDown();
-		} 
-		
-		if (!input.isKeyDown(Input.KEY_DOWN) && !input.isKeyDown(Input.KEY_RIGHT) &&
-				!input.isKeyDown(Input.KEY_LEFT) && !input.isKeyDown(Input.KEY_UP)){
-			ws.p2.setStand();
-			
-		}*/
 		
 		// Reset the level if held down
 		if (input.isKeyDown(Input.KEY_R)){
@@ -315,6 +290,8 @@ public class PlayingState extends BasicGameState{
 		if (reset >= 1000){
 			reset = 0;
 			reset();
+			client.Writer.println("reset");
+			return;
 		}
 		
 		// ----------------------------------------------------------------------------------------
