@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -42,6 +43,7 @@ public class PlayingState extends BasicGameState{
 	Player otherPlayer;
 	
 	PlayerState lastState;
+	boolean paused;
 	
 	static TileManager tileManager;
 	static MechanismManager mechanismManager;
@@ -143,6 +145,13 @@ public class PlayingState extends BasicGameState{
 		g.drawString("Isometr : (" + Float.toString(TileUtil.toCarX(ws.p1.getX(), ws.p1.getY()))+", "+Float.toString(TileUtil.toCarY(ws.p1.getX(), ws.p1.getY()))+")", 50, 90);
 		g.drawString("Tile    : (" + Float.toString( TileUtil.getCoordinateX(ws.p1.getX()) )+", "+Float.toString( TileUtil.getCoordinateY(ws.p1.getY()) )+")", 50, 110);
 		
+		if (paused) {
+			g.setColor(new Color(0, 0, 0, 128));
+			g.fillRect(0, 0, container.getWidth(), container.getHeight());
+			g.setColor(Color.white);
+			g.drawString("Paused", 200, 200);
+		}
+		
 	}
 
 	@Override
@@ -156,68 +165,76 @@ public class PlayingState extends BasicGameState{
 		Input input = container.getInput();
 		
 		if (TowerGame.connected || !TowerGame.player1) { 			
-			//Reset command first, hold LSHIFT, R, N to reset
-			if (input.isKeyDown(Input.KEY_LSHIFT) && input.isKeyDown(Input.KEY_R) &&
-					input.isKeyDown(Input.KEY_N)) {
-				reset();
-				client.Writer.println("reset");
-				return;
-			}
-		
-			//Flipping Switches
-			if (input.isKeyDown(Input.KEY_E))
+			if (input.isKeyPressed(Input.KEY_P))
 			{
-					//Screw it I'm just gonna use switch tiles
+				client.Writer.println("pause");
+				paused = !paused;
 			}
-				
-			if (input.isKeyDown(Input.KEY_A) && input.isKeyDown(Input.KEY_W)){
-				player.setState(PlayerState.WALK_LEFT);
-				player.walkUpLeft();
-				client.Writer.println("move upleft");
-			} else if (input.isKeyDown(Input.KEY_D) && input.isKeyDown(Input.KEY_W)){
-				player.setState(PlayerState.WALK_UP);
-				player.walkUpRight();
-				client.Writer.println("move upright");
-			} else if (input.isKeyDown(Input.KEY_A) && input.isKeyDown(Input.KEY_S)){
-				player.setState(PlayerState.WALK_DOWN);
-				player.walkDownLeft();
-				client.Writer.println("move downleft");
-			} else if (input.isKeyDown(Input.KEY_D) && input.isKeyDown(Input.KEY_S)){
-				player.setState(PlayerState.WALK_RIGHT);
-				player.walkDownRight();
-				client.Writer.println("move downright");
-			} else if (input.isKeyDown(Input.KEY_D)){
-				player.setState(PlayerState.WALK_RIGHT);
-				player.walkRight();
-				client.Writer.println("move right");
-			} else if (input.isKeyDown(Input.KEY_A)){
-				player.setState(PlayerState.WALK_LEFT);
-				player.walkLeft();
-				client.Writer.println("move left");
-			} else if (input.isKeyDown(Input.KEY_W)){
-				player.setState(PlayerState.WALK_UP);
-				player.walkUp();
-				client.Writer.println("move up");
-			} else if (input.isKeyDown(Input.KEY_S)){
-				player.setState(PlayerState.WALK_DOWN);
-				player.walkDown();
-				client.Writer.println("move down");
-			} 
 			
-			if (!input.isKeyDown(Input.KEY_S) && !input.isKeyDown(Input.KEY_D) &&
-					!input.isKeyDown(Input.KEY_A) && !input.isKeyDown(Input.KEY_W)){
-				player.setStand();
-				if (player.playerState != lastState) {
-					client.Writer.println("stand");
+			if (!paused) {
+				//Reset command first, hold LSHIFT, R, N to reset
+				if (input.isKeyDown(Input.KEY_LSHIFT) && input.isKeyDown(Input.KEY_R) &&
+						input.isKeyDown(Input.KEY_N)) {
+					reset();
+					client.Writer.println("reset");
+					return;
 				}
+			
+				//Flipping Switches
+				if (input.isKeyDown(Input.KEY_E))
+				{
+						//Screw it I'm just gonna use switch tiles
+				}
+				
+				
+					
+				if (input.isKeyDown(Input.KEY_A) && input.isKeyDown(Input.KEY_W)){
+					player.setState(PlayerState.WALK_LEFT);
+					player.walkUpLeft();
+					client.Writer.println("move upleft");
+				} else if (input.isKeyDown(Input.KEY_D) && input.isKeyDown(Input.KEY_W)){
+					player.setState(PlayerState.WALK_UP);
+					player.walkUpRight();
+					client.Writer.println("move upright");
+				} else if (input.isKeyDown(Input.KEY_A) && input.isKeyDown(Input.KEY_S)){
+					player.setState(PlayerState.WALK_DOWN);
+					player.walkDownLeft();
+					client.Writer.println("move downleft");
+				} else if (input.isKeyDown(Input.KEY_D) && input.isKeyDown(Input.KEY_S)){
+					player.setState(PlayerState.WALK_RIGHT);
+					player.walkDownRight();
+					client.Writer.println("move downright");
+				} else if (input.isKeyDown(Input.KEY_D)){
+					player.setState(PlayerState.WALK_RIGHT);
+					player.walkRight();
+					client.Writer.println("move right");
+				} else if (input.isKeyDown(Input.KEY_A)){
+					player.setState(PlayerState.WALK_LEFT);
+					player.walkLeft();
+					client.Writer.println("move left");
+				} else if (input.isKeyDown(Input.KEY_W)){
+					player.setState(PlayerState.WALK_UP);
+					player.walkUp();
+					client.Writer.println("move up");
+				} else if (input.isKeyDown(Input.KEY_S)){
+					player.setState(PlayerState.WALK_DOWN);
+					player.walkDown();
+					client.Writer.println("move down");
+				} 
+				
+				if (!input.isKeyDown(Input.KEY_S) && !input.isKeyDown(Input.KEY_D) &&
+						!input.isKeyDown(Input.KEY_A) && !input.isKeyDown(Input.KEY_W)){
+					player.setStand();
+					if (player.playerState != lastState) {
+						client.Writer.println("stand");
+					}
+				}
+				
+				lastState = player.playerState;
+				
+				client.Writer.flush();
 			}
-			
-			lastState = player.playerState;
-			
-			client.Writer.flush();
-			
-			//Send update if changed
-			
+						
 			try {
 				if (client.Reader.ready()) {
 					String line = client.Reader.readLine();
@@ -271,6 +288,9 @@ public class PlayingState extends BasicGameState{
 					case "reset":
 						reset();
 						return;
+					case "pause":
+						paused = !paused;
+						break;
 					default:
 						break;
 					}
