@@ -23,9 +23,12 @@ import towergame.PlayerShadows;
 import towergame.ResourceManager;
 import towergame.TowerGame;
 import towergame.WorldState;
+import towergame.circuits.AndQuadCircuit;
 import towergame.circuits.Circuit;
+import towergame.circuits.IfPressedCircuit;
 import towergame.circuits.OnCircuit;
 import towergame.circuits.OneTimeOnSingleCircuit;
+import towergame.circuits.ReverseIfPressedCircuit;
 import towergame.circuits.ReverseOrDualCircuit;
 import towergame.circuits.ExitCircuit;
 import towergame.entities.Entity;
@@ -478,8 +481,18 @@ public class PlayingState extends BasicGameState{
 				ws.circuitList.add(new OneTimeOnSingleCircuit(2));
 				ws.circuitList.add(new OneTimeOnSingleCircuit(3));
 				ws.circuitList.add(new OnCircuit(4));
-				//ws.circuitList.add(new ExitCircuit(4));
-				
+				ws.circuitList.add(new AndQuadCircuit(5));
+				ws.circuitList.add(new OneTimeOnSingleCircuit(6));
+				ws.circuitList.add(new IfPressedCircuit(7));
+				ws.circuitList.add(new OneTimeOnSingleCircuit(8));
+				ws.circuitList.add(new ReverseIfPressedCircuit(9));
+				ws.circuitList.add(new IfPressedCircuit(10));
+				ws.circuitList.add(new ReverseIfPressedCircuit(11));
+				ws.circuitList.add(new ReverseIfPressedCircuit(12));
+				ws.circuitList.add(new OneTimeOnSingleCircuit(13));
+				ws.circuitList.add(new OneTimeOnSingleCircuit(14));
+				ws.circuitList.add(new OneTimeOnSingleCircuit(15));
+				ws.circuitList.add(new ExitCircuit(16));
 				// Load Music
 				ResourceManager.getMusic(TowerGame.BGM_LVL1).loop();
 				break;
@@ -553,12 +566,37 @@ public class PlayingState extends BasicGameState{
 			tileManager.setTileCircuit2(2, 11, 1, 0);
 			tileManager.setTileCircuit2(3, 11, 1, 0);
 			tileManager.setTileCircuit2(4, 11, 1, 0);
+			tileManager.setTileCircuit2(2, 12, 1, 0);
+			tileManager.setTileCircuit2(3, 12, 1, 0);
+			tileManager.setTileCircuit2(4, 12, 1, 0);
 			
 			tileManager.setTileCircuit2(3, 6, 1, 0);
 			tileManager.setTileCircuit2(3, 15, 1, 0);
 			
 			tileManager.setTileCircuit2(4, 2, 3, 0);
 			tileManager.setTileCircuit2(4, 19, 2, 0);
+			
+			tileManager.setTileCircuit2(6, 8, 5, 0);
+			
+			tileManager.setTileCircuit2(15, 17, 7, 0);
+			tileManager.setTileCircuit2(12, 2, 8, 0);
+			
+			for (int i = 13; i < 20; i++)
+				tileManager.setTileCircuit2(10, i, 6, 0);
+			
+			tileManager.setTileCircuit2(16, 10, 10, 0);
+			tileManager.setTileCircuit2(18, 2, 10, 0);
+			
+			tileManager.setTileCircuit2(21, 8, 13, 0);
+			tileManager.setTileCircuit2(21, 13, 13, 0);
+			
+			tileManager.setTileCircuit2(22, 10, 16, 0);
+			tileManager.setTileCircuit2(22, 11, 16, 0);
+			
+			tileManager.setTileCircuit2(21, 9, 15, 0);
+			tileManager.setTileCircuit2(21, 10, 15, 0);
+			tileManager.setTileCircuit2(21, 11, 14, 0);
+			tileManager.setTileCircuit2(21, 12, 14, 0);
 			
 			//Buttons
 			tileManager.setTileCircuit2(3, 8, 1, 1);
@@ -567,17 +605,62 @@ public class PlayingState extends BasicGameState{
 			tileManager.setTileCircuit2(1, 2, 2, 1);
 			tileManager.setTileCircuit2(1, 19, 3, 1);
 			
+			tileManager.setTileCircuit2(6, 13, 5, 1);
+			tileManager.setTileCircuit2(8, 13, 5, 2);
+			tileManager.setTileCircuit2(8, 18, 5, 3);
+			tileManager.setTileCircuit2(9, 15, 5, 4);
+			
+			tileManager.setTileCircuit2(6, 9, 6, 1);
+			
+			tileManager.setTileCircuit2(13, 14, 7, 1);
+			
+			tileManager.setTileCircuit2(18, 16, 8, 1);
+			tileManager.setTileCircuit2(15, 13, 9, 1);
+			
+			tileManager.setTileCircuit2(19, 18, 10, 1);
+			tileManager.setTileCircuit2(19, 19, 11, 1);
+			tileManager.setTileCircuit2(20, 19, 12, 1);
+			
+			tileManager.setTileCircuit2(19, 10, 13, 1);
+			
+			tileManager.setTileCircuit2(23, 0, 14, 1);
+			tileManager.setTileCircuit2(23, 21, 15, 1);
+			
+			// Exit Buttons
+			tileManager.setTileCircuit2(22, 2, 16, 1);
+			tileManager.setTileCircuit2(22, 19, 16, 2);
+			
+			// Setting conveyors
 			for (int i = 1; i < 23; i++){
-				// Setting conveyors
 				tileManager.setTileCircuit2(i, 0, 1, 0);
 				tileManager.setTileCircuit2(i, 21, 1, 0);
 			}
 			for (int i = 5; i < 12; i++){
 				for (int j = 2; j < 9; j++){
-					tileManager.setTileCircuit2(i, j, 4, 0);
+					if (!(i == 6 && j == 8))
+						tileManager.setTileCircuit2(i, j, 4, 0);
 				}
 			}
+			for (int i = 5; i < 13; i++){
+				tileManager.setTileCircuit2(i, 10, 4, 0);
+			}
+			for (int i = 5; i < 10; i++){
+				tileManager.setTileCircuit2(i, 11, 4, 0);
+			}
+			for (int i = 3; i < 14; i++){
+				tileManager.setTileCircuit2(13, i, 9, 0);
+			}
+			tileManager.setTileCircuit2(14, 2, 9, 0);
 			
+			tileManager.setTileCircuit2(15, 4, 11, 0);
+			tileManager.setTileCircuit2(15, 5, 11, 0);
+			tileManager.setTileCircuit2(17, 8, 11, 0);
+			tileManager.setTileCircuit2(17, 9, 11, 0);
+			
+			tileManager.setTileCircuit2(15, 8, 12, 0);
+			tileManager.setTileCircuit2(15, 9, 12, 0);
+			tileManager.setTileCircuit2(17, 4, 12, 0);
+			tileManager.setTileCircuit2(17, 5, 12, 0);
 			break;
 		}
 	}
