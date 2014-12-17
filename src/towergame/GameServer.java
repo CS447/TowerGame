@@ -32,6 +32,7 @@ public class GameServer {
 				handler.start();
 				ConnectionHandler handler2 = new ConnectionHandler(player2, player1);
 				handler2.start();
+				TowerGame.connected = true;
 			} catch (Exception e) {
 				System.out.println("Error: Server error: " + e);
 			}
@@ -48,7 +49,7 @@ public class GameServer {
 		public void run() {
 			try {
 				BufferedReader in = new BufferedReader(new InputStreamReader(player1.getInputStream()));
-				PrintWriter out = new PrintWriter(player2.getOutputStream());
+				PrintWriter out = new PrintWriter(player2.getOutputStream(), true);
 				
 				while (true) {
 					out.println(in.readLine());
