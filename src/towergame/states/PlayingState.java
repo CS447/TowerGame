@@ -14,7 +14,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.util.FontUtils;
 
 import towergame.BackgroundManager;
 import towergame.GameClient;
@@ -44,6 +43,7 @@ public class PlayingState extends BasicGameState{
 	Player otherPlayer;
 	
 	PlayerState lastState;
+	boolean paused;
 	
 	static TileManager tileManager;
 	static MechanismManager mechanismManager;
@@ -58,8 +58,6 @@ public class PlayingState extends BasicGameState{
 	static List<Entity> entityList;
 	
 	static int reset;
-	
-	static boolean syncGame;
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
@@ -81,7 +79,7 @@ public class PlayingState extends BasicGameState{
 
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) {
-		//container.setMusicOn(false);
+		container.setMusicOn(false);
 		
 		ws.circuitList.clear();
 		tileManager.clear();
@@ -94,8 +92,6 @@ public class PlayingState extends BasicGameState{
 		darknessAlpha = 1;
 		
 		reset = 0;
-		
-		syncGame = false;
 		
 		loadLevel();
 			
@@ -112,37 +108,49 @@ public class PlayingState extends BasicGameState{
 		
 		g.setAntiAlias(false);
 		
-		if (syncGame == true) {
+		backgroundManager.draw();
+		tileManager.draw(camera);
 		
-			backgroundManager.draw();
-			tileManager.draw(camera);
-			
-			playerShadows.draw( camera, ws.p1.getPosition(), ws.p1.getPlayerState() );
-			playerShadows.draw( camera, ws.p2.getPosition(), ws.p2.getPlayerState() );
-			
-			entityList.addAll(ws.mechanismList);
-			entityList.add(ws.p1);
-			entityList.add(ws.p2);
-			
-			Collections.sort(entityList, new EntityComparator());
-			for(Entity temp: entityList){
-				temp.draw(camera);
-			}
-			entityList.clear();
-			
-			black.draw();
-			darkness.draw();
-			
+		playerShadows.draw( camera, ws.p1.getPosition(), ws.p1.getPlayerState() );
+		playerShadows.draw( camera, ws.p2.getPosition(), ws.p2.getPlayerState() );
+		
+		/*
+		 * mechanismManager.draw(ws.mechanismList, camera);
+		
+		if (ws.p1.getY() < ws.p2.getY()){
+			ws.p1.draw(camera);
+			ws.p2.draw(camera);
 		} else {
-			FontUtils.drawCenter(TowerGame.ricasso30, "Waiting for other player...", 165, 104, 470, Color.white);
+			ws.p2.draw(camera);
+			ws.p1.draw(camera);
 		}
+		*/
 		
-		/* Extra stuff
+		entityList.addAll(ws.mechanismList);
+		entityList.add(ws.p1);
+		entityList.add(ws.p2);
+		
+		Collections.sort(entityList, new EntityComparator());
+		for(Entity temp: entityList){
+			temp.draw(camera);
+		}
+		entityList.clear();
+		
+		black.draw();
+		darkness.draw();
+		
+		// Extra stuff
 		g.drawString("Camera:   (" + Float.toString(camera.x)+", "+Float.toString(camera.y)+")", 50, 50);
 		g.drawString("Player 1: (" + Float.toString(ws.p1.getX())+", "+Float.toString(ws.p1.getY())+")", 50, 70);
 		g.drawString("Isometr : (" + Float.toString(TileUtil.toCarX(ws.p1.getX(), ws.p1.getY()))+", "+Float.toString(TileUtil.toCarY(ws.p1.getX(), ws.p1.getY()))+")", 50, 90);
 		g.drawString("Tile    : (" + Float.toString( TileUtil.getCoordinateX(ws.p1.getX()) )+", "+Float.toString( TileUtil.getCoordinateY(ws.p1.getY()) )+")", 50, 110);
-		*/
+		
+		if (paused) {
+			g.setColor(new Color(0, 0, 0, 128));
+			g.fillRect(0, 0, container.getWidth(), container.getHeight());
+			g.setColor(Color.white);
+			g.drawString("Paused", 200, 200);
+		}
 		
 	}
 
@@ -156,73 +164,77 @@ public class PlayingState extends BasicGameState{
 		// ----------------------------------------------------------------------------------------
 		Input input = container.getInput();
 		
-		if (TowerGame.connected || !TowerGame.player1) { 	
-			if (syncGame == false){
-				reset += delta*1.75;
-			}
-			
-			//Reset command first, hold LSHIFT, R, N to reset
-			if (input.isKeyDown(Input.KEY_LSHIFT) && input.isKeyDown(Input.KEY_R) &&
-					input.isKeyDown(Input.KEY_N)) {
-				reset();
-				client.Writer.println("reset");
-				return;
-			}
-		
-			//Flipping Switches
-			if (input.isKeyDown(Input.KEY_E))
+		if (TowerGame.connected || !TowerGame.player1) { 			
+			if (input.isKeyPressed(Input.KEY_P))
 			{
-					//Screw it I'm just gonna use switch tiles
+				client.Writer.println("pause");
+				paused = !paused;
 			}
-				
-			if (input.isKeyDown(Input.KEY_A) && input.isKeyDown(Input.KEY_W)){
-				player.setState(PlayerState.WALK_LEFT);
-				player.walkUpLeft();
-				client.Writer.println("move upleft");
-			} else if (input.isKeyDown(Input.KEY_D) && input.isKeyDown(Input.KEY_W)){
-				player.setState(PlayerState.WALK_UP);
-				player.walkUpRight();
-				client.Writer.println("move upright");
-			} else if (input.isKeyDown(Input.KEY_A) && input.isKeyDown(Input.KEY_S)){
-				player.setState(PlayerState.WALK_DOWN);
-				player.walkDownLeft();
-				client.Writer.println("move downleft");
-			} else if (input.isKeyDown(Input.KEY_D) && input.isKeyDown(Input.KEY_S)){
-				player.setState(PlayerState.WALK_RIGHT);
-				player.walkDownRight();
-				client.Writer.println("move downright");
-			} else if (input.isKeyDown(Input.KEY_D)){
-				player.setState(PlayerState.WALK_RIGHT);
-				player.walkRight();
-				client.Writer.println("move right");
-			} else if (input.isKeyDown(Input.KEY_A)){
-				player.setState(PlayerState.WALK_LEFT);
-				player.walkLeft();
-				client.Writer.println("move left");
-			} else if (input.isKeyDown(Input.KEY_W)){
-				player.setState(PlayerState.WALK_UP);
-				player.walkUp();
-				client.Writer.println("move up");
-			} else if (input.isKeyDown(Input.KEY_S)){
-				player.setState(PlayerState.WALK_DOWN);
-				player.walkDown();
-				client.Writer.println("move down");
-			} 
 			
-			if (!input.isKeyDown(Input.KEY_S) && !input.isKeyDown(Input.KEY_D) &&
-					!input.isKeyDown(Input.KEY_A) && !input.isKeyDown(Input.KEY_W)){
-				player.setStand();
-				if (player.playerState != lastState) {
-					client.Writer.println("stand");
+			if (!paused) {
+				//Reset command first, hold LSHIFT, R, N to reset
+				if (input.isKeyDown(Input.KEY_LSHIFT) && input.isKeyDown(Input.KEY_R) &&
+						input.isKeyDown(Input.KEY_N)) {
+					reset();
+					client.Writer.println("reset");
+					return;
 				}
+			
+				//Flipping Switches
+				if (input.isKeyDown(Input.KEY_E))
+				{
+						//Screw it I'm just gonna use switch tiles
+				}
+				
+				
+					
+				if (input.isKeyDown(Input.KEY_A) && input.isKeyDown(Input.KEY_W)){
+					player.setState(PlayerState.WALK_LEFT);
+					player.walkUpLeft();
+					client.Writer.println("move upleft");
+				} else if (input.isKeyDown(Input.KEY_D) && input.isKeyDown(Input.KEY_W)){
+					player.setState(PlayerState.WALK_UP);
+					player.walkUpRight();
+					client.Writer.println("move upright");
+				} else if (input.isKeyDown(Input.KEY_A) && input.isKeyDown(Input.KEY_S)){
+					player.setState(PlayerState.WALK_DOWN);
+					player.walkDownLeft();
+					client.Writer.println("move downleft");
+				} else if (input.isKeyDown(Input.KEY_D) && input.isKeyDown(Input.KEY_S)){
+					player.setState(PlayerState.WALK_RIGHT);
+					player.walkDownRight();
+					client.Writer.println("move downright");
+				} else if (input.isKeyDown(Input.KEY_D)){
+					player.setState(PlayerState.WALK_RIGHT);
+					player.walkRight();
+					client.Writer.println("move right");
+				} else if (input.isKeyDown(Input.KEY_A)){
+					player.setState(PlayerState.WALK_LEFT);
+					player.walkLeft();
+					client.Writer.println("move left");
+				} else if (input.isKeyDown(Input.KEY_W)){
+					player.setState(PlayerState.WALK_UP);
+					player.walkUp();
+					client.Writer.println("move up");
+				} else if (input.isKeyDown(Input.KEY_S)){
+					player.setState(PlayerState.WALK_DOWN);
+					player.walkDown();
+					client.Writer.println("move down");
+				} 
+				
+				if (!input.isKeyDown(Input.KEY_S) && !input.isKeyDown(Input.KEY_D) &&
+						!input.isKeyDown(Input.KEY_A) && !input.isKeyDown(Input.KEY_W)){
+					player.setStand();
+					if (player.playerState != lastState) {
+						client.Writer.println("stand");
+					}
+				}
+				
+				lastState = player.playerState;
+				
+				client.Writer.flush();
 			}
-			
-			lastState = player.playerState;
-			
-			client.Writer.flush();
-			
-			//Send update if changed
-			
+						
 			try {
 				if (client.Reader.ready()) {
 					String line = client.Reader.readLine();
@@ -276,6 +288,9 @@ public class PlayingState extends BasicGameState{
 					case "reset":
 						reset();
 						return;
+					case "pause":
+						paused = !paused;
+						break;
 					default:
 						break;
 					}
@@ -283,26 +298,25 @@ public class PlayingState extends BasicGameState{
 			} catch (IOException e) {
 				System.out.println("NetError: " + e);
 			}
-			
-			// Reset the level if held down
-			if (input.isKeyDown(Input.KEY_R)){
-				reset += delta;
-			} else {
-				reset -= delta;
-			}
-			blackAlpha = reset/1000f;
-			black.setAlpha(blackAlpha);
-			
-			if (reset <= 0){
-				reset = 0;
-			}
-			if (reset >= 1000){
-				reset = 0;
-				reset();
-				client.Writer.println("reset");
-				syncGame = true;
-				return;
-			}
+		}
+		
+		// Reset the level if held down
+		if (input.isKeyDown(Input.KEY_R)){
+			reset += delta;
+		} else {
+			reset -= delta;
+		}
+		blackAlpha = reset/1000f;
+		black.setAlpha(blackAlpha);
+		
+		if (reset <= 0){
+			reset = 0;
+		}
+		if (reset >= 1000){
+			reset = 0;
+			reset();
+			client.Writer.println("reset");
+			return;
 		}
 		
 		// ----------------------------------------------------------------------------------------
@@ -342,7 +356,7 @@ public class PlayingState extends BasicGameState{
 		// ----------------------------------------------------------------------------------------
 		
 		// Update the background
-		backgroundManager.update(delta, player.getPosition());
+		backgroundManager.update(delta, ws.p1.getPosition());
 		
 		// Set the camera position (368 and 262 are to center the camera around the player)
 		camera = TileUtil.toIso(player.getPosition());
@@ -405,8 +419,6 @@ public class PlayingState extends BasicGameState{
 				ws.circuitList.add(new ReverseOrDualCircuit(2));
 				ws.circuitList.add(new ExitCircuit(3));
 				
-				// Load Music
-				ResourceManager.getMusic(TowerGame.BGM_LVL1).loop();
 				break;
 			case 2:
 				// Load Map
