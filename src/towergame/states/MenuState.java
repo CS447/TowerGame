@@ -12,6 +12,7 @@ import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 import org.newdawn.slick.util.FontUtils;
 
+import towergame.GameServer;
 import towergame.ResourceManager;
 import towergame.TowerGame;
 
@@ -271,6 +272,7 @@ public class MenuState extends BasicGameState{
 			switch(startGame){
 			// Host
 			case 1:
+				new GameServer();
 				tg.enterState(TowerGame.PLAYINGSTATE, new FadeOutTransition(), new FadeInTransition());
 				TowerGame.player1 = true;
 				break;
