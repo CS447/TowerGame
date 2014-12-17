@@ -18,6 +18,7 @@ public class TowerGame extends StateBasedGame{
 
 	public static boolean player1;
 	public static String remoteAddr = "127.0.0.1";
+	public static boolean connected = false;
 	
 	public final int ScreenWidth;
 	public final int ScreenHeight;

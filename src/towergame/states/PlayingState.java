@@ -98,8 +98,6 @@ public class PlayingState extends BasicGameState{
 		} else {
 			client = new GameClient(TowerGame.remoteAddr, GameServer.LISTEN_PORT);
 		}
-		
-		
 	}
 	
 	@Override
@@ -155,124 +153,125 @@ public class PlayingState extends BasicGameState{
 		// ----------------------------------------------------------------------------------------
 		// Game Controls
 		// ----------------------------------------------------------------------------------------
-		
 		Input input = container.getInput();
 		
-		//Reset command first, hold LSHIFT, R, N to reset
-		if (input.isKeyDown(Input.KEY_LSHIFT) && input.isKeyDown(Input.KEY_R) &&
-				input.isKeyDown(Input.KEY_N)) {
-			reset();
-			client.Writer.println("reset");
-			return;
-		}
-		
-		if (input.isKeyDown(Input.KEY_A) && input.isKeyDown(Input.KEY_W)){
-			player.setState(PlayerState.WALK_LEFT);
-			player.walkUpLeft();
-			client.Writer.println("move upleft");
-		} else if (input.isKeyDown(Input.KEY_D) && input.isKeyDown(Input.KEY_W)){
-			player.setState(PlayerState.WALK_UP);
-			player.walkUpRight();
-			client.Writer.println("move upright");
-		} else if (input.isKeyDown(Input.KEY_A) && input.isKeyDown(Input.KEY_S)){
-			player.setState(PlayerState.WALK_DOWN);
-			player.walkDownLeft();
-			client.Writer.println("move downleft");
-		} else if (input.isKeyDown(Input.KEY_D) && input.isKeyDown(Input.KEY_S)){
-			player.setState(PlayerState.WALK_RIGHT);
-			player.walkDownRight();
-			client.Writer.println("move downright");
-		} else if (input.isKeyDown(Input.KEY_D)){
-			player.setState(PlayerState.WALK_RIGHT);
-			player.walkRight();
-			client.Writer.println("move right");
-		} else if (input.isKeyDown(Input.KEY_A)){
-			player.setState(PlayerState.WALK_LEFT);
-			player.walkLeft();
-			client.Writer.println("move left");
-		} else if (input.isKeyDown(Input.KEY_W)){
-			player.setState(PlayerState.WALK_UP);
-			player.walkUp();
-			client.Writer.println("move up");
-		} else if (input.isKeyDown(Input.KEY_S)){
-			player.setState(PlayerState.WALK_DOWN);
-			player.walkDown();
-			client.Writer.println("move down");
-		} 
-		
-		if (!input.isKeyDown(Input.KEY_S) && !input.isKeyDown(Input.KEY_D) &&
-				!input.isKeyDown(Input.KEY_A) && !input.isKeyDown(Input.KEY_W)){
-			player.setStand();
-			if (player.playerState != lastState) {
-				client.Writer.println("stand");
+		if (TowerGame.connected || !TowerGame.player1) { 			
+			//Reset command first, hold LSHIFT, R, N to reset
+			if (input.isKeyDown(Input.KEY_LSHIFT) && input.isKeyDown(Input.KEY_R) &&
+					input.isKeyDown(Input.KEY_N)) {
+				reset();
+				client.Writer.println("reset");
+				return;
 			}
-		}
-		
-		lastState = player.playerState;
-		
-		client.Writer.flush();
-		
-		//Send update if changed
-		
-		try {
-			if (client.Reader.ready()) {
-				String line = client.Reader.readLine();
-				
-				String[] tokens = line.split(" ");
-				
-				switch (tokens[0]) {
-				case "state":
-					break;
-				case "move":
-					switch (tokens[1]) {
-					case "left":
-						otherPlayer.setState(PlayerState.WALK_LEFT);
-						otherPlayer.walkLeft();
-						break;
-					case "right":
-						otherPlayer.setState(PlayerState.WALK_RIGHT);
-						otherPlayer.walkRight();
-						break;
-					case "up":
-						otherPlayer.setState(PlayerState.WALK_UP);
-						otherPlayer.walkUp();
-						break;
-					case "down":
-						otherPlayer.setState(PlayerState.WALK_DOWN);
-						otherPlayer.walkDown();
-						break;
-					case "downleft":
-						otherPlayer.setState(PlayerState.WALK_DOWN);
-						otherPlayer.walkDownLeft();
-						break;
-					case "downright":
-						otherPlayer.setState(PlayerState.WALK_RIGHT);
-						otherPlayer.walkDownRight();
-						break;
-					case "upleft":
-						otherPlayer.setState(PlayerState.WALK_LEFT);
-						otherPlayer.walkUpLeft();
-						break;
-					case "upright":
-						otherPlayer.setState(PlayerState.WALK_UP);
-						otherPlayer.walkUpRight();
-						break;
-					}
-					break;
-				case "stand":
-					otherPlayer.setStand();
-					break;
-				case "activate":
-					break;
-				case "reset":
-					reset();
-					return;
-				default:
-					break;
+			
+			if (input.isKeyDown(Input.KEY_A) && input.isKeyDown(Input.KEY_W)){
+				player.setState(PlayerState.WALK_LEFT);
+				player.walkUpLeft();
+				client.Writer.println("move upleft");
+			} else if (input.isKeyDown(Input.KEY_D) && input.isKeyDown(Input.KEY_W)){
+				player.setState(PlayerState.WALK_UP);
+				player.walkUpRight();
+				client.Writer.println("move upright");
+			} else if (input.isKeyDown(Input.KEY_A) && input.isKeyDown(Input.KEY_S)){
+				player.setState(PlayerState.WALK_DOWN);
+				player.walkDownLeft();
+				client.Writer.println("move downleft");
+			} else if (input.isKeyDown(Input.KEY_D) && input.isKeyDown(Input.KEY_S)){
+				player.setState(PlayerState.WALK_RIGHT);
+				player.walkDownRight();
+				client.Writer.println("move downright");
+			} else if (input.isKeyDown(Input.KEY_D)){
+				player.setState(PlayerState.WALK_RIGHT);
+				player.walkRight();
+				client.Writer.println("move right");
+			} else if (input.isKeyDown(Input.KEY_A)){
+				player.setState(PlayerState.WALK_LEFT);
+				player.walkLeft();
+				client.Writer.println("move left");
+			} else if (input.isKeyDown(Input.KEY_W)){
+				player.setState(PlayerState.WALK_UP);
+				player.walkUp();
+				client.Writer.println("move up");
+			} else if (input.isKeyDown(Input.KEY_S)){
+				player.setState(PlayerState.WALK_DOWN);
+				player.walkDown();
+				client.Writer.println("move down");
+			} 
+			
+			if (!input.isKeyDown(Input.KEY_S) && !input.isKeyDown(Input.KEY_D) &&
+					!input.isKeyDown(Input.KEY_A) && !input.isKeyDown(Input.KEY_W)){
+				player.setStand();
+				if (player.playerState != lastState) {
+					client.Writer.println("stand");
 				}
 			}
-		} catch (IOException e) {
-			System.out.println("NetError: " + e);
+			
+			lastState = player.playerState;
+			
+			client.Writer.flush();
+			
+			//Send update if changed
+			
+			try {
+				if (client.Reader.ready()) {
+					String line = client.Reader.readLine();
+					
+					String[] tokens = line.split(" ");
+					
+					switch (tokens[0]) {
+					case "state":
+						break;
+					case "move":
+						switch (tokens[1]) {
+						case "left":
+							otherPlayer.setState(PlayerState.WALK_LEFT);
+							otherPlayer.walkLeft();
+							break;
+						case "right":
+							otherPlayer.setState(PlayerState.WALK_RIGHT);
+							otherPlayer.walkRight();
+							break;
+						case "up":
+							otherPlayer.setState(PlayerState.WALK_UP);
+							otherPlayer.walkUp();
+							break;
+						case "down":
+							otherPlayer.setState(PlayerState.WALK_DOWN);
+							otherPlayer.walkDown();
+							break;
+						case "downleft":
+							otherPlayer.setState(PlayerState.WALK_DOWN);
+							otherPlayer.walkDownLeft();
+							break;
+						case "downright":
+							otherPlayer.setState(PlayerState.WALK_RIGHT);
+							otherPlayer.walkDownRight();
+							break;
+						case "upleft":
+							otherPlayer.setState(PlayerState.WALK_LEFT);
+							otherPlayer.walkUpLeft();
+							break;
+						case "upright":
+							otherPlayer.setState(PlayerState.WALK_UP);
+							otherPlayer.walkUpRight();
+							break;
+						}
+						break;
+					case "stand":
+						otherPlayer.setStand();
+						break;
+					case "activate":
+						break;
+					case "reset":
+						reset();
+						return;
+					default:
+						break;
+					}
+				}
+			} catch (IOException e) {
+				System.out.println("NetError: " + e);
+			}
 		}
 		
 		// Reset the level if held down
