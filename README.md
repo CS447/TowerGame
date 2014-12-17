@@ -8,13 +8,12 @@ The premise is to start at the bottom of a tower and navigate up the tower by so
 
 Controls
 --------
-- WASD/Arrow keys - Movement
-- E - Use
-- Space - Nothing
+- WASD - Movement
+- R (Hold) - Reset level
 
 Authors
 -------
 - Joel
 - Jason
-- Stephen - Test to see if push is working
+- Stephen
 

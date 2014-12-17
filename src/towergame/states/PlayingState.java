@@ -1,9 +1,11 @@
 package towergame.states;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -14,6 +16,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import towergame.BackgroundManager;
+import towergame.GameClient;
+import towergame.GameServer;
 import towergame.PlayerShadows;
 import towergame.ResourceManager;
 import towergame.TowerGame;
@@ -34,6 +38,12 @@ import towergame.tiles.TileUtil;
 public class PlayingState extends BasicGameState{
 
 	WorldState ws;
+	GameClient client;
+	Player player;
+	Player otherPlayer;
+	
+	PlayerState lastState;
+	boolean paused;
 	
 	static TileManager tileManager;
 	static MechanismManager mechanismManager;
@@ -84,6 +94,12 @@ public class PlayingState extends BasicGameState{
 		reset = 0;
 		
 		loadLevel();
+			
+		if (TowerGame.player1) {
+			client = new GameClient("127.0.0.1", GameServer.LISTEN_PORT);			
+		} else {
+			client = new GameClient(TowerGame.remoteAddr, GameServer.LISTEN_PORT);
+		}
 	}
 	
 	@Override
@@ -129,6 +145,13 @@ public class PlayingState extends BasicGameState{
 		g.drawString("Isometr : (" + Float.toString(TileUtil.toCarX(ws.p1.getX(), ws.p1.getY()))+", "+Float.toString(TileUtil.toCarY(ws.p1.getX(), ws.p1.getY()))+")", 50, 90);
 		g.drawString("Tile    : (" + Float.toString( TileUtil.getCoordinateX(ws.p1.getX()) )+", "+Float.toString( TileUtil.getCoordinateY(ws.p1.getY()) )+")", 50, 110);
 		
+		if (paused) {
+			g.setColor(new Color(0, 0, 0, 128));
+			g.fillRect(0, 0, container.getWidth(), container.getHeight());
+			g.setColor(Color.white);
+			g.drawString("Paused", 200, 200);
+		}
+		
 	}
 
 	@Override
@@ -139,87 +162,142 @@ public class PlayingState extends BasicGameState{
 		// ----------------------------------------------------------------------------------------
 		// Game Controls
 		// ----------------------------------------------------------------------------------------
-		
 		Input input = container.getInput();
 		
-		//Reset command first, hold LSHIFT, R, N to reset
-		if (input.isKeyDown(Input.KEY_LSHIFT) && input.isKeyDown(Input.KEY_R) &&
-				input.isKeyDown(Input.KEY_N)) {
-			reset();
-			return;
-		}
-		
-		//Flipping Switches
-		if (input.isKeyDown(Input.KEY_E))
-		{
-				//Screw it I'm just gonna use switch tiles
-		}
-		
-		if (input.isKeyDown(Input.KEY_A) && input.isKeyDown(Input.KEY_W)){
-			ws.p1.setState(PlayerState.WALK_LEFT);
-			ws.p1.walkUpLeft();
-		} else if (input.isKeyDown(Input.KEY_D) && input.isKeyDown(Input.KEY_W)){
-			ws.p1.setState(PlayerState.WALK_UP);
-			ws.p1.walkUpRight();
-		} else if (input.isKeyDown(Input.KEY_A) && input.isKeyDown(Input.KEY_S)){
-			ws.p1.setState(PlayerState.WALK_DOWN);
-			ws.p1.walkDownLeft();
-		} else if (input.isKeyDown(Input.KEY_D) && input.isKeyDown(Input.KEY_S)){
-			ws.p1.setState(PlayerState.WALK_RIGHT);
-			ws.p1.walkDownRight();
-		} else if (input.isKeyDown(Input.KEY_D)){
-			ws.p1.setState(PlayerState.WALK_RIGHT);
-			ws.p1.walkRight();
-		} else if (input.isKeyDown(Input.KEY_A)){
-			ws.p1.setState(PlayerState.WALK_LEFT);
-			ws.p1.walkLeft();
-		} else if (input.isKeyDown(Input.KEY_W)){
-			ws.p1.setState(PlayerState.WALK_UP);
-			ws.p1.walkUp();
-		} else if (input.isKeyDown(Input.KEY_S)){
-			ws.p1.setState(PlayerState.WALK_DOWN);
-			ws.p1.walkDown();
-		} 
-		
-		if (!input.isKeyDown(Input.KEY_S) && !input.isKeyDown(Input.KEY_D) &&
-				!input.isKeyDown(Input.KEY_A) && !input.isKeyDown(Input.KEY_W)){
-			ws.p1.setStand();
+		if (TowerGame.connected || !TowerGame.player1) { 			
+			if (input.isKeyPressed(Input.KEY_P))
+			{
+				client.Writer.println("pause");
+				paused = !paused;
+			}
 			
-		}
-		
-		// TODO Get rid of Player 2 controls
-		// Only here to test without networking
-		
-		if (input.isKeyDown(Input.KEY_LEFT) && input.isKeyDown(Input.KEY_UP)){
-			ws.p2.setState(PlayerState.WALK_LEFT);
-			ws.p2.walkUpLeft();
-		} else if (input.isKeyDown(Input.KEY_RIGHT) && input.isKeyDown(Input.KEY_UP)){
-			ws.p2.setState(PlayerState.WALK_UP);
-			ws.p2.walkUpRight();
-		} else if (input.isKeyDown(Input.KEY_LEFT) && input.isKeyDown(Input.KEY_DOWN)){
-			ws.p2.setState(PlayerState.WALK_DOWN);
-			ws.p2.walkDownLeft();
-		} else if (input.isKeyDown(Input.KEY_RIGHT) && input.isKeyDown(Input.KEY_DOWN)){
-			ws.p2.setState(PlayerState.WALK_RIGHT);
-			ws.p2.walkDownRight();
-		} else if (input.isKeyDown(Input.KEY_RIGHT)){
-			ws.p2.setState(PlayerState.WALK_RIGHT);
-			ws.p2.walkRight();
-		} else if (input.isKeyDown(Input.KEY_LEFT)){
-			ws.p2.setState(PlayerState.WALK_LEFT);
-			ws.p2.walkLeft();
-		} else if (input.isKeyDown(Input.KEY_UP)){
-			ws.p2.setState(PlayerState.WALK_UP);
-			ws.p2.walkUp();
-		} else if (input.isKeyDown(Input.KEY_DOWN)){
-			ws.p2.setState(PlayerState.WALK_DOWN);
-			ws.p2.walkDown();
-		} 
-		
-		if (!input.isKeyDown(Input.KEY_DOWN) && !input.isKeyDown(Input.KEY_RIGHT) &&
-				!input.isKeyDown(Input.KEY_LEFT) && !input.isKeyDown(Input.KEY_UP)){
-			ws.p2.setStand();
+			if (!paused) {
+				//Reset command first, hold LSHIFT, R, N to reset
+				if (input.isKeyDown(Input.KEY_LSHIFT) && input.isKeyDown(Input.KEY_R) &&
+						input.isKeyDown(Input.KEY_N)) {
+					reset();
+					client.Writer.println("reset");
+					return;
+				}
 			
+				//Flipping Switches
+				if (input.isKeyDown(Input.KEY_E))
+				{
+						//Screw it I'm just gonna use switch tiles
+				}
+				
+				
+					
+				if (input.isKeyDown(Input.KEY_A) && input.isKeyDown(Input.KEY_W)){
+					player.setState(PlayerState.WALK_LEFT);
+					player.walkUpLeft();
+					client.Writer.println("move upleft");
+				} else if (input.isKeyDown(Input.KEY_D) && input.isKeyDown(Input.KEY_W)){
+					player.setState(PlayerState.WALK_UP);
+					player.walkUpRight();
+					client.Writer.println("move upright");
+				} else if (input.isKeyDown(Input.KEY_A) && input.isKeyDown(Input.KEY_S)){
+					player.setState(PlayerState.WALK_DOWN);
+					player.walkDownLeft();
+					client.Writer.println("move downleft");
+				} else if (input.isKeyDown(Input.KEY_D) && input.isKeyDown(Input.KEY_S)){
+					player.setState(PlayerState.WALK_RIGHT);
+					player.walkDownRight();
+					client.Writer.println("move downright");
+				} else if (input.isKeyDown(Input.KEY_D)){
+					player.setState(PlayerState.WALK_RIGHT);
+					player.walkRight();
+					client.Writer.println("move right");
+				} else if (input.isKeyDown(Input.KEY_A)){
+					player.setState(PlayerState.WALK_LEFT);
+					player.walkLeft();
+					client.Writer.println("move left");
+				} else if (input.isKeyDown(Input.KEY_W)){
+					player.setState(PlayerState.WALK_UP);
+					player.walkUp();
+					client.Writer.println("move up");
+				} else if (input.isKeyDown(Input.KEY_S)){
+					player.setState(PlayerState.WALK_DOWN);
+					player.walkDown();
+					client.Writer.println("move down");
+				} 
+				
+				if (!input.isKeyDown(Input.KEY_S) && !input.isKeyDown(Input.KEY_D) &&
+						!input.isKeyDown(Input.KEY_A) && !input.isKeyDown(Input.KEY_W)){
+					player.setStand();
+					if (player.playerState != lastState) {
+						client.Writer.println("stand");
+					}
+				}
+				
+				lastState = player.playerState;
+				
+				client.Writer.flush();
+			}
+						
+			try {
+				if (client.Reader.ready()) {
+					String line = client.Reader.readLine();
+					
+					String[] tokens = line.split(" ");
+					
+					switch (tokens[0]) {
+					case "state":
+						break;
+					case "move":
+						switch (tokens[1]) {
+						case "left":
+							otherPlayer.setState(PlayerState.WALK_LEFT);
+							otherPlayer.walkLeft();
+							break;
+						case "right":
+							otherPlayer.setState(PlayerState.WALK_RIGHT);
+							otherPlayer.walkRight();
+							break;
+						case "up":
+							otherPlayer.setState(PlayerState.WALK_UP);
+							otherPlayer.walkUp();
+							break;
+						case "down":
+							otherPlayer.setState(PlayerState.WALK_DOWN);
+							otherPlayer.walkDown();
+							break;
+						case "downleft":
+							otherPlayer.setState(PlayerState.WALK_DOWN);
+							otherPlayer.walkDownLeft();
+							break;
+						case "downright":
+							otherPlayer.setState(PlayerState.WALK_RIGHT);
+							otherPlayer.walkDownRight();
+							break;
+						case "upleft":
+							otherPlayer.setState(PlayerState.WALK_LEFT);
+							otherPlayer.walkUpLeft();
+							break;
+						case "upright":
+							otherPlayer.setState(PlayerState.WALK_UP);
+							otherPlayer.walkUpRight();
+							break;
+						}
+						break;
+					case "stand":
+						otherPlayer.setStand();
+						break;
+					case "activate":
+						break;
+					case "reset":
+						reset();
+						return;
+					case "pause":
+						paused = !paused;
+						break;
+					default:
+						break;
+					}
+				}
+			} catch (IOException e) {
+				System.out.println("NetError: " + e);
+			}
 		}
 		
 		// Reset the level if held down
@@ -237,6 +315,8 @@ public class PlayingState extends BasicGameState{
 		if (reset >= 1000){
 			reset = 0;
 			reset();
+			client.Writer.println("reset");
+			return;
 		}
 		
 		// ----------------------------------------------------------------------------------------
@@ -279,7 +359,7 @@ public class PlayingState extends BasicGameState{
 		backgroundManager.update(delta, ws.p1.getPosition());
 		
 		// Set the camera position (368 and 262 are to center the camera around the player)
-		camera = TileUtil.toIso(ws.p1.getPosition());
+		camera = TileUtil.toIso(player.getPosition());
 		camera.x = -camera.x + 368;
 		camera.y = -camera.y + 262;
 	}
@@ -385,11 +465,21 @@ public class PlayingState extends BasicGameState{
 				ws.circuitList.add(new ExitCircuit(6));
 				ws.circuitList.add(new ReverseOrDualCircuit(7));
 		}
+		
+
+		if (TowerGame.player1) {
+			player = ws.p1;
+			otherPlayer = ws.p2;
+		} else {
+			player = ws.p2;
+			otherPlayer = ws.p1;
+		}
+		
 		// Remove blank tiles
 		tileManager.removeExtras();
 		
 		// Set Camera
-		camera = TileUtil.toIso(ws.p1.getPosition());
+		camera = TileUtil.toIso(player.getPosition());
 		camera.x = -camera.x + 368;
 		camera.y = -camera.y + 262;
 		
