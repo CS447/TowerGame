@@ -275,11 +275,13 @@ public class MenuState extends BasicGameState{
 				new GameServer();
 				tg.enterState(TowerGame.PLAYINGSTATE, new FadeOutTransition(), new FadeInTransition());
 				TowerGame.player1 = true;
+				ResourceManager.getMusic(TowerGame.BGM_LOADING).loop();
 				break;
 			// Join
 			case 2:
 				tg.enterState(TowerGame.PLAYINGSTATE, new FadeOutTransition(), new FadeInTransition());
 				TowerGame.player1 = false;
+				ResourceManager.getMusic(TowerGame.BGM_LOADING).loop();
 				break;
 			// Back
 			case 3: 

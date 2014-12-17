@@ -17,7 +17,7 @@ import towergame.states.SplashState;
 public class TowerGame extends StateBasedGame{
 
 	public static boolean player1;
-	public static String remoteAddr = "127.0.0.1";
+	public static String remoteAddr = "192.168.1.198";
 	public static boolean connected = false;
 	
 	public final int ScreenWidth;
@@ -111,6 +111,7 @@ public class TowerGame extends StateBasedGame{
 	public static final String SFX_CONFIRM2 = "towergame/resources/confirm_style_5_echo_004.ogg";
 	
 	public static final String BGM_MENU = "towergame/resources/mica_2.ogg";
+	public static final String BGM_LOADING = "towergame/resources/elevator.ogg";
 	public static final String BGM_LVL1 = "towergame/resources/comical_pirates.ogg";
 	
 	Font awtFont;
@@ -212,6 +213,7 @@ public class TowerGame extends StateBasedGame{
 		// Preload some Music
 		container.setMusicVolume(0.15f);
 		ResourceManager.loadMusic(BGM_MENU);
+		ResourceManager.loadMusic(BGM_LOADING);
 		ResourceManager.loadMusic(BGM_LVL1);
 		
 		// Preload some font

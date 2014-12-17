@@ -89,7 +89,7 @@ public class PlayingState extends BasicGameState{
 		
 		entityList.clear();
 		
-		ws.level = 1;
+		ws.level = 0;
 		
 		blackAlpha = 0;
 		darknessAlpha = 1;
@@ -111,27 +111,29 @@ public class PlayingState extends BasicGameState{
 		
 		g.setAntiAlias(false);
 		
-		if (syncGame == true) {
-			backgroundManager.draw();
-			tileManager.draw(camera);
-			
-			playerShadows.draw( camera, ws.p1.getPosition(), ws.p1.getPlayerState() );
-			playerShadows.draw( camera, ws.p2.getPosition(), ws.p2.getPlayerState() );
-			
-			entityList.addAll(ws.mechanismList);
-			entityList.add(ws.p1);
-			entityList.add(ws.p2);
-			
-			Collections.sort(entityList, new EntityComparator());
-			for(Entity temp: entityList){
-				temp.draw(camera);
-			}
-			entityList.clear();
-			
-			black.draw();
-			darkness.draw();
-		} else {
+		
+		backgroundManager.draw();
+		tileManager.draw(camera);
+		
+		playerShadows.draw( camera, ws.p1.getPosition(), ws.p1.getPlayerState() );
+		playerShadows.draw( camera, ws.p2.getPosition(), ws.p2.getPlayerState() );
+		
+		entityList.addAll(ws.mechanismList);
+		entityList.add(ws.p1);
+		entityList.add(ws.p2);
+		
+		Collections.sort(entityList, new EntityComparator());
+		for(Entity temp: entityList){
+			temp.draw(camera);
+		}
+		entityList.clear();
+		
+		black.draw();
+		darkness.draw();
+		
+		if (syncGame == false) {
 			FontUtils.drawCenter(TowerGame.ricasso30, "Waiting for other player...", 165, 104, 470, Color.white);
+			black.setAlpha(0);
 		}
 		
 		// Extra stuff
@@ -162,6 +164,8 @@ public class PlayingState extends BasicGameState{
 		if (TowerGame.connected || !TowerGame.player1) { 			
 			if (syncGame == false){
 				reset += delta*1.75;
+				if (reset >= 1000)
+					ws.level = 1;
 			}
 			
 			if (input.isKeyPressed(Input.KEY_P))
@@ -312,10 +316,10 @@ public class PlayingState extends BasicGameState{
 				reset = 0;
 			}
 			if (reset >= 1000){
+				syncGame = true;
 				reset = 0;
 				reset();
 				client.Writer.println("reset");
-				syncGame = true;
 				return;
 			}
 			
@@ -407,6 +411,14 @@ public class PlayingState extends BasicGameState{
 		ws.circuitList.clear();
 		
 		switch(ws.level){
+			case 0:
+				// Load Map
+				tileManager.loadMap(TileMaps.level0, 2, 2, TileMaps.TPlevel1);
+				
+				// Set Players
+				ws.p1 = new Player(16, 16, true);
+				ws.p2 = new Player(48, 48, false);
+				break;
 			case 1:
 				// Load Map
 				tileManager.loadMap(TileMaps.level1, 24, 12, TileMaps.TPlevel1);
