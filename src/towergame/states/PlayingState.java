@@ -455,7 +455,7 @@ public class PlayingState extends BasicGameState{
 				ws.circuitList.add(new ExitCircuit(3));
 				
 				// Load Music
-				//ResourceManager.getMusic(TowerGame.BGM_LVL1).loop();
+				ResourceManager.getMusic(TowerGame.BGM_LVL1).loop();
 				break;
 			case 2:
 				// Load Map
