@@ -172,7 +172,7 @@ public class PlayingState extends BasicGameState{
 			if (syncGame == false){
 				reset += delta*1.75;
 				if (reset >= 1000)
-					ws.level = 1;
+					ws.level = 3;
 			}
 			
 			if (input.isKeyPressed(Input.KEY_P))
@@ -479,7 +479,7 @@ public class PlayingState extends BasicGameState{
 				ws.circuitList.add(new ExitCircuit(1));
 				ws.circuitList.add(new ExitCircuit(2));
 				break;
-			case 3:
+			case 4:
 				// Load Map
 				tileManager.loadMap(TileMaps.level4, 24, 22, TileMaps.TPlevel1);
 				mechanismManager.loadMap(ws.mechanismList, ObjectMaps.level4, 24, 22);
@@ -506,7 +506,7 @@ public class PlayingState extends BasicGameState{
 				ws.circuitList.add(new ExitCircuit(16));
 
 				break;	
-			case 4:
+			case 3:
 				// Load Map
 				tileManager.loadMap(TileMaps.level3, 23, 17, TileMaps.TPlevel1);
 				mechanismManager.loadMap(ws.mechanismList, ObjectMaps.level3, 23, 17);
@@ -590,8 +590,8 @@ public class PlayingState extends BasicGameState{
 			break;
 		case 3:
 			//Fade tiles
-			tileManager.setTileCircuit2(21, 10, 6, 0);
-			tileManager.setTileCircuit2(21, 11, 6, 0);
+			tileManager.setTileCircuit2(20, 10, 6, 0);
+			tileManager.setTileCircuit2(20, 11, 6, 0);
 			
 			//Buttons
 			tileManager.setTileCircuit2(3, 13, 1, 1);
@@ -599,8 +599,8 @@ public class PlayingState extends BasicGameState{
 			tileManager.setTileCircuit2(8, 10, 3, 1);
 			tileManager.setTileCircuit2(10, 10, 4, 1);
 			tileManager.setTileCircuit2(7, 4, 5, 1);
-			tileManager.setTileCircuit2(20, 9, 6, 1);
-			tileManager.setTileCircuit2(20, 12, 6, 2);
+			tileManager.setTileCircuit2(19, 9, 6, 1);
+			tileManager.setTileCircuit2(19, 12, 6, 2);
 			
 			//Never ending, button hidden off map
 			tileManager.setTileCircuit2(23, 17, 7, 1);

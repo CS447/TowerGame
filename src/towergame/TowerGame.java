@@ -211,7 +211,7 @@ public class TowerGame extends StateBasedGame{
 		ResourceManager.loadSound(SFX_CONFIRM2);
 		
 		// Preload some Music
-		container.setMusicVolume(0.30f);
+		container.setMusicVolume(0.15f);
 		ResourceManager.loadMusic(BGM_MENU);
 		ResourceManager.loadMusic(BGM_LOADING);
 		ResourceManager.loadMusic(BGM_LVL1);
