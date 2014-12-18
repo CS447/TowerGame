@@ -172,7 +172,7 @@ public class PlayingState extends BasicGameState{
 			if (syncGame == false){
 				reset += delta*1.75;
 				if (reset >= 1000)
-					ws.level = 3;
+					ws.level = 1;
 			}
 			
 			if (input.isKeyPressed(Input.KEY_P))
@@ -388,8 +388,6 @@ public class PlayingState extends BasicGameState{
 			
 			entityList.clear();
 			
-			ws.level = 1;
-			
 			darknessAlpha = 1;
 			
 			loadLevel();
@@ -399,8 +397,6 @@ public class PlayingState extends BasicGameState{
 			tileManager.clear();
 			
 			entityList.clear();
-			
-			ws.level = 2;
 			
 			darknessAlpha = 1;
 			
@@ -414,8 +410,6 @@ public class PlayingState extends BasicGameState{
 			
 			entityList.clear();
 			
-			ws.level = 3;
-			
 			darknessAlpha = 1;
 			
 			loadLevel();
@@ -425,8 +419,6 @@ public class PlayingState extends BasicGameState{
 			tileManager.clear();
 			
 			entityList.clear();
-			
-			ws.level = 4;
 			
 			darknessAlpha = 1;
 			
@@ -463,7 +455,7 @@ public class PlayingState extends BasicGameState{
 				ws.circuitList.add(new ExitCircuit(3));
 				
 				// Load Music
-				ResourceManager.getMusic(TowerGame.BGM_LVL1).loop();
+				//ResourceManager.getMusic(TowerGame.BGM_LVL1).loop();
 				break;
 			case 2:
 				// Load Map
@@ -526,7 +518,7 @@ public class PlayingState extends BasicGameState{
 				ws.circuitList.add(new ReverseOrDualCircuit(7));
 
 				// Load Music
-				ResourceManager.getMusic(TowerGame.BGM_LVL1).loop();
+				//ResourceManager.getMusic(TowerGame.BGM_LVL1).loop();
 				break;
 		}
 		
