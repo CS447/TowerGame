@@ -64,6 +64,7 @@ public class PlayingState extends BasicGameState{
 	static List<Entity> entityList;
 	
 	static int reset;
+	static int update;
 	
 	static boolean syncGame;
 	
@@ -100,6 +101,7 @@ public class PlayingState extends BasicGameState{
 		darknessAlpha = 1;
 		
 		reset = 0;
+		update = 0;
 		
 		loadLevel();
 			
@@ -301,6 +303,14 @@ public class PlayingState extends BasicGameState{
 					case "pause":
 						paused = !paused;
 						break;
+					case "sync1":
+						if (!TowerGame.player1)
+							otherPlayer.setPosition( Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]) );
+						break;
+					case "sync2":
+						if (!TowerGame.player1)
+							player.setPosition( Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]) );
+						break;
 					default:
 						break;
 					}
@@ -309,6 +319,16 @@ public class PlayingState extends BasicGameState{
 				System.out.println("NetError: " + e);
 			}
 			
+			
+			// Update/Sync The game every second
+			update += delta;
+			if (update >= 1000){
+				update -= 1000;
+				if (TowerGame.player1){
+					client.Writer.println("sync1 " + player.getX() + " " + player.getY());
+					client.Writer.println("sync2 " + otherPlayer.getX() + " " + otherPlayer.getY());
+				}
+			}
 			
 			// Reset the level if held down
 			if (input.isKeyDown(Input.KEY_R)){
